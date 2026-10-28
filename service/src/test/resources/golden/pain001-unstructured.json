@@ -1,0 +1,40 @@
+{
+  "messageId" : "<id>",
+  "messageType" : "pain.001",
+  "status" : "RECEIVED",
+  "inputValid" : true,
+  "schemaErrorCount" : 0,
+  "schemaErrors" : [ ],
+  "duplicate" : false,
+  "addressJobs" : [ {
+    "jobId" : "<id>",
+    "messageId" : "<id>",
+    "messageType" : "pain.001",
+    "role" : "DEBTOR",
+    "xmlPath" : "/Document/CstmrCdtTrfInitn[1]/PmtInf[1]/Dbtr[1]/PstlAdr[1]",
+    "rawLines" : [ "7 Orchard Lane", "Cork T12 XY34", "IRELAND" ],
+    "existing" : { },
+    "countryHint" : "IE",
+    "alreadyStructured" : false
+  }, {
+    "jobId" : "<id>",
+    "messageId" : "<id>",
+    "messageType" : "pain.001",
+    "role" : "CREDITOR",
+    "xmlPath" : "/Document/CstmrCdtTrfInitn[1]/PmtInf[1]/CdtTrfTxInf[1]/Cdtr[1]/PstlAdr[1]",
+    "rawLines" : [ "Keizersgracht 99", "1015 CJ Amsterdam" ],
+    "existing" : { },
+    "countryHint" : "NL",
+    "alreadyStructured" : false
+  }, {
+    "jobId" : "<id>",
+    "messageId" : "<id>",
+    "messageType" : "pain.001",
+    "role" : "CREDITOR",
+    "xmlPath" : "/Document/CstmrCdtTrfInitn[1]/PmtInf[1]/CdtTrfTxInf[2]/Cdtr[1]/PstlAdr[1]",
+    "rawLines" : [ "Plot 12, Sector 5, near City Mall", "Pune, Maharashtra 411001", "India" ],
+    "existing" : { },
+    "countryHint" : null,
+    "alreadyStructured" : false
+  } ]
+}

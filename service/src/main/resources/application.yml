@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: paystruct-service
+  datasource:
+    # Credentials come from the environment (see ../.env.example); nothing secret is stored here.
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  flyway:
+    enabled: true
+
+paystruct:
+  ingest:
+    # Hard cap on one request body. Larger bodies are rejected with HTTP 413.
+    max-request-size: 5MB
+    # Schema errors kept per message (the total count is always reported).
+    max-schema-errors: 1000
+    # Supported message versions. Adding a version = adding its XSD and one entry here.
+    message-types:
+      - namespace: urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14
+        type: pacs.008
+        xsd: xsd/pacs.008.001.14.xsd
+      - namespace: urn:iso:std:iso:20022:tech:xsd:pain.001.001.13
+        type: pain.001
+        xsd: xsd/pain.001.001.13.xsd

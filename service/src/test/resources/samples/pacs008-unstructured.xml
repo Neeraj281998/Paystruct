@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0001</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0001</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">1250.00</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Brindle and Moss Trading Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Flat 2, 14 Marlow Court</AdrLine>
+          <AdrLine>Riverside Road</AdrLine>
+          <AdrLine>BRISTOL BS1 4XY UNITED KINGDOM</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTGB2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <Nm>Example Regional Bank</Nm>
+          <PstlAdr>
+            <AdrLine>1 Quay Street</AdrLine>
+            <AdrLine>Galway H91 AB12 Ireland</AdrLine>
+          </PstlAdr>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Harbour Lights Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Unit 4 Block B Docklands Business Park</AdrLine>
+          <AdrLine>Dublin 1 D01 K2X7 Ireland</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

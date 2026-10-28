@@ -1,0 +1,91 @@
+{
+  "messageId" : "<id>",
+  "messageType" : "pacs.008",
+  "status" : "RECEIVED",
+  "inputValid" : true,
+  "schemaErrorCount" : 0,
+  "schemaErrors" : [ ],
+  "duplicate" : false,
+  "addressJobs" : [ {
+    "jobId" : "<id>",
+    "messageId" : "<id>",
+    "messageType" : "pacs.008",
+    "role" : "ULTIMATE_DEBTOR",
+    "xmlPath" : "/Document/FIToFICstmrCdtTrf[1]/CdtTrfTxInf[1]/UltmtDbtr[1]/PstlAdr[1]",
+    "rawLines" : [ ],
+    "existing" : {
+      "StrtNm" : "Lindenallee",
+      "BldgNb" : "27",
+      "PstCd" : "20095",
+      "TwnNm" : "Hamburg",
+      "Ctry" : "DE"
+    },
+    "countryHint" : "DE",
+    "alreadyStructured" : true
+  }, {
+    "jobId" : "<id>",
+    "messageId" : "<id>",
+    "messageType" : "pacs.008",
+    "role" : "DEBTOR",
+    "xmlPath" : "/Document/FIToFICstmrCdtTrf[1]/CdtTrfTxInf[1]/Dbtr[1]/PstlAdr[1]",
+    "rawLines" : [ ],
+    "existing" : {
+      "AdrTp" : "BIZZ",
+      "StrtNm" : "Lindenallee",
+      "BldgNb" : "27",
+      "PstCd" : "20095",
+      "TwnNm" : "Hamburg",
+      "Ctry" : "DE"
+    },
+    "countryHint" : "DE",
+    "alreadyStructured" : true
+  }, {
+    "jobId" : "<id>",
+    "messageId" : "<id>",
+    "messageType" : "pacs.008",
+    "role" : "CREDITOR_AGENT",
+    "xmlPath" : "/Document/FIToFICstmrCdtTrf[1]/CdtTrfTxInf[1]/CdtrAgt[1]/FinInstnId[1]/PstlAdr[1]",
+    "rawLines" : [ ],
+    "existing" : {
+      "StrtNm" : "Rue de la Gare",
+      "BldgNb" : "8",
+      "PstCd" : "69002",
+      "TwnNm" : "Lyon",
+      "Ctry" : "FR"
+    },
+    "countryHint" : null,
+    "alreadyStructured" : true
+  }, {
+    "jobId" : "<id>",
+    "messageId" : "<id>",
+    "messageType" : "pacs.008",
+    "role" : "CREDITOR",
+    "xmlPath" : "/Document/FIToFICstmrCdtTrf[1]/CdtTrfTxInf[1]/Cdtr[1]/PstlAdr[1]",
+    "rawLines" : [ ],
+    "existing" : {
+      "StrtNm" : "Rue des Tilleuls",
+      "BldgNb" : "12",
+      "PstCd" : "69003",
+      "TwnNm" : "Lyon",
+      "Ctry" : "FR"
+    },
+    "countryHint" : null,
+    "alreadyStructured" : true
+  }, {
+    "jobId" : "<id>",
+    "messageId" : "<id>",
+    "messageType" : "pacs.008",
+    "role" : "ULTIMATE_CREDITOR",
+    "xmlPath" : "/Document/FIToFICstmrCdtTrf[1]/CdtTrfTxInf[1]/UltmtCdtr[1]/PstlAdr[1]",
+    "rawLines" : [ ],
+    "existing" : {
+      "StrtNm" : "Rue des Tilleuls",
+      "BldgNb" : "12",
+      "PstCd" : "69003",
+      "TwnNm" : "Lyon",
+      "Ctry" : "FR"
+    },
+    "countryHint" : null,
+    "alreadyStructured" : true
+  } ]
+}

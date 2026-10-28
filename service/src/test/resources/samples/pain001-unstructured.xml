@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.13">
+  <CstmrCdtTrfInitn>
+    <GrpHdr>
+      <MsgId>SYNTH-PAIN001-0001</MsgId>
+      <CreDtTm>2026-10-13T08:00:00Z</CreDtTm>
+      <NbOfTxs>2</NbOfTxs>
+      <InitgPty>
+        <Nm>Fernhill Foods Ltd</Nm>
+      </InitgPty>
+    </GrpHdr>
+    <PmtInf>
+      <PmtInfId>SYNTH-PMT-0001</PmtInfId>
+      <PmtMtd>TRF</PmtMtd>
+      <ReqdExctnDt>
+        <Dt>2026-10-14</Dt>
+      </ReqdExctnDt>
+      <Dbtr>
+        <Nm>Fernhill Foods Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>7 Orchard Lane</AdrLine>
+          <AdrLine>Cork T12 XY34</AdrLine>
+          <AdrLine>IRELAND</AdrLine>
+        </PstlAdr>
+        <Id>
+          <OrgId>
+            <AnyBIC>TESTIE2DXXX</AnyBIC>
+          </OrgId>
+        </Id>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <Othr>
+            <Id>SYNTH-ACCT-0001</Id>
+          </Othr>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2DXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtTrfTxInf>
+        <PmtId>
+          <EndToEndId>SYNTH-E2E-1001</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="EUR">4300.00</InstdAmt>
+        </Amt>
+        <CdtrAgt>
+          <FinInstnId>
+            <BICFI>TESTNL2AXXX</BICFI>
+          </FinInstnId>
+        </CdtrAgt>
+        <Cdtr>
+          <Nm>Tulpenhandel Van Dijk BV</Nm>
+          <PstlAdr>
+            <AdrLine>Keizersgracht 99</AdrLine>
+            <AdrLine>1015 CJ Amsterdam</AdrLine>
+          </PstlAdr>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <Othr>
+              <Id>SYNTH-ACCT-2001</Id>
+            </Othr>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+      <CdtTrfTxInf>
+        <PmtId>
+          <EndToEndId>SYNTH-E2E-1002</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="USD">2100.00</InstdAmt>
+        </Amt>
+        <Cdtr>
+          <Nm>Saffron Spice Exports Pvt Ltd</Nm>
+          <PstlAdr>
+            <AdrLine>Plot 12, Sector 5, near City Mall</AdrLine>
+            <AdrLine>Pune, Maharashtra 411001</AdrLine>
+            <AdrLine>India</AdrLine>
+          </PstlAdr>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <Othr>
+              <Id>SYNTH-ACCT-2002</Id>
+            </Othr>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>

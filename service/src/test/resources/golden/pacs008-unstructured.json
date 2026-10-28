@@ -1,0 +1,40 @@
+{
+  "messageId" : "<id>",
+  "messageType" : "pacs.008",
+  "status" : "RECEIVED",
+  "inputValid" : true,
+  "schemaErrorCount" : 0,
+  "schemaErrors" : [ ],
+  "duplicate" : false,
+  "addressJobs" : [ {
+    "jobId" : "<id>",
+    "messageId" : "<id>",
+    "messageType" : "pacs.008",
+    "role" : "DEBTOR",
+    "xmlPath" : "/Document/FIToFICstmrCdtTrf[1]/CdtTrfTxInf[1]/Dbtr[1]/PstlAdr[1]",
+    "rawLines" : [ "Flat 2, 14 Marlow Court", "Riverside Road", "BRISTOL BS1 4XY UNITED KINGDOM" ],
+    "existing" : { },
+    "countryHint" : "GB",
+    "alreadyStructured" : false
+  }, {
+    "jobId" : "<id>",
+    "messageId" : "<id>",
+    "messageType" : "pacs.008",
+    "role" : "CREDITOR_AGENT",
+    "xmlPath" : "/Document/FIToFICstmrCdtTrf[1]/CdtTrfTxInf[1]/CdtrAgt[1]/FinInstnId[1]/PstlAdr[1]",
+    "rawLines" : [ "1 Quay Street", "Galway H91 AB12 Ireland" ],
+    "existing" : { },
+    "countryHint" : null,
+    "alreadyStructured" : false
+  }, {
+    "jobId" : "<id>",
+    "messageId" : "<id>",
+    "messageType" : "pacs.008",
+    "role" : "CREDITOR",
+    "xmlPath" : "/Document/FIToFICstmrCdtTrf[1]/CdtTrfTxInf[1]/Cdtr[1]/PstlAdr[1]",
+    "rawLines" : [ "Unit 4 Block B Docklands Business Park", "Dublin 1 D01 K2X7 Ireland" ],
+    "existing" : { },
+    "countryHint" : null,
+    "alreadyStructured" : false
+  } ]
+}

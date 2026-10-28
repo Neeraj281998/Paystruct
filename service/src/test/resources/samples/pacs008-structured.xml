@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0002</MsgId>
+      <CreDtTm>2026-10-12T10:15:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0002</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">980.50</IntrBkSttlmAmt>
+      <ChrgBr>DEBT</ChrgBr>
+      <UltmtDbtr>
+        <Nm>Alder Holdings GmbH</Nm>
+        <PstlAdr>
+          <StrtNm>Lindenallee</StrtNm>
+          <BldgNb>27</BldgNb>
+          <PstCd>20095</PstCd>
+          <TwnNm>Hamburg</TwnNm>
+          <Ctry>DE</Ctry>
+        </PstlAdr>
+      </UltmtDbtr>
+      <Dbtr>
+        <Nm>Alder Logistics GmbH</Nm>
+        <PstlAdr>
+          <AdrTp>
+            <Cd>BIZZ</Cd>
+          </AdrTp>
+          <StrtNm>Lindenallee</StrtNm>
+          <BldgNb>27</BldgNb>
+          <PstCd>20095</PstCd>
+          <TwnNm>Hamburg</TwnNm>
+          <Ctry>DE</Ctry>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTDEHHXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <Nm>Example Handelsbank</Nm>
+          <PstlAdr>
+            <StrtNm>Rue de la Gare</StrtNm>
+            <BldgNb>8</BldgNb>
+            <PstCd>69002</PstCd>
+            <TwnNm>Lyon</TwnNm>
+            <Ctry>FR</Ctry>
+          </PstlAdr>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Maison Quinet SARL</Nm>
+        <PstlAdr>
+          <StrtNm>Rue des Tilleuls</StrtNm>
+          <BldgNb>12</BldgNb>
+          <PstCd>69003</PstCd>
+          <TwnNm>Lyon</TwnNm>
+          <Ctry>FR</Ctry>
+        </PstlAdr>
+      </Cdtr>
+      <UltmtCdtr>
+        <Nm>Quinet Famille</Nm>
+        <PstlAdr>
+          <StrtNm>Rue des Tilleuls</StrtNm>
+          <BldgNb>12</BldgNb>
+          <PstCd>69003</PstCd>
+          <TwnNm>Lyon</TwnNm>
+          <Ctry>FR</Ctry>
+        </PstlAdr>
+      </UltmtCdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>
