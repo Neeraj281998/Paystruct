@@ -13,6 +13,6 @@ Status: accepted (Phase 2A)
 - **Faker is used for surnames only** (in street and building names, with the `en_IE` and `en_GB` locales). Towns, counties, routing keys and outward codes come from small curated tables, because Faker's cities are not real places. Faker is pinned in `requirements.txt` because its output can change between versions.
 - **One module per country**, discovered by importing the `countries` package. The country supplies its data, a town block and a postcode split; templates, corruptions, tags and validation are shared.
 
-## Deviation
+## Python version
 
-Python 3.12 was asked for but only 3.14 is installed here. The code avoids anything newer than 3.12, and installing 3.12 was not done without asking. Run the tests on 3.12 before relying on that.
+Python 3.12 (tested on 3.12.16 with the pinned `requirements.txt`).

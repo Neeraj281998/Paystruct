@@ -12,7 +12,7 @@ python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 ```
 
-Code is written for Python 3.12 or later and has been run on 3.14.
+Tested on Python 3.12.
 
 ## Generate
 

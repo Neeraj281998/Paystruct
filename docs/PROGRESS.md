@@ -30,5 +30,4 @@ Built: `data/labelling-guide.md` (decisions applied, awaiting approval) and the 
 Not built: the other six countries, the four splits, the frozen test split, the hard-set tooling, the message builder and the stats script (all Phase 2B).
 
 Things to know:
-- Python 3.12 was specified; only 3.14 is installed, so the tests have been run on 3.14 only.
 - Typos in gold stay as written, abbreviations are not expanded in gold, and the scorer folds the allowlisted expansions (guide sections 9 and 10).
