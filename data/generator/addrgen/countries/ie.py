@@ -9,16 +9,33 @@ from addrgen.model import Part, TownBlock
 # Eircode unique identifiers use these 25 characters.
 _EIRCODE_CHARS = "0123456789ACDEFHKNPRTVWXY"
 
-# (town, county, routing key)
+# (town, county, routing key, localities). A locality is written only next to the town it belongs to; a town with an
+# empty tuple never gets one, because no locality is listed for it.
 TOWNS = (
-    ("Cork", "Cork", "T12"), ("Galway", "Galway", "H91"), ("Limerick", "Limerick", "V94"),
-    ("Waterford", "Waterford", "X91"), ("Kilkenny", "Kilkenny", "R95"), ("Sligo", "Sligo", "F91"),
-    ("Athlone", "Westmeath", "N37"), ("Drogheda", "Louth", "A92"), ("Dundalk", "Louth", "A91"),
-    ("Letterkenny", "Donegal", "F92"), ("Tralee", "Kerry", "V92"), ("Ennis", "Clare", "V95"),
-    ("Wexford", "Wexford", "Y35"), ("Navan", "Meath", "C15"), ("Carlow", "Carlow", "R93"),
-    ("Naas", "Kildare", "W91"), ("Killarney", "Kerry", "V93"), ("Mullingar", "Westmeath", "N91"),
-    ("Cavan", "Cavan", "H12"), ("Castlebar", "Mayo", "F23"), ("Dún Laoghaire", "Dublin", "A96"),
-    ("Bray", "Wicklow", "A98"), ("Swords", "Dublin", "K67"), ("Tullamore", "Offaly", "R35"),
+    ("Cork", "Cork", "T12", ("Douglas", "Mahon", "Blackrock", "Ballincollig", "Glanmire", "Bishopstown", "Wilton", "Togher", "Montenotte")),
+    ("Galway", "Galway", "H91", ("Salthill", "Knocknacarra", "Renmore", "Oranmore", "Claregalway", "Ballybrit", "Mervue", "Doughiska")),
+    ("Limerick", "Limerick", "V94", ("Castletroy", "Raheen", "Dooradoyle", "Annacotty", "Caherdavin", "Corbally")),
+    ("Waterford", "Waterford", "X91", ("Tramore", "Ferrybank", "Ballybeg", "Lisduggan")),
+    ("Kilkenny", "Kilkenny", "R95", ()),
+    ("Sligo", "Sligo", "F91", ("Strandhill", "Rosses Point")),
+    ("Athlone", "Westmeath", "N37", ("Monksland", "Coosan")),
+    ("Drogheda", "Louth", "A92", ("Mornington", "Termonfeckin")),
+    ("Dundalk", "Louth", "A91", ("Blackrock", "Castletown", "Haggardstown")),
+    ("Letterkenny", "Donegal", "F92", ("Ballyraine",)),
+    ("Tralee", "Kerry", "V92", ("Ballymullen", "Blennerville")),
+    ("Ennis", "Clare", "V95", ()),
+    ("Wexford", "Wexford", "Y35", ()),
+    ("Navan", "Meath", "C15", ("Athlumney", "Kentstown")),
+    ("Carlow", "Carlow", "R93", ("Graiguecullen",)),
+    ("Naas", "Kildare", "W91", ("Sallins", "Johnstown")),
+    ("Killarney", "Kerry", "V93", ("Muckross", "Fossa")),
+    ("Mullingar", "Westmeath", "N91", ()),
+    ("Cavan", "Cavan", "H12", ()),
+    ("Castlebar", "Mayo", "F23", ()),
+    ("D\u00fan Laoghaire", "Dublin", "A96", ("Glasthule", "Monkstown", "Sandycove")),
+    ("Bray", "Wicklow", "A98", ("Ballywaltrim", "Little Bray")),
+    ("Swords", "Dublin", "K67", ("Applewood", "Seatown")),
+    ("Tullamore", "Offaly", "R35", ()),
 )
 
 # Dublin postal districts: (written town, routing key). There is no Dublin 19, 21 or 23.
@@ -26,19 +43,23 @@ DUBLIN_DISTRICTS = tuple(
     (f"Dublin {n}", f"D{n:02d}") for n in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 22, 24)
 ) + (("Dublin 6W", "D6W"),)
 
-# Suburbs that can sit on a line before the district.
+# Suburbs, each listed under the postal district it is in.
 DUBLIN_LOCALITIES = {
-    "Dublin 1": ("Docklands", "North Wall"), "Dublin 2": ("Portobello",), "Dublin 4": ("Ballsbridge", "Sandymount"),
-    "Dublin 6": ("Ranelagh", "Rathmines", "Terenure"), "Dublin 7": ("Phibsborough", "Stoneybatter"),
-    "Dublin 8": ("Kilmainham", "Rialto"), "Dublin 9": ("Drumcondra", "Santry"), "Dublin 12": ("Crumlin", "Walkinstown"),
-    "Dublin 14": ("Dundrum", "Churchtown"), "Dublin 15": ("Blanchardstown", "Castleknock"),
-    "Dublin 18": ("Sandyford", "Cabinteely"), "Dublin 24": ("Tallaght", "Kilnamanagh"),
+    "Dublin 1": ("Docklands", "North Wall"), "Dublin 2": ("Grand Canal Dock",),
+    "Dublin 3": ("Clontarf", "Fairview", "Marino"), "Dublin 4": ("Ballsbridge", "Sandymount", "Donnybrook"),
+    "Dublin 5": ("Raheny", "Artane", "Donaghmede"), "Dublin 6": ("Ranelagh", "Rathmines", "Rathgar"),
+    "Dublin 6W": ("Terenure", "Templeogue"), "Dublin 7": ("Phibsborough", "Stoneybatter"),
+    "Dublin 8": ("Kilmainham", "Rialto", "Portobello"), "Dublin 9": ("Drumcondra", "Santry", "Glasnevin"),
+    "Dublin 10": ("Ballyfermot",), "Dublin 11": ("Finglas", "Glasnevin"), "Dublin 12": ("Crumlin", "Walkinstown"),
+    "Dublin 13": ("Sutton", "Baldoyle"), "Dublin 14": ("Dundrum", "Churchtown", "Rathfarnham"),
+    "Dublin 15": ("Blanchardstown", "Castleknock"), "Dublin 16": ("Ballinteer", "Knocklyon"),
+    "Dublin 17": ("Coolock",), "Dublin 18": ("Sandyford", "Cabinteely", "Foxrock"), "Dublin 20": ("Chapelizod",),
+    "Dublin 22": ("Clondalkin",), "Dublin 24": ("Tallaght", "Kilnamanagh"),
 }
 
-LOCALITIES = (
-    "Ballybrit", "Knocknacarra", "Mahon", "Douglas", "Salthill", "Oranmore", "Maynooth", "Glanmire", "Ballincollig",
-    "Raheen", "Castletroy", "Shankill", "Kilcock", "Rathfarnham", "Clondalkin", "Lucan", "Carrigaline", "Blarney",
-)
+# Every locality that may be written beside a town, by lower-cased town: used by the tests.
+LOCALITIES_BY_TOWN = {t.casefold(): frozenset(x.casefold() for x in locs) for t, _, _, locs in TOWNS} | {
+    d.casefold(): frozenset(x.casefold() for x in locs) for d, locs in DUBLIN_LOCALITIES.items()}
 
 
 @register
@@ -70,12 +91,13 @@ class Ireland(CountryModule):
         if difficulty == "hard" and rng.random() < 0.4:
             town, key = rng.choice(DUBLIN_DISTRICTS)
             tags.add("postal_district")
-            suburbs = DUBLIN_LOCALITIES.get(town)
-            locality = rng.choice(suburbs) if suburbs and (want_locality or rng.random() < 0.3) else None
+            suburbs = DUBLIN_LOCALITIES[town]
+            locality = rng.choice(suburbs) if want_locality or rng.random() < 0.3 else None
             county = "Co. Dublin" if rng.random() < 0.10 else None
         else:
-            town, county_name, key = rng.choice(TOWNS)
-            locality = rng.choice(LOCALITIES) if want_locality or rng.random() < 0.25 else None
+            candidates = [t for t in TOWNS if t[3]] if want_locality else TOWNS  # a locality needs a town that has some
+            town, county_name, key, suburbs = rng.choice(candidates)
+            locality = rng.choice(suburbs) if suburbs and (want_locality or rng.random() < 0.25) else None
             county = None
             if rng.random() < 0.3:
                 county = f"Co. {county_name}" if rng.random() < 0.5 else f"County {county_name}"

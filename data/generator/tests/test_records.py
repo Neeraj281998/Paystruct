@@ -148,7 +148,7 @@ def test_tag_semantics(records):
 
 
 # ---- the guide's labelling decisions hold, and typos never reach towns, postcodes or countries --------------------
-_IE_TOWNS = {t.casefold() for t, _, _ in ie.TOWNS} | {d.casefold() for d, _ in ie.DUBLIN_DISTRICTS}
+_IE_TOWNS = {t.casefold() for t, *_ in ie.TOWNS} | {d.casefold() for d, _ in ie.DUBLIN_DISTRICTS}
 _GB_TOWNS = {t.casefold() for t, *_ in gb.POST_TOWNS}
 _EIRCODE = re.compile(r"^([ACDEFHKNPRTVWXY][0-9]{2}|D6W)")
 _GB_POSTCODE = re.compile(r"^[A-Z]{1,2}[0-9][0-9A-Z]? ?[0-9][A-Z]{2}$")
@@ -164,6 +164,19 @@ def test_towns_postcodes_and_countries_are_never_corrupted(records):
             assert gold["TwnNm"].casefold() in _GB_TOWNS, (rec["id"], gold["TwnNm"])
             assert _GB_POSTCODE.match(gold["PstCd"].upper()), (rec["id"], gold["PstCd"])
         assert gold["Ctry"] == rec["country"]
+
+
+def test_a_locality_is_only_ever_beside_a_town_it_belongs_to(records):
+    """Fixes 'Knocknacarra beside Drogheda': every TwnLctnNm must be listed under that record's own town."""
+    by_town = {"IE": ie.LOCALITIES_BY_TOWN, "GB": gb.LOCALITIES_BY_TOWN}
+    checked = 0
+    for rec in records:
+        gold = rec["gold"]
+        if "TwnLctnNm" in gold:
+            checked += 1
+            allowed = by_town[rec["country"]][gold["TwnNm"].casefold()]
+            assert gold["TwnLctnNm"].casefold() in allowed, (rec["id"], gold["TwnLctnNm"], gold["TwnNm"])
+    assert checked > 100  # the check is exercised, not vacuous
 
 
 def test_labelling_guide_conventions(records):
