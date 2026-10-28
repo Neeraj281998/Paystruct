@@ -1,6 +1,6 @@
 # Labelling guide
 
-Status: DECISIONS APPLIED, waiting for approval. Settles every ambiguous case once, so gold labels never contradict each other. The generator, the hand-written hard set and the scorer all follow this file. If a case is not covered, add a rule here before labelling it.
+Status: approved, including sections 12-18 (FR, DE, NL, CA, US, IN). Settles every ambiguous case once, so gold labels never contradict each other. The generator, the hand-written hard set and the scorer all follow this file. If a case is not covered, add a rule here before labelling it.
 
 Element names and maximum lengths come from the XSD (`docs/decisions/xsd-versions.md`), not from the spec table. Fields used in v1: `StrtNm`, `BldgNb`, `BldgNm`, `Flr`, `Room`, `PstBx`, `PstCd`, `TwnNm`, `TwnLctnNm`, `CtrySubDvsn`, `Ctry`. Not used in v1: `Dept`, `SubDept`, `UnitNb`, `DstrctNm`, `CareOf`.
 
@@ -36,7 +36,7 @@ A named suburb on its own line before the town is `TwnLctnNm`: `"Ranelagh" / "Du
 
 ## 3. Building name versus street name
 
-**Decision:** decided by the words in the segment.
+**Decision:** decided by the words in the segment. The word lists below are for IE and GB; each new country has its own lists in sections 13-18 (for example "Court" is a street word in the US and a building word here).
 
 - Street words: Street, St, Road, Rd, Lane, Ln, Avenue, Ave, Drive, Dr, Terrace, Ter, Close, Cl, Way, Place, Square, Sq, Quay, Crescent, Cres, Gardens, Gdns, Grove, Row, Hill, Walk. A segment with one is `StrtNm`.
 - Building words: House, Court, Lodge, Tower, Building, Centre, Plaza, Mansions, Cottage, Business Park, Industrial Estate, Block. A segment with one (and no street word) is `BldgNm`, even if it could be a street name.
@@ -86,22 +86,94 @@ A named suburb on its own line before the town is `TwnLctnNm`: `"Ranelagh" / "Du
 ## 9. Typos, abbreviations and long lines
 
 - Typos are made only in `StrtNm` and `BldgNm` (a word of the name, not the street or building word, and not the first letter). Never in towns, postcodes, numbers or countries. Gold keeps the typo as written, because PayStruct must never output a value that is not in the input. Records with a typo are tagged `typo` so results can be broken out separately.
-- Abbreviations (St, Rd, Ave, Dr, Ln, Ter, Cl, Sq, Gdns, Cres, Apt) are written in the raw text and stay in gold. Tag `abbreviated`.
+- Abbreviations are written in the raw text and stay in gold. Tag `abbreviated`. IE and GB: St, Rd, Ave, Dr, Ln, Ter, Cl, Sq, Gdns, Cres, Apt. The other countries use only the abbreviations listed in their own section.
 - A raw line over 70 characters is split at a word boundary into the next line, tag `long_line_split`. Gold stays whole, so any value, including a postcode, may end up across two lines. At most 7 raw lines.
 
 ## 10. How the scorer compares
 
 A predicted field equals the gold field when, for both: Unicode NFC, case-folded, runs of whitespace collapsed to one space, leading and trailing whitespace and the punctuation `, . ;` trimmed. For `PstCd` only, all whitespace is removed, so "D01K2X7" equals "D01 K2X7". Accents are kept ("Dún" is not "Dun").
 
-Abbreviations: gold keeps the text as written, but a system must not be penalised for either form. So the scorer also treats a value and its allowlisted expansion as equal (St/Street, Rd/Road, Ave/Avenue, Dr/Drive, Ln/Lane, Ter/Terrace, Cl/Close, Sq/Square, Gdns/Gardens, Cres/Crescent, Apt/Apartment). The scorer and the Phase 5 grounding check use one shared allowlist, defined once in Phase 4. Exact match means every gold field matches and no extra field is predicted.
+Abbreviations: gold keeps the text as written, but a system must not be penalised for either form. So the scorer also treats a value and its allowlisted expansion as equal (IE and GB: St/Street, Rd/Road, Ave/Avenue, Dr/Drive, Ln/Lane, Ter/Terrace, Cl/Close, Sq/Square, Gdns/Gardens, Cres/Crescent, Apt/Apartment; the pairs for the other countries are in sections 13-18). The scorer and the Phase 5 grounding check use one shared allowlist, defined once in Phase 4. Exact match means every gold field matches and no extra field is predicted.
 
 ## 11. Difficulty and tags
 
 Difficulty is computed from the tags, so it cannot drift from them.
 
 - **Corruption tags:** `all_caps`, `extra_spaces`, `one_line`, `missing_commas`, `reordered`, `postcode_split`, `postcode_no_space`, `postcode_wrong_line`, `typo`, `abbreviated`, `country_name`, `no_country`, `long_line_split`.
-- **hard:** four or more corruption tags, or any of `postal_district`, `no_country`, `postcode_split`, `postcode_wrong_line`, `typo`.
+- **hard:** four or more corruption tags, or any of `postal_district`, `no_country`, `postcode_split`, `postcode_wrong_line`, `typo`, `landmark`, `cedex`.
 - **medium:** otherwise, two or three corruption tags, or any of `no_street_number`, `flat`, `building_name`, `floor`.
 - **easy:** everything else.
 
-Structure tags: `no_street_number`, `postal_district`, `flat`, `building_name`, `floor`, `po_box`, `county` (any `CtrySubDvsn`), `locality`.
+Structure tags: `no_street_number`, `postal_district`, `flat`, `building_name`, `floor`, `po_box`, `county` (any `CtrySubDvsn`: a county, state or province), `locality`, `landmark` (India, section 18), `cedex` (France, section 13).
+
+## 12. Rules common to the six new countries
+
+- **Natural order.** Number position: before the street in FR, CA, US, IN; after it in DE, NL. Postcode position: before the town in FR, DE, NL; after the town in CA and US (with the state between) and in IN (state, then PIN). `reordered` means any departure from the country's own natural order.
+- **Compound street names (DE, NL).** The street word is the end of the name ("Hauptstraße", "Keizersgracht") or a separate word ("Berliner Straße"). Either way the whole name is `StrtNm`.
+- **Region (`CtrySubDvsn`)** is labelled only when written, as written. It is always written in CA, US and IN, never generated in FR, DE and NL.
+- **Case and accents.** As in section 0, gold follows the text. In German all-caps text "ß" becomes "SS" ("HAUPTSTRASSE"), and gold follows. Accents are kept (NFC).
+- Countries, their words and their abbreviations live in the country's own section. Gold `Ctry` is the ISO code in every case.
+
+## 13. France (FR)
+
+Natural: `12 Rue des Tilleuls` / `69003 Lyon` / `France`.
+
+- `StrtNm` includes the type word, which comes first: "Rue des Tilleuls", "Avenue Victor Hugo". Street words: Rue, Avenue, Boulevard, Place, Chemin, Impasse, Allée, Quai, Route, Cours, Passage, Square.
+- `BldgNb` keeps "bis" and "ter" ("12 bis").
+- Building words: Résidence, Bâtiment, Immeuble, Tour, Villa. "Résidence Les Tilleuls" is `BldgNm`. "Appartement 12", "Appt 12", "Bureau 4" are `Room`. "3ème étage", "2e étage", "Rez-de-chaussée" are `Flr`. "BP 123" is `PstBx`.
+- **Cedex:** the suffix stays with the town: "69003 Lyon Cedex 03" gives `PstCd` "69003", `TwnNm` "Lyon Cedex 03". Tag `cedex`.
+- **Arrondissement:** "75008 Paris" gives `TwnNm` "Paris". If written "Paris 8e", `TwnNm` is "Paris 8e" (the district stays with the town, as for Dublin). Tag `postal_district`.
+- Country written: "France". Abbreviations: Av./Avenue, Bd/Boulevard, Pl./Place, Ch./Chemin, Imp./Impasse, All./Allée, Appt/Appartement, Bât./Bâtiment.
+
+## 14. Germany (DE)
+
+Natural: `Hauptstraße 12` / `20095 Hamburg` / `Deutschland`.
+
+- Number after the street: `StrtNm` "Hauptstraße", `BldgNb` "12". Letters stay as written ("12a"); ranges stay whole ("12-14").
+- Street endings: -straße, -strasse, -str., -weg, -allee, -platz, -gasse, -ring, -damm, -ufer. Names with no such ending ("Am Markt", "An der Mühle") are hand-written set only.
+- Building words: Haus, Gebäude, Turm, Center. "Wohnung 5", "Whg. 5", "Zimmer 3", "Büro 12" are `Room`. "3. OG", "EG", "Erdgeschoss", "2. Etage" are `Flr` as written. "Postfach 1234" is `PstBx`. "c/o" is not generated.
+- Country written: "Deutschland", "Germany". Abbreviations: Str./Straße and Str./Strasse, also as an ending ("Hauptstr." = "Hauptstraße").
+
+## 15. Netherlands (NL)
+
+Natural: `Keizersgracht 99` / `1015 CJ Amsterdam` / `Nederland`.
+
+- Number after the street, as in Germany. Number additions stay in `BldgNb` in the forms "99A" and "99-2". Other forms ("99 2hg", "99 bis") are hand-written set only.
+- Street endings: -straat, -laan, -weg, -gracht, -plein, -kade, -singel, -dijk, -steeg, -hof, -pad.
+- `PstCd` is four digits, a space, two letters: "1015 CJ". "1015CJ" is `postcode_no_space`.
+- Building words: Gebouw, Toren. "Unit 4", "Kamer 5" are `Room`. "2e etage", "Begane grond" are `Flr`. "Postbus 123" is `PstBx`.
+- Country written: "Nederland", "The Netherlands", "Netherlands", "Holland". No abbreviations are generated.
+
+## 16. Canada (CA)
+
+Natural: `123 Main Street` / `Toronto ON M5V 2T6` / `Canada`.
+
+- Province is `CtrySubDvsn` as written, code or name ("ON", "Ontario", "QC", "Québec"). Postal code format A1A 1A1, `PstCd` as written with its space; "K1A0B1" is `postcode_no_space`.
+- English and French. French puts the type first and keeps it in `StrtNm` ("rue Sainte-Catherine Ouest", "boulevard René-Lévesque"). Directionals (East, Est, Ouest, E, W, O) stay in `StrtNm`.
+- English street words: Street, Avenue, Road, Drive, Crescent, Boulevard, Court, Way, Lane, Trail, Place. French: rue, avenue, boulevard, chemin, rang, place, côte, montée. In CA "Court" is a street word.
+- Building words: Building, Tower, Centre, Plaza, Complex; French: Édifice, Tour, Complexe.
+- "Unit 5", "Suite 200", "App. 5", "Bureau 200" are `Room`. "3rd Floor", "3e étage" are `Flr`. "PO Box 123", "C.P. 123" are `PstBx`.
+- **Unit-number prefix** ("5-123 Main St" = unit 5, number 123): `Room` "5", `BldgNb` "123". Hand-written set only; the generator never writes hyphenated numbers for CA.
+- Country written: "Canada". "CA" in the text of a US address is California, a state, never the country. Abbreviations: Blvd/Boulevard, Ct/Court, Pl/Place, Ave/Avenue, St/Street, Rd/Road, Dr/Drive, Ln/Lane, Cres/Crescent, Ste/Suite, N/North, S/South, E/East, W/West.
+
+## 17. United States (US)
+
+Natural: `123 Main St` / `Austin, TX 78701` / `USA`.
+
+- State is `CtrySubDvsn` as written ("TX", "Texas"). `PstCd` is the ZIP or ZIP+4 as written, hyphen kept ("78701-1234").
+- Directionals before or after the street stay in `StrtNm` ("N Main St", "Main St NW").
+- Street words: Street, St, Avenue, Ave, Boulevard, Blvd, Drive, Dr, Lane, Ln, Road, Rd, Court, Ct, Way, Place, Pl, Parkway, Pkwy, Circle, Cir, Trail, Trl, Highway, Hwy, Terrace. "Court" is a street word here.
+- Building words: Building, Tower, Plaza, Center, Complex.
+- "Apt 5B", "Suite 200", "Ste 200", "Unit 3", "#5" are `Room` as written (the keyword or "#" stays). "5th Floor", "Fl 5" are `Flr`. "P.O. Box 123" is `PstBx`.
+- Country written: "USA", "U.S.A.", "US", "United States", "United States of America". Abbreviations: the CA list, plus Apt/Apartment.
+
+## 18. India (IN)
+
+Natural: `Flat 301, Sunrise Residency` / `Plot 12, MG Road` / `Koregaon Park` / `Pune, Maharashtra 411001` / `India`.
+
+- `PstCd` is the six-digit PIN as written; "411 001" is also written that way.
+- State is `CtrySubDvsn` as written. City is `TwnNm`. Area, colony, nagar, sector or layout names are `TwnLctnNm` ("Koregaon Park", "Sector 5", "Andheri East"). A main road is `StrtNm` ("MG Road", "Station Road").
+- Plot, house and door numbers go in `BldgNb` **with their keyword**: "Plot 12", "House No. 45", "Door No. 12-3-45" (16 characters or fewer). The keyword stays so the value is text from the line and no keyword is left over. This may disadvantage baselines that output the number alone, so **Phase 4 reports IN separately**. "Flat 301", "Flat No. 301" are `Room`. "3rd Floor" is `Flr`.
+- Street words: Road, Rd, Marg, Street, Lane, Cross, Highway. Building words: Residency, Towers, Heights, Apartments (plural), Plaza, Complex, Mansion. "Apartment 5" (singular, with a number) is a `Room`.
+- **Landmarks** ("near City Mall", "opp. Railway Station", "behind SBI Bank") are **not labelled**. They are not in gold; the record is tagged `landmark`. A system must not put one into a structured field (in a hybrid address it belongs in `AdrLine`). The scorer ignores unlabelled text. In the generator tests, "every raw token is explained" exempts only the landmark phrase, and only if it is one contiguous span of the raw text; every other token must still be explained.
+- Country written: "India". Abbreviations: Rd/Road, Apt/Apartment.
