@@ -1,6 +1,6 @@
 # Labelling guide
 
-Status: approved, including sections 12-18 (FR, DE, NL, CA, US, IN). Section 19 (postcode-to-town ties) was added after the GeoNames check and awaits approval. Settles every ambiguous case once, so gold labels never contradict each other. The generator, the hand-written hard set and the scorer all follow this file. If a case is not covered, add a rule here before labelling it.
+Status: approved, sections 0 to 19. Settles every ambiguous case once, so gold labels never contradict each other. The generator, the hand-written hard set and the scorer all follow this file. If a case is not covered, add a rule here before labelling it.
 
 Element names and maximum lengths come from the XSD (`docs/decisions/xsd-versions.md`), not from the spec table. Fields used in v1: `StrtNm`, `BldgNb`, `BldgNm`, `Flr`, `Room`, `PstBx`, `PstCd`, `TwnNm`, `TwnLctnNm`, `CtrySubDvsn`, `Ctry`. Not used in v1: `Dept`, `SubDept`, `UnitNb`, `DstrctNm`, `CareOf`.
 
@@ -104,7 +104,7 @@ Difficulty is computed from the tags, so it cannot drift from them.
 - **medium:** otherwise, two or three corruption tags, or any of `no_street_number`, `flat`, `building_name`, `floor`.
 - **easy:** everything else.
 
-Structure tags: `no_street_number`, `postal_district`, `flat`, `building_name`, `floor`, `po_box`, `county` (any `CtrySubDvsn`: a county, state or province), `locality`, `landmark` (India, section 18), `cedex` (France, section 13).
+Structure tags: `no_street_number`, `postal_district`, `flat`, `building_name`, `floor`, `po_box`, `county` (any `CtrySubDvsn`: a county, state or province), `locality`, `landmark` (India, section 18), `cedex` (France, section 13), `partial_postcode` (a lone routing key or outward code, section 5; hand-written set only), `not_in_geonames` (section 19; hand-written set only, optional). Neither of the last two changes the difficulty tier, and the generator never writes them.
 
 ## 12. Rules common to the six new countries
 
@@ -180,7 +180,7 @@ Natural: `Flat 301, Sunrise Residency` / `Plot 12, MG Road` / `Koregaon Park` / 
 
 ## 19. Postcode-to-town ties (generator and gold)
 
-Added with the GeoNames tie fix (`docs/decisions/postcode-ties.md`). Gold never contains a town and postcode that contradict each other, because the generator only writes a postcode GeoNames lists for the town. This section says how tightly each country's pairing is tied, and what is left random. The hand-written hard set is not bound by it (real addresses may be anything), but each entry should still be checked against it.
+Added with the GeoNames tie fix (`docs/decisions/postcode-ties.md`). Generated gold never contradicts GeoNames at the granularity in the table below, because the generator only writes a postcode GeoNames lists for the town. This section says how tightly each country's pairing is tied, and what is left random. The hand-written hard set is not bound by it: its entries are checked against real-world knowledge, not against this table.
 
 | Country | Town and postcode are tied at | Source check | Left random (never tied) |
 |---|---|---|---|
@@ -194,7 +194,7 @@ Added with the GeoNames tie fix (`docs/decisions/postcode-ties.md`). Gold never 
 | CA | the first three characters (city and area code; province always checked) | 44 of 47 confirmed, 3 not | the last three characters |
 
 Rules for labelling:
-- A town and a postcode written together in gold are always from the same row of this table. A hand-written entry that pairs them differently needs a note saying why.
+- A hand-written entry is never dropped or altered because GeoNames lacks its postcode. If its town and postcode pairing is not listed in GeoNames (at the granularity in the table), it may carry the optional tag `not_in_geonames`, so Phase 4 can report those entries separately.
 - Gold still keeps the text as written (section 0); the tie says nothing about accents or case.
 - The pairings not confirmed by GeoNames are listed in `docs/decisions/postcode-ties.md`: IE (Ennis V95, Navan C15, Killarney V93, all county and all locality-to-key ties), GB (18 post-town codes, 30 localities), CA (Montréal H2X and H4A, Québec G1V), IN (20 localities).
 - Because the generator and the rules engine both use GeoNames, town and postcode accuracy on the synthetic splits is optimistic. See `docs/decisions/geonames-circularity.md`; report the hard-set result beside it.

@@ -18,7 +18,7 @@ from addrgen.limits import GOLD_FIELDS, LIMITS, MAX_LINE_LENGTH, MAX_LINES
 
 TARGET_SIZE = 100
 STRUCTURE_TAGS = frozenset({"no_street_number", "postal_district", "flat", "building_name", "floor", "po_box", "county",
-                            "locality", "landmark", "cedex", "partial_postcode"})
+                            "locality", "landmark", "cedex", "partial_postcode", "not_in_geonames"})
 KNOWN_TAGS = CORRUPTION_TAGS | STRUCTURE_TAGS
 REQUIRED_GOLD = ("TwnNm", "Ctry")  # CBPR+ makes town and country mandatory; everything else is optional
 _ID = re.compile(r"^([a-z]{2})-(h\d{3}|x\d{2})$")  # h001 for a real entry, x01 for an example

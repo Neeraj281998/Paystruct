@@ -194,3 +194,21 @@ def test_build_script_refuses_a_partial_set_and_writes_with_the_flag(tmp_path):
 def test_committed_hard_jsonl_matches_the_yaml():
     path = REPO / "data" / "splits" / "hard.jsonl"
     assert [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines()] == build_records(HARD_DIR, allow_partial=True)
+
+
+def test_partial_postcode_and_not_in_geonames_are_accepted():
+    entry = dict(copy.deepcopy(GOOD), tags=["county", "no_country", "partial_postcode", "not_in_geonames"])
+    assert validate_entry(entry, "IE") == []
+    assert validate_entry(dict(copy.deepcopy(GOOD), tags=["county", "no_country", "not_in_geonames"]), "IE") == []
+
+
+def test_the_two_tags_do_not_change_the_difficulty_tier():
+    from addrgen.difficulty import difficulty_of
+    base = {"flat"}
+    assert difficulty_of(base | {"partial_postcode", "not_in_geonames"}) == difficulty_of(base) == "medium"
+    assert difficulty_of({"not_in_geonames"}) == "easy"
+
+
+def test_the_generator_never_writes_the_hand_written_only_tags(records):
+    used = {t for r in records for t in r["tags"]}
+    assert not used & {"partial_postcode", "not_in_geonames"}
