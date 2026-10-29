@@ -1,3 +1,4 @@
+# Drafted by AI, to be reviewed by the project owner. Remove this line only when the project owner says the file is reviewed.
 # Hand-written hard set, IE. Format: data/hard_set/README.md
 # The two entries marked EXAMPLE only show the format. Delete them when you add your own.
 country: IE
@@ -37,3 +38,162 @@ entries:
     country_hint: IE
 
   # ---- your entries go below this line ----
+  - id: ie-h001
+    tags: ["building_name", "flat", "no_country", "postal_district"]
+    raw_lines:
+      - "Flat 3, Ashgrove Court"
+      - "Rathmines Road Lower"
+      - "Dublin 6"
+      - "D06 N4R2"
+    gold:
+      Room: "Flat 3"
+      BldgNm: "Ashgrove Court"
+      StrtNm: "Rathmines Road Lower"
+      TwnNm: "Dublin 6"
+      PstCd: "D06 N4R2"
+      Ctry: "IE"
+    country_hint: IE
+  - id: ie-h002
+    tags: ["country_name", "county", "locality"]
+    raw_lines:
+      - "Knockbrack"
+      - "Gorey"
+      - "Co. Wexford"
+      - "Ireland"
+    gold:
+      TwnLctnNm: "Knockbrack"
+      TwnNm: "Gorey"
+      CtrySubDvsn: "Co. Wexford"
+      Ctry: "IE"
+  # GUIDE?: 'Cnoc na Rí' is an Irish-language estate name with no street word from the guide's list; labelled StrtNm. Also the dashes: are they separators only?
+  - id: ie-h003
+    tags: ["country_name", "locality", "one_line", "postal_district"]
+    raw_lines:
+      - "14 Cnoc na Rí - Ballinteer - Dublin 16 - D16 X0F3 - Eire"
+    gold:
+      BldgNb: "14"
+      StrtNm: "Cnoc na Rí"
+      TwnLctnNm: "Ballinteer"
+      TwnNm: "Dublin 16"
+      PstCd: "D16 X0F3"
+      Ctry: "IE"
+  - id: ie-h004
+    tags: ["no_country", "po_box"]
+    raw_lines:
+      - "P.O. Box 1187"
+      - "Cork"
+      - "T12 K4Y9"
+    gold:
+      PstBx: "P.O. Box 1187"
+      TwnNm: "Cork"
+      PstCd: "T12 K4Y9"
+      Ctry: "IE"
+    country_hint: IE
+  - id: ie-h005
+    tags: ["no_country"]
+    raw_lines:
+      - "12 Ballina Walk"
+      - "Limerick V94 3NX"
+    gold:
+      BldgNb: "12"
+      StrtNm: "Ballina Walk"
+      TwnNm: "Limerick"
+      PstCd: "V94 3NX"
+      Ctry: "IE"
+    country_hint: IE
+  - id: ie-h006
+    tags: ["building_name", "country_name", "floor", "locality", "no_street_number", "postal_district"]
+    raw_lines:
+      - "2nd Floor, Block C Fenmore Business Park"
+      - "Clontarf, Dublin 3"
+      - "D03 W8X1"
+      - "Ireland"
+    gold:
+      Flr: "2nd Floor"
+      BldgNm: "Block C Fenmore Business Park"
+      TwnLctnNm: "Clontarf"
+      TwnNm: "Dublin 3"
+      PstCd: "D03 W8X1"
+      Ctry: "IE"
+  - id: ie-h007
+    tags: ["abbreviated", "all_caps", "building_name", "flat", "no_country", "no_street_number"]
+    raw_lines:
+      - "APT 12 SEAFIELD HOUSE"
+      - "CLOGHAUN RD"
+      - "WATERFORD"
+    gold:
+      Room: "APT 12"
+      BldgNm: "SEAFIELD HOUSE"
+      StrtNm: "CLOGHAUN RD"
+      TwnNm: "WATERFORD"
+      Ctry: "IE"
+    country_hint: IE
+  - id: ie-h008
+    tags: ["building_name", "country_name", "flat", "no_street_number", "typo"]
+    raw_lines:
+      - "Flat 1, Sea Veiw Cottage"
+      - "Carrowbeg Road"
+      - "Sligo"
+      - "F91 Y2K8"
+      - "Ireland"
+    gold:
+      Room: "Flat 1"
+      BldgNm: "Sea Veiw Cottage"
+      StrtNm: "Carrowbeg Road"
+      TwnNm: "Sligo"
+      PstCd: "F91 Y2K8"
+      Ctry: "IE"
+  - id: ie-h009
+    tags: ["building_name", "locality", "no_country", "no_street_number", "partial_postcode"]
+    raw_lines:
+      - "Brookfield Lodge"
+      - "Dooradoyle"
+      - "Limerick"
+      - "V94"
+    gold:
+      BldgNm: "Brookfield Lodge"
+      TwnLctnNm: "Dooradoyle"
+      TwnNm: "Limerick"
+      PstCd: "V94"
+      Ctry: "IE"
+    country_hint: IE
+  # VERIFY: Kilrush routing key V15 (believed correct).
+  - id: ie-h010
+    tags: ["county", "no_country", "one_line", "reordered"]
+    raw_lines:
+      - "Kilrush, Co. Clare V15 H2R4, 7 Seafield Lane"
+    gold:
+      TwnNm: "Kilrush"
+      CtrySubDvsn: "Co. Clare"
+      PstCd: "V15 H2R4"
+      BldgNb: "7"
+      StrtNm: "Seafield Lane"
+      Ctry: "IE"
+    country_hint: IE
+  # ---- odd or ambiguous ----
+  - id: ie-h011
+    tags: ["county", "no_country"]
+    raw_lines:
+      - "4 Dublin Road"
+      - "Dundalk"
+      - "Co. Louth"
+      - "A91 F8Y2"
+    gold:
+      BldgNb: "4"
+      StrtNm: "Dublin Road"
+      TwnNm: "Dundalk"
+      CtrySubDvsn: "Co. Louth"
+      PstCd: "A91 F8Y2"
+      Ctry: "IE"
+    country_hint: IE
+  - id: ie-h012
+    tags: ["no_country", "one_line", "postal_district", "postcode_no_space"]
+    raw_lines:
+      - "12 marlowe lane, dublin 2, d02hx48"
+    gold:
+      BldgNb: "12"
+      StrtNm: "marlowe lane"
+      TwnNm: "dublin 2"
+      PstCd: "d02hx48"
+      Ctry: "IE"
+    country_hint: IE

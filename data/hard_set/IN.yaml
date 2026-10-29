@@ -1,3 +1,4 @@
+# Drafted by AI, to be reviewed by the project owner. Remove this line only when the project owner says the file is reviewed.
 # Hand-written hard set, IN. Format: data/hard_set/README.md
 # The two entries marked EXAMPLE only show the format. Delete them when you add your own.
 country: IN
@@ -44,3 +45,195 @@ entries:
     country_hint: IN
 
   # ---- your entries go below this line ----
+  - id: in-h001
+    tags: ["building_name", "country_name", "flat", "landmark", "locality"]
+    raw_lines:
+      - "Flat No. 402, Sai Krupa Heights"
+      - "Plot 14, Thakur Pada Road, near Lotus Bakery"
+      - "Andheri East, Mumbai 400069"
+      - "India"
+    gold:
+      Room: "Flat No. 402"
+      BldgNm: "Sai Krupa Heights"
+      BldgNb: "Plot 14"
+      StrtNm: "Thakur Pada Road"
+      TwnLctnNm: "Andheri East"
+      TwnNm: "Mumbai"
+      PstCd: "400069"
+      Ctry: "IN"
+  # GUIDE?: 'Pocket 3' and 'Sector 12' are both sub-areas before 'Dwarka'. Gold keeps only 'Dwarka' as TwnLctnNm and leaves 'Pocket 3' and 'Sector 12' unlabelled; 'H.No.' is a form of 'House No.'.
+  - id: in-h002
+    tags: ["abbreviated", "locality", "no_country"]
+    raw_lines:
+      - "H.No. 1182, Pocket 3"
+      - "Sector 12, Dwarka"
+      - "New Delhi - 110078"
+    gold:
+      BldgNb: "H.No. 1182"
+      TwnLctnNm: "Dwarka"
+      TwnNm: "New Delhi"
+      PstCd: "110078"
+      Ctry: "IN"
+    country_hint: IN
+  # GUIDE?: '#42' as a house number: the guide's BldgNb keywords are Plot / House No. / Door No.; '#' is not covered.
+  - id: in-h003
+    tags: ["county", "locality", "no_country"]
+    raw_lines:
+      - "#42, 5th Main Road"
+      - "Koramangala 4th Block"
+      - "Bengaluru, Karnataka 560034"
+    gold:
+      BldgNb: "#42"
+      StrtNm: "5th Main Road"
+      TwnLctnNm: "Koramangala 4th Block"
+      TwnNm: "Bengaluru"
+      CtrySubDvsn: "Karnataka"
+      PstCd: "560034"
+      Ctry: "IN"
+    country_hint: IN
+  - id: in-h004
+    tags: ["building_name", "country_name", "county", "flat", "locality"]
+    raw_lines:
+      - "Apartment 5C, Palm Grove Apartments"
+      - "Haldar Lane, Ballygunge"
+      - "Kolkata 700 019, West Bengal"
+      - "India"
+    gold:
+      Room: "Apartment 5C"
+      BldgNm: "Palm Grove Apartments"
+      StrtNm: "Haldar Lane"
+      TwnLctnNm: "Ballygunge"
+      TwnNm: "Kolkata"
+      PstCd: "700 019"
+      CtrySubDvsn: "West Bengal"
+      Ctry: "IN"
+  # GUIDE?: 'Bungalow 7' as a house number with its keyword; the guide lists Plot, House No. and Door No. only.
+  - id: in-h005
+    tags: ["county", "locality", "no_country"]
+    raw_lines:
+      - "Bungalow 7, Sutar Wadi Road"
+      - "Aundh, Pune, MH"
+    gold:
+      BldgNb: "Bungalow 7"
+      StrtNm: "Sutar Wadi Road"
+      TwnLctnNm: "Aundh"
+      TwnNm: "Pune"
+      CtrySubDvsn: "MH"
+      Ctry: "IN"
+    country_hint: IN
+  # GUIDE?: 'SCO' (shop-cum-office) number as BldgNb with its keyword, by analogy with Plot and House No.
+  - id: in-h006
+    tags: ["locality", "no_country"]
+    raw_lines:
+      - "SCO 118-119, Sector 17-C"
+      - "Chandigarh 160017"
+    gold:
+      BldgNb: "SCO 118-119"
+      TwnLctnNm: "Sector 17-C"
+      TwnNm: "Chandigarh"
+      PstCd: "160017"
+      Ctry: "IN"
+    country_hint: IN
+  # GUIDE?: 'Gali' (Hindi for lane) is not on the guide's street-word list; the landmark 'Shiv Mandir ke paas' ('near the Shiv temple') is in Hinglish.
+  - id: in-h007
+    tags: ["landmark", "locality", "no_country"]
+    raw_lines:
+      - "Gali No. 5, Shiv Mandir ke paas"
+      - "Laxmi Nagar"
+      - "Delhi 110092"
+    gold:
+      StrtNm: "Gali No. 5"
+      TwnLctnNm: "Laxmi Nagar"
+      TwnNm: "Delhi"
+      PstCd: "110092"
+      Ctry: "IN"
+    country_hint: IN
+  # GUIDE?: Chennai 'New No. / Old No.' door numbers: the guide has no rule for two numbers. Both left unlabelled.
+  - id: in-h008
+    tags: ["all_caps", "county", "locality", "no_country"]
+    raw_lines:
+      - "NEW NO. 12, OLD NO. 7, 2ND STREET"
+      - "ADYAR"
+      - "CHENNAI - 600020"
+      - "TAMIL NADU"
+    gold:
+      StrtNm: "2ND STREET"
+      TwnLctnNm: "ADYAR"
+      TwnNm: "CHENNAI"
+      PstCd: "600020"
+      CtrySubDvsn: "TAMIL NADU"
+      Ctry: "IN"
+    country_hint: IN
+  - id: in-h009
+    tags: ["building_name", "flat", "locality", "missing_commas", "no_country", "one_line"]
+    raw_lines:
+      - "Flat 301 Vasavi Residency Road No. 12 Banjara Hills Hyderabad 500034"
+    gold:
+      Room: "Flat 301"
+      BldgNm: "Vasavi Residency"
+      StrtNm: "Road No. 12"
+      TwnLctnNm: "Banjara Hills"
+      TwnNm: "Hyderabad"
+      PstCd: "500034"
+      Ctry: "IN"
+    country_hint: IN
+  - id: in-h010
+    tags: ["county", "landmark", "locality", "no_country", "reordered"]
+    raw_lines:
+      - "Behind old water tank, Plot 22"
+      - "Vaishali Nagar"
+      - "Jaipur, Rajasthan 302021"
+    gold:
+      BldgNb: "Plot 22"
+      TwnLctnNm: "Vaishali Nagar"
+      TwnNm: "Jaipur"
+      CtrySubDvsn: "Rajasthan"
+      PstCd: "302021"
+      Ctry: "IN"
+    country_hint: IN
+  # ---- odd or ambiguous ----
+  # VERIFY: Is 682016 the Ernakulam / Kochi PIN for this area? (believed correct)
+  - id: in-h011
+    tags: ["county", "locality", "no_country"]
+    raw_lines:
+      - "Door No. 12/345A, Pallimukku Road"
+      - "Ernakulam, Kochi - 682016"
+      - "Kerala"
+    gold:
+      BldgNb: "Door No. 12/345A"
+      StrtNm: "Pallimukku Road"
+      TwnLctnNm: "Ernakulam"
+      TwnNm: "Kochi"
+      PstCd: "682016"
+      CtrySubDvsn: "Kerala"
+      Ctry: "IN"
+    country_hint: IN
+  # GUIDE?: Goa address: 'Candolim' is a village and 'Bardez' the taluka (sub-district). Gold takes Candolim as TwnNm and leaves 'Bardez' unlabelled.
+  - id: in-h012
+    tags: ["county", "landmark", "no_country"]
+    raw_lines:
+      - "House No. 118, Near Church Square"
+      - "Candolim"
+      - "Bardez, Goa 403515"
+    gold:
+      BldgNb: "House No. 118"
+      TwnNm: "Candolim"
+      CtrySubDvsn: "Goa"
+      PstCd: "403515"
+      Ctry: "IN"
+    country_hint: IN
+  - id: in-h013
+    tags: ["building_name", "country_name", "county", "flat"]
+    raw_lines:
+      - "Flat No. 7, Anand Towers"
+      - "Station Road"
+      - "Nagpur 440001"
+      - "(Maharashtra) India"
+    gold:
+      Room: "Flat No. 7"
+      BldgNm: "Anand Towers"
+      StrtNm: "Station Road"
+      TwnNm: "Nagpur"
+      PstCd: "440001"
+      CtrySubDvsn: "Maharashtra"
+      Ctry: "IN"

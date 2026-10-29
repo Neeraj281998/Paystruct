@@ -1,3 +1,4 @@
+# Drafted by AI, to be reviewed by the project owner. Remove this line only when the project owner says the file is reviewed.
 # Hand-written hard set, GB. Format: data/hard_set/README.md
 # The two entries marked EXAMPLE only show the format. Delete them when you add your own.
 country: GB
@@ -42,3 +43,198 @@ entries:
     country_hint: GB
 
   # ---- your entries go below this line ----
+  - id: gb-h001
+    tags: ["building_name", "flat", "no_country"]
+    raw_lines:
+      - "Flat 3, Wexcombe Court"
+      - "17 Lantern Road"
+      - "Bristol"
+      - "BS6 7QD"
+    gold:
+      Room: "Flat 3"
+      BldgNm: "Wexcombe Court"
+      BldgNb: "17"
+      StrtNm: "Lantern Road"
+      TwnNm: "Bristol"
+      PstCd: "BS6 7QD"
+      Ctry: "GB"
+    country_hint: GB
+  # GUIDE?: Both a county (Somerset) and 'England' on the last line are written; the guide makes each a CtrySubDvsn but there is one field. Gold keeps Somerset only.
+  - id: gb-h002
+    tags: ["building_name", "county", "locality", "no_country", "no_street_number"]
+    raw_lines:
+      - "Dairy Cottage"
+      - "Farm Lane"
+      - "Combe Hay"
+      - "Bath"
+      - "Somerset BA2 8PH"
+      - "England"
+    gold:
+      BldgNm: "Dairy Cottage"
+      StrtNm: "Farm Lane"
+      TwnLctnNm: "Combe Hay"
+      TwnNm: "Bath"
+      CtrySubDvsn: "Somerset"
+      PstCd: "BA2 8PH"
+      Ctry: "GB"
+    country_hint: GB
+  # GUIDE?: Scottish tenement flat written as a bare '3F2' with no keyword. Guide says Room keeps its keyword; here there is none.
+  - id: gb-h003
+    tags: ["country_name", "flat"]
+    raw_lines:
+      - "3F2, 22 Holm Street"
+      - "EDINBURGH"
+      - "EH8 9LZ"
+      - "UK"
+    gold:
+      Room: "3F2"
+      BldgNb: "22"
+      StrtNm: "Holm Street"
+      TwnNm: "EDINBURGH"
+      PstCd: "EH8 9LZ"
+      Ctry: "GB"
+  - id: gb-h004
+    tags: ["building_name", "county", "flat", "no_country", "no_street_number"]
+    raw_lines:
+      - "Unit 6, Lisbarn Industrial Estate"
+      - "Belfast BT12 5GH"
+      - "Northern Ireland"
+    gold:
+      Room: "Unit 6"
+      BldgNm: "Lisbarn Industrial Estate"
+      TwnNm: "Belfast"
+      PstCd: "BT12 5GH"
+      CtrySubDvsn: "Northern Ireland"
+      Ctry: "GB"
+    country_hint: GB
+  - id: gb-h005
+    tags: ["country_name", "locality", "missing_commas", "one_line", "partial_postcode"]
+    raw_lines:
+      - "8 Pellam Street Hackney London E8 UK"
+    gold:
+      BldgNb: "8"
+      StrtNm: "Pellam Street"
+      TwnLctnNm: "Hackney"
+      TwnNm: "London"
+      PstCd: "E8"
+      Ctry: "GB"
+  - id: gb-h006
+    tags: ["no_country", "po_box"]
+    raw_lines:
+      - "PO Box 318"
+      - "Norwich"
+      - "NR3 1PX"
+    gold:
+      PstBx: "PO Box 318"
+      TwnNm: "Norwich"
+      PstCd: "NR3 1PX"
+      Ctry: "GB"
+    country_hint: GB
+  # GUIDE?: 'Thornhill Terrace' is a building name but contains a street word (Terrace); guide section 3 would make it a StrtNm. Gold follows the real-world reading (BldgNm).
+  - id: gb-h007
+    tags: ["building_name", "no_country"]
+    raw_lines:
+      - "Thornhill Terrace"
+      - "12 Keld Road"
+      - "Sheffield S10 4TG"
+    gold:
+      BldgNm: "Thornhill Terrace"
+      BldgNb: "12"
+      StrtNm: "Keld Road"
+      TwnNm: "Sheffield"
+      PstCd: "S10 4TG"
+      Ctry: "GB"
+    country_hint: GB
+  # GUIDE?: Welsh street word 'Stryd' is not on the guide's street-word list.
+  - id: gb-h008
+    tags: ["county", "flat", "no_country"]
+    raw_lines:
+      - "Flat 4, 9 Stryd Fawr"
+      - "Caernarfon"
+      - "LL55 1PT"
+      - "Wales"
+    gold:
+      Room: "Flat 4"
+      BldgNb: "9"
+      StrtNm: "Stryd Fawr"
+      TwnNm: "Caernarfon"
+      PstCd: "LL55 1PT"
+      CtrySubDvsn: "Wales"
+      Ctry: "GB"
+    country_hint: GB
+  - id: gb-h009
+    tags: ["all_caps", "building_name", "flat", "no_country", "no_street_number", "postcode_no_space"]
+    raw_lines:
+      - "UNIT 12 HOLLINS HOUSE"
+      - "MILL LANE"
+      - "LANCASTER"
+      - "LA14QA"
+    gold:
+      Room: "UNIT 12"
+      BldgNm: "HOLLINS HOUSE"
+      StrtNm: "MILL LANE"
+      TwnNm: "LANCASTER"
+      PstCd: "LA14QA"
+      Ctry: "GB"
+    country_hint: GB
+  # GUIDE?: 'Ground Floor Flat' has no flat number: Flr 'Ground Floor' labelled, and the word 'Flat' is left unlabelled.
+  - id: gb-h010
+    tags: ["floor", "locality", "no_country"]
+    raw_lines:
+      - "Ground Floor Flat"
+      - "3 Prospect Gardens"
+      - "Jesmond"
+      - "Newcastle upon Tyne"
+      - "NE2 3JW"
+    gold:
+      Flr: "Ground Floor"
+      BldgNb: "3"
+      StrtNm: "Prospect Gardens"
+      TwnLctnNm: "Jesmond"
+      TwnNm: "Newcastle upon Tyne"
+      PstCd: "NE2 3JW"
+      Ctry: "GB"
+    country_hint: GB
+  # ---- odd or ambiguous ----
+  - id: gb-h011
+    tags: ["no_country", "postcode_wrong_line"]
+    raw_lines:
+      - "BS1 6AX"
+      - "21 Orchard Walk"
+      - "Bristol"
+    gold:
+      PstCd: "BS1 6AX"
+      BldgNb: "21"
+      StrtNm: "Orchard Walk"
+      TwnNm: "Bristol"
+      Ctry: "GB"
+    country_hint: GB
+  - id: gb-h012
+    tags: ["no_country", "postcode_split"]
+    raw_lines:
+      - "46 Aldrin Close, York YO10"
+      - "5LB"
+    gold:
+      BldgNb: "46"
+      StrtNm: "Aldrin Close"
+      TwnNm: "York"
+      PstCd: "YO10 5LB"
+      Ctry: "GB"
+    country_hint: GB
+  # GUIDE?: Neither 'Kingsmead' (building) nor 'Weller Park North' (street) contains a word from the guide's lists.
+  - id: gb-h013
+    tags: ["building_name", "flat", "locality", "no_country"]
+    raw_lines:
+      - "Flat 9 Kingsmead"
+      - "Weller Park North"
+      - "Balham"
+      - "London SW12 8AF"
+    gold:
+      Room: "Flat 9"
+      BldgNm: "Kingsmead"
+      StrtNm: "Weller Park North"
+      TwnLctnNm: "Balham"
+      TwnNm: "London"
+      PstCd: "SW12 8AF"
+      Ctry: "GB"
+    country_hint: GB

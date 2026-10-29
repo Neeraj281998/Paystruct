@@ -1,3 +1,4 @@
+# Drafted by AI, to be reviewed by the project owner. Remove this line only when the project owner says the file is reviewed.
 # Hand-written hard set, NL. Format: data/hard_set/README.md
 # The two entries marked EXAMPLE only show the format. Delete them when you add your own.
 country: NL
@@ -33,3 +34,155 @@ entries:
     country_hint: NL
 
   # ---- your entries go below this line ----
+  - id: nl-h001
+    tags: ["country_name"]
+    raw_lines:
+      - "Vlasgracht 41-2"
+      - "1017 BW Amsterdam"
+      - "The Netherlands"
+    gold:
+      StrtNm: "Vlasgracht"
+      BldgNb: "41-2"
+      PstCd: "1017 BW"
+      TwnNm: "Amsterdam"
+      Ctry: "NL"
+  # VERIFY: Postbus postcodes for Utrecht are in the 3500-3509 range; is 3503 right?
+  - id: nl-h002
+    tags: ["no_country", "po_box"]
+    raw_lines:
+      - "Postbus 8423"
+      - "3503 RK Utrecht"
+    gold:
+      PstBx: "Postbus 8423"
+      PstCd: "3503 RK"
+      TwnNm: "Utrecht"
+      Ctry: "NL"
+    country_hint: NL
+  - id: nl-h003
+    tags: ["no_country", "postcode_no_space"]
+    raw_lines:
+      - "Kanaalstraat 88A"
+      - "2011VK Haarlem"
+    gold:
+      StrtNm: "Kanaalstraat"
+      BldgNb: "88A"
+      PstCd: "2011VK"
+      TwnNm: "Haarlem"
+      Ctry: "NL"
+    country_hint: NL
+  - id: nl-h004
+    tags: ["flat", "floor"]
+    raw_lines:
+      - "Unit 4, 3rd floor"
+      - "Wilgenlaan 17"
+      - "5611 JK Eindhoven"
+      - "NL"
+    gold:
+      Room: "Unit 4"
+      Flr: "3rd floor"
+      StrtNm: "Wilgenlaan"
+      BldgNb: "17"
+      PstCd: "5611 JK"
+      TwnNm: "Eindhoven"
+      Ctry: "NL"
+  # GUIDE?: '22 2hg' ('2 hoog' = second floor): the guide leaves this form to the hand-written set without saying how to label it. Gold keeps '22 2hg' as BldgNb.
+  - id: nl-h005
+    tags: ["no_country"]
+    raw_lines:
+      - "Havenkade 22 2hg"
+      - "3011 TL Rotterdam"
+    gold:
+      StrtNm: "Havenkade"
+      BldgNb: "22 2hg"
+      PstCd: "3011 TL"
+      TwnNm: "Rotterdam"
+      Ctry: "NL"
+    country_hint: NL
+  - id: nl-h006
+    tags: ["country_name", "one_line"]
+    raw_lines:
+      - "Dorpsweg 5 / 6811 KL / Arnhem / Nederland"
+    gold:
+      StrtNm: "Dorpsweg"
+      BldgNb: "5"
+      PstCd: "6811 KL"
+      TwnNm: "Arnhem"
+      Ctry: "NL"
+  - id: nl-h007
+    tags: ["no_country"]
+    raw_lines:
+      - "Molenpad 3"
+      - "Maastricht"
+    gold:
+      StrtNm: "Molenpad"
+      BldgNb: "3"
+      TwnNm: "Maastricht"
+      Ctry: "NL"
+    country_hint: NL
+  - id: nl-h008
+    tags: ["no_country", "reordered"]
+    raw_lines:
+      - "Leiden"
+      - "Rapenburgsteeg 9"
+      - "2311 EZ"
+    gold:
+      TwnNm: "Leiden"
+      StrtNm: "Rapenburgsteeg"
+      BldgNb: "9"
+      PstCd: "2311 EZ"
+      Ctry: "NL"
+    country_hint: NL
+  - id: nl-h009
+    tags: ["floor", "no_country"]
+    raw_lines:
+      - "Begane grond"
+      - "Visserplein 6"
+      - "9711 LM Groningen"
+    gold:
+      Flr: "Begane grond"
+      StrtNm: "Visserplein"
+      BldgNb: "6"
+      PstCd: "9711 LM"
+      TwnNm: "Groningen"
+      Ctry: "NL"
+    country_hint: NL
+  # GUIDE?: The building name 'Gebouw De Gracht' holds both a building word (Gebouw) and a street ending (Gracht).
+  - id: nl-h010
+    tags: ["building_name", "no_country"]
+    raw_lines:
+      - "Gebouw De Gracht"
+      - "Industrieweg 40"
+      - "2612 XA Delft"
+    gold:
+      BldgNm: "Gebouw De Gracht"
+      StrtNm: "Industrieweg"
+      BldgNb: "40"
+      PstCd: "2612 XA"
+      TwnNm: "Delft"
+      Ctry: "NL"
+    country_hint: NL
+  # ---- odd or ambiguous ----
+  - id: nl-h011
+    tags: ["all_caps", "no_country"]
+    raw_lines:
+      - "JULIANASTRAAT 15"
+      - "6511 PX NIJMEGEN"
+    gold:
+      StrtNm: "JULIANASTRAAT"
+      BldgNb: "15"
+      PstCd: "6511 PX"
+      TwnNm: "NIJMEGEN"
+      Ctry: "NL"
+    country_hint: NL
+  - id: nl-h012
+    tags: ["country_name"]
+    raw_lines:
+      - "Stationsplein 9-11"
+      - "8011 CW Zwolle"
+      - "Holland"
+    gold:
+      StrtNm: "Stationsplein"
+      BldgNb: "9-11"
+      PstCd: "8011 CW"
+      TwnNm: "Zwolle"
+      Ctry: "NL"

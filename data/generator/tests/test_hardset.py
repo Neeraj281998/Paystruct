@@ -95,14 +95,22 @@ def test_committed_files_are_valid_with_two_marked_examples_each():
     found, entries = validate_dir(HARD_DIR)
     assert found == []
     for code in countries.codes():
-        own = [e for c, e in entries if c == code]
-        assert len(own) == 2 and all(e["example"] and e["note"].startswith("EXAMPLE") for e in own), code
-    assert len(entries) == 16
+        examples = [e for c, e in entries if c == code and e.get("example")]
+        assert len(examples) == 2 and all(e["note"].startswith("EXAMPLE") for e in examples), code
 
 
-def test_no_hand_written_entries_have_been_invented():
+def test_the_hand_written_entries_do_not_exceed_the_target():
     _, entries = validate_dir(HARD_DIR)
-    assert [e for _, e in entries if not e.get("example")] == []
+    assert len([e for _, e in entries if not e.get("example")]) <= TARGET_SIZE
+
+
+def examples_only(tmp_path):
+    """A copy of the hard-set files with the hand-written entries removed, so only the two examples per country remain."""
+    for f in HARD_DIR.glob("*.yaml"):
+        data = yaml.safe_load(f.read_text(encoding="utf-8"))
+        data["entries"] = [e for e in data["entries"] if e.get("example")]
+        (tmp_path / f.name).write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+    return tmp_path
 
 
 def test_every_country_has_a_file_and_a_missing_one_is_reported(tmp_path):
@@ -130,16 +138,19 @@ def test_duplicate_ids_are_reported(tmp_path):
     assert any("duplicate id" in p for p in validate_dir(tmp_path)[0])
 
 
-def test_converter_leaves_examples_out_by_default():
-    assert build_records(HARD_DIR, allow_partial=True) == []
-    assert len(build_records(HARD_DIR, include_examples=True, allow_partial=True)) == 16
+def test_converter_leaves_examples_out_by_default(tmp_path):
+    only = examples_only(tmp_path)
+    assert build_records(only, allow_partial=True) == []
+    assert len(build_records(only, include_examples=True, allow_partial=True)) == 16
+    assert not any("-x" in r["id"] for r in build_records(HARD_DIR, allow_partial=True))
 
 
 def test_converter_demands_exactly_100(tmp_path):
+    only = examples_only(tmp_path)
     with pytest.raises(ValueError, match=f"has {TARGET_SIZE}"):
-        build_records(HARD_DIR)
+        build_records(only)
     with pytest.raises(ValueError, match=f"has {TARGET_SIZE}"):
-        build_records(HARD_DIR, include_examples=True)
+        build_records(only, include_examples=True)
 
 
 def test_converter_stops_on_an_invalid_entry(tmp_path):
@@ -167,7 +178,8 @@ def test_difficulty_is_computed_not_written():
 
 
 def test_example_records_load_as_json_lines(tmp_path):
-    records = build_records(HARD_DIR, include_examples=True, allow_partial=True)
+    (tmp_path / "ex").mkdir()
+    records = build_records(examples_only(tmp_path / "ex"), include_examples=True, allow_partial=True)
     assert all(r["id"].split("-")[1].startswith("x") for r in records)
     assert {r["country"] for r in records} == set(countries.codes())
     from addrgen.hardset import write_jsonl
@@ -181,19 +193,23 @@ def _run(script, *args):
 
 def test_validate_script_passes_on_the_committed_files():
     result = _run("validate_hard_set.py")
-    assert result.returncode == 0 and "0 of 100 hand-written entries, 16 examples" in result.stdout
+    assert result.returncode == 0 and "of 100 hand-written entries, 16 examples" in result.stdout
 
 
 def test_build_script_refuses_a_partial_set_and_writes_with_the_flag(tmp_path):
+    (tmp_path / "ex").mkdir()
+    only = examples_only(tmp_path / "ex")
     out = tmp_path / "hard.jsonl"
-    assert _run("build_hard_set.py", "--out", str(out)).returncode == 1 and not out.exists()
-    assert _run("build_hard_set.py", "--out", str(out), "--allow-partial", "--include-examples").returncode == 0
+    assert _run("build_hard_set.py", "--dir", str(only), "--out", str(out)).returncode == 1 and not out.exists()
+    assert _run("build_hard_set.py", "--dir", str(only), "--out", str(out), "--allow-partial", "--include-examples").returncode == 0
     assert len(out.read_text(encoding="utf-8").splitlines()) == 16
 
 
-def test_committed_hard_jsonl_matches_the_yaml():
+def test_committed_hard_jsonl_is_empty_or_matches_the_yaml():
+    """The owner builds hard.jsonl after reviewing the drafts; until then it stays empty."""
     path = REPO / "data" / "splits" / "hard.jsonl"
-    assert [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines()] == build_records(HARD_DIR, allow_partial=True)
+    records = [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines()]
+    assert records == [] or records == build_records(HARD_DIR, allow_partial=True)
 
 
 def test_partial_postcode_and_not_in_geonames_are_accepted():
