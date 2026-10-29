@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.13">
+  <CstmrCdtTrfInitn>
+    <GrpHdr>
+      <MsgId>SYNTH-PAIN001-0218</MsgId>
+      <CreDtTm>2026-10-13T08:00:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <InitgPty>
+        <Nm>Fernhill Textiles Pvt Ltd</Nm>
+      </InitgPty>
+    </GrpHdr>
+    <PmtInf>
+      <PmtInfId>SYNTH-PMT-0218</PmtInfId>
+      <PmtMtd>TRF</PmtMtd>
+      <ReqdExctnDt>
+        <Dt>2026-10-14</Dt>
+      </ReqdExctnDt>
+      <Dbtr>
+        <Nm>Fernhill Supply Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Flat 1012, Orchid Apartments, Gandhi Road, behind SBI Bank, Satellite,</AdrLine>
+          <AdrLine>Ahmedabad, Gujarat 380098</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <Othr>
+            <Id>SYNTH-ACCT-0218</Id>
+          </Othr>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtTrfTxInf>
+        <PmtId>
+          <EndToEndId>SYNTH-E2E-0218</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="INR">2489.43</InstdAmt>
+        </Amt>
+        <CdtrAgt>
+          <FinInstnId>
+            <BICFI>TESTIN2LXXX</BICFI>
+          </FinInstnId>
+        </CdtrAgt>
+        <Cdtr>
+          <Nm>Saffron Moss Pvt Ltd</Nm>
+          <PstlAdr>
+            <AdrLine>Plot 93, Market Lane, Sector 48, Noida, Uttar Pradesh 201072, IN</AdrLine>
+          </PstlAdr>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <Othr>
+              <Id>SYNTH-ACCT-5218</Id>
+            </Othr>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>

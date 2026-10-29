@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.13">
+  <CstmrCdtTrfInitn>
+    <GrpHdr>
+      <MsgId>SYNTH-PAIN001-0178</MsgId>
+      <CreDtTm>2026-10-13T08:00:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <InitgPty>
+        <Nm>Meadow Labs Pvt Ltd</Nm>
+      </InitgPty>
+    </GrpHdr>
+    <PmtInf>
+      <PmtInfId>SYNTH-PMT-0178</PmtInfId>
+      <PmtMtd>TRF</PmtMtd>
+      <ReqdExctnDt>
+        <Dt>2026-10-14</Dt>
+      </ReqdExctnDt>
+      <Dbtr>
+        <Nm>Brindle Lights Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>DOOR NO. 49-7-33, STATION MARG,</AdrLine>
+          <AdrLine>KOREGAON PARK,</AdrLine>
+          <AdrLine>PUNE, MAHARASHTRA 411008,</AdrLine>
+          <AdrLine>INDIA</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <Othr>
+            <Id>SYNTH-ACCT-0178</Id>
+          </Othr>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtTrfTxInf>
+        <PmtId>
+          <EndToEndId>SYNTH-E2E-0178</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="INR">3609.24</InstdAmt>
+        </Amt>
+        <CdtrAgt>
+          <FinInstnId>
+            <BICFI>TESTCA2LXXX</BICFI>
+          </FinInstnId>
+        </CdtrAgt>
+        <Cdtr>
+          <Nm>Tulip Textiles Inc</Nm>
+          <PstlAdr>
+            <AdrLine>9389 côte Sherbrooke O Suite 919 H3A 0P8 Québec Montréal CA</AdrLine>
+          </PstlAdr>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <Othr>
+              <Id>SYNTH-ACCT-5178</Id>
+            </Othr>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>

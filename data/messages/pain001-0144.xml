@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.13">
+  <CstmrCdtTrfInitn>
+    <GrpHdr>
+      <MsgId>SYNTH-PAIN001-0144</MsgId>
+      <CreDtTm>2026-10-13T08:00:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <InitgPty>
+        <Nm>Tulip Exports Ltd</Nm>
+      </InitgPty>
+    </GrpHdr>
+    <PmtInf>
+      <PmtInfId>SYNTH-PMT-0144</PmtInfId>
+      <PmtMtd>TRF</PmtMtd>
+      <ReqdExctnDt>
+        <Dt>2026-10-14</Dt>
+      </ReqdExctnDt>
+      <Dbtr>
+        <Nm>Granite Works Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>P.O. Box 7089, Sligo F91 7XA0</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <Othr>
+            <Id>SYNTH-ACCT-0144</Id>
+          </Othr>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtTrfTxInf>
+        <PmtId>
+          <EndToEndId>SYNTH-E2E-0144</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="EUR">7394.66</InstdAmt>
+        </Amt>
+        <CdtrAgt>
+          <FinInstnId>
+            <BICFI>TESTIN2LXXX</BICFI>
+          </FinInstnId>
+        </CdtrAgt>
+        <Cdtr>
+          <Nm>Marrow Works Pvt Ltd</Nm>
+          <PstlAdr>
+            <AdrLine>House No. 70 Hospital Street</AdrLine>
+            <AdrLine>Flat No. 119</AdrLine>
+            <AdrLine>Mumbai Maharashtra 400 089</AdrLine>
+            <AdrLine>IN</AdrLine>
+          </PstlAdr>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <Othr>
+              <Id>SYNTH-ACCT-5144</Id>
+            </Othr>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>

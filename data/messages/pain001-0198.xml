@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.13">
+  <CstmrCdtTrfInitn>
+    <GrpHdr>
+      <MsgId>SYNTH-PAIN001-0198</MsgId>
+      <CreDtTm>2026-10-13T08:00:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <InitgPty>
+        <Nm>Copper Labs SARL</Nm>
+      </InitgPty>
+    </GrpHdr>
+    <PmtInf>
+      <PmtInfId>SYNTH-PMT-0198</PmtInfId>
+      <PmtMtd>TRF</PmtMtd>
+      <ReqdExctnDt>
+        <Dt>2026-10-14</Dt>
+      </ReqdExctnDt>
+      <Dbtr>
+        <Nm>Willow Design SARL</Nm>
+        <PstlAdr>
+          <AdrLine>138 RUE DES TILLEULS</AdrLine>
+          <AdrLine>57000 METZ</AdrLine>
+          <AdrLine>FR</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <Othr>
+            <Id>SYNTH-ACCT-0198</Id>
+          </Othr>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTFR2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtTrfTxInf>
+        <PmtId>
+          <EndToEndId>SYNTH-E2E-0198</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="EUR">3062.66</InstdAmt>
+        </Amt>
+        <CdtrAgt>
+          <FinInstnId>
+            <BICFI>TESTIE2LXXX</BICFI>
+          </FinInstnId>
+        </CdtrAgt>
+        <Cdtr>
+          <Nm>Granite Moss Ltd</Nm>
+          <PstlAdr>
+            <AdrLine>145 Hamilton Street</AdrLine>
+            <AdrLine>Waterford X91 XA8N</AdrLine>
+            <AdrLine>IE</AdrLine>
+          </PstlAdr>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <Othr>
+              <Id>SYNTH-ACCT-5198</Id>
+            </Othr>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>

@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0245</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0245</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="INR">7397.39</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Tulip Moss Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Flat 198 </AdrLine>
+          <AdrLine>Prestige Residency</AdrLine>
+          <AdrLine>House No. 144  Link Rd</AdrLine>
+          <AdrLine>near Metro Station</AdrLine>
+          <AdrLine>Sector 86 </AdrLine>
+          <AdrLine>Noida  Uttar Pradesh 201091</AdrLine>
+          <AdrLine>India</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTCA2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Willow Textiles Inc</Nm>
+        <PstlAdr>
+          <AdrLine>Suite 996, 679 chemin des Érables, Montréal QC H2X 2L2, CA</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

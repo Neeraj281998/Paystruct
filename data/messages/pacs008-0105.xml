@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0105</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0105</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">7248.21</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Granite Trading GmbH</Nm>
+        <PstlAdr>
+          <AdrLine>Haus Atlas</AdrLine>
+          <AdrLine>Lindenplatz</AdrLine>
+          <AdrLine>69200 Heidelberg</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTDE2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTGB2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Fernhill Foods Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Queen Street</AdrLine>
+          <AdrLine>Heaton</AdrLine>
+          <AdrLine>NEWCASTLE UPON TYNE</AdrLine>
+          <AdrLine>NE1 4AH</AdrLine>
+          <AdrLine>Tyne and Wear</AdrLine>
+          <AdrLine>UK</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

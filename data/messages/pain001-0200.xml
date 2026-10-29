@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.13">
+  <CstmrCdtTrfInitn>
+    <GrpHdr>
+      <MsgId>SYNTH-PAIN001-0200</MsgId>
+      <CreDtTm>2026-10-13T08:00:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <InitgPty>
+        <Nm>Tulip Foods Ltd</Nm>
+      </InitgPty>
+    </GrpHdr>
+    <PmtInf>
+      <PmtInfId>SYNTH-PMT-0200</PmtInfId>
+      <PmtMtd>TRF</PmtMtd>
+      <ReqdExctnDt>
+        <Dt>2026-10-14</Dt>
+      </ReqdExctnDt>
+      <Dbtr>
+        <Nm>Granite Supply Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>FLAT 14, 51 STATION GROVE, WEXFORD Y35 VW8V, IE</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <Othr>
+            <Id>SYNTH-ACCT-0200</Id>
+          </Othr>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtTrfTxInf>
+        <PmtId>
+          <EndToEndId>SYNTH-E2E-0200</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="EUR">671.70</InstdAmt>
+        </Amt>
+        <CdtrAgt>
+          <FinInstnId>
+            <BICFI>TESTGB2LXXX</BICFI>
+          </FinInstnId>
+        </CdtrAgt>
+        <Cdtr>
+          <Nm>Meadow Exports Ltd</Nm>
+          <PstlAdr>
+            <AdrLine>135 Elmwood Court, Station Street, BELFAST, BT12AF, Northern Ireland</AdrLine>
+          </PstlAdr>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <Othr>
+              <Id>SYNTH-ACCT-5200</Id>
+            </Othr>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>

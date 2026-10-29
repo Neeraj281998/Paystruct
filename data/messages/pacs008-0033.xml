@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0033</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0033</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="INR">8893.71</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Copper Supply Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>No. 45, Mill Street, behind Bus Stand, Sector 65, 201018 Uttar Pradesh</AdrLine>
+          <AdrLine>Noida</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTCA2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Granite Works Inc</Nm>
+        <PstlAdr>
+          <AdrLine>658 Rodriguez Avenue</AdrLine>
+          <AdrLine>5th Floor</AdrLine>
+          <AdrLine>Edmonton AB T5J 1L6</AdrLine>
+          <AdrLine>CA</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0071</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0071</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">6520.89</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Sparrow Moss BV</Nm>
+        <PstlAdr>
+          <AdrLine>2567 BK Den Haag,</AdrLine>
+          <AdrLine>Van Venrooystraat 158</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTNL2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Quarry Exports Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>HOUSE NO. 56 MG ROAD SECTOR 81 NOIDA UTTAR PRADESH 201083 IN</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0201</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0201</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="CAD">8756.17</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Cobalt Handel Inc</Nm>
+        <PstlAdr>
+          <AdrLine> 8785 Yonge Street,  St. John's  NL A1C 6E2, CA</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTCA2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Fernhill Moss Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Door No. 92-4-47, MG Marg</AdrLine>
+          <AdrLine>Adyar</AdrLine>
+          <AdrLine>Chennai, Tamil Nadu 600031, IN</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

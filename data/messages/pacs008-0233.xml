@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0233</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0233</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="GBP">4943.61</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Meadow Logistics Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>131 Albert Road,</AdrLine>
+          <AdrLine>Reading RG30 8JW, GB</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTGB2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Harbour Foods Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Mumbai,  Maharashtra 400032</AdrLine>
+          <AdrLine>House No. 19,  19th Cross</AdrLine>
+          <AdrLine>Dadar</AdrLine>
+          <AdrLine>India </AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

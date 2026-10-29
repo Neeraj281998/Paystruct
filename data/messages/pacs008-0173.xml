@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0173</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0173</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="USD">8245.50</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Willow Exports LLC</Nm>
+        <PstlAdr>
+          <AdrLine>Lakeside</AdrLine>
+          <AdrLine>Center,</AdrLine>
+          <AdrLine>547 Elm</AdrLine>
+          <AdrLine>St NW,</AdrLine>
+          <AdrLine>Unit 6B,</AdrLine>
+          <AdrLine>Denver, CO,</AdrLine>
+          <AdrLine>US,</AdrLine>
+          <AdrLine>80025</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTUS2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Brindle Freight Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>47 CHAPEL QUAY,</AdrLine>
+          <AdrLine>CASTLEBAR F23 9N22,</AdrLine>
+          <AdrLine>IE</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

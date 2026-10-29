@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0147</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0147</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="GBP">5419.20</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Saffron Timber Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>EXETER</AdrLine>
+          <AdrLine>47 STATION GROVE</AdrLine>
+          <AdrLine>EX1 6EL</AdrLine>
+          <AdrLine>GB</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTGB2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTFR2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Brindle Freight SARL</Nm>
+        <PstlAdr>
+          <AdrLine>21000 Dijon,</AdrLine>
+          <AdrLine>Résidence Le Clos,</AdrLine>
+          <AdrLine>175 Rue Anatole France,</AdrLine>
+          <AdrLine>FR</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

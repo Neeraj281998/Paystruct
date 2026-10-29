@@ -1,0 +1,39 @@
+# Hand-written hard set, IE. Format: data/hard_set/README.md
+# The two entries marked EXAMPLE only show the format. Delete them when you add your own.
+country: IE
+entries:
+  # ---- EXAMPLE (not part of the hard set) ----
+  - id: ie-x01
+    example: true
+    note: "EXAMPLE: shows the format only, left out of hard.jsonl"
+    tags: ["abbreviated", "building_name", "country_name", "county", "no_street_number"]
+    raw_lines:
+      - "Forge House"
+      - "Main St, Kinvara"
+      - "Co. Galway H91 W3R7"
+      - "Ireland"
+    gold:
+      BldgNm: "Forge House"
+      StrtNm: "Main St"
+      TwnNm: "Kinvara"
+      CtrySubDvsn: "Co. Galway"
+      PstCd: "H91 W3R7"
+      Ctry: "IE"
+  # ---- EXAMPLE (not part of the hard set) ----
+  - id: ie-x02
+    example: true
+    note: "EXAMPLE: shows the format only, left out of hard.jsonl"
+    tags: ["building_name", "flat", "no_country", "no_street_number"]
+    raw_lines:
+      - "Unit 7 Shannon Industrial Estate"
+      - "Ennis"
+      - "V95 K8T2"
+    gold:
+      Room: "Unit 7"
+      BldgNm: "Shannon Industrial Estate"
+      PstCd: "V95 K8T2"
+      TwnNm: "Ennis"
+      Ctry: "IE"
+    country_hint: IE
+
+  # ---- your entries go below this line ----

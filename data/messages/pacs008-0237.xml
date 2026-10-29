@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0237</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0237</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="USD">1432.52</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Harbour Print LLC</Nm>
+        <PstlAdr>
+          <AdrLine>789 Whitehead Drive Dallas,</AdrLine>
+          <AdrLine>TX 75213</AdrLine>
+          <AdrLine>US</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTUS2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTDE2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Brindle Logistics GmbH</Nm>
+        <PstlAdr>
+          <AdrLine>70368 STUTTGART</AdrLine>
+          <AdrLine>BERGERSTRASSE 77</AdrLine>
+          <AdrLine>WHG. 41</AdrLine>
+          <AdrLine>3. OG DE</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0299</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0299</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="GBP">859.52</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Harbour Print Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>164 Clark Crescent</AdrLine>
+          <AdrLine>Belfast BT2</AdrLine>
+          <AdrLine>5DR GB</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTGB2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Juniper Design Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>No. 182, Link Marg,</AdrLine>
+          <AdrLine>Juhu,</AdrLine>
+          <AdrLine>Mumbai, Maharashtra 400079, IN</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

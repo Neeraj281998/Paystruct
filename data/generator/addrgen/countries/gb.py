@@ -55,6 +55,7 @@ class UnitedKingdom(CountryModule):
     building_words = (("House", 0.28), ("Court", 0.25), ("Lodge", 0.08), ("Tower", 0.05), ("Building", 0.06),
                       ("Centre", 0.04), ("Plaza", 0.02), ("Mansions", 0.07), ("Cottage", 0.15))
     place_names = ("Riverside", "Meridian", "Northgate", "Eastpoint", "Greenhills", "Westpark", "Lakeside", "Harbour")
+    postcode_pattern = r"[A-Z]{1,2}[0-9][0-9A-Z]? ?[0-9][A-Z]{2}"
     template_weights = {
         "number_street": 6, "street_only": 0.5, "house_name_street": 2, "building_street_number": 1.5,
         "flat_number_street": 3, "flat_in_building": 3, "floor_number_street": 1, "unit_business_park": 1,
@@ -80,6 +81,9 @@ class UnitedKingdom(CountryModule):
         elif rng.random() < 0.2:
             segments.append([Part("CtrySubDvsn", constituent)])
         return TownBlock(segments, set())
+
+    def known_towns(self) -> frozenset[str]:
+        return frozenset(t.casefold() for t, *_ in POST_TOWNS)
 
     def split_postcode(self, postcode: str) -> tuple[str, str] | None:
         parts = postcode.split(" ")

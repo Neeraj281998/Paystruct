@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.13">
+  <CstmrCdtTrfInitn>
+    <GrpHdr>
+      <MsgId>SYNTH-PAIN001-0284</MsgId>
+      <CreDtTm>2026-10-13T08:00:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <InitgPty>
+        <Nm>Marrow Print Pvt Ltd</Nm>
+      </InitgPty>
+    </GrpHdr>
+    <PmtInf>
+      <PmtInfId>SYNTH-PMT-0284</PmtInfId>
+      <PmtMtd>TRF</PmtMtd>
+      <ReqdExctnDt>
+        <Dt>2026-10-14</Dt>
+      </ReqdExctnDt>
+      <Dbtr>
+        <Nm>Lantern Works Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Orchid Residency </AdrLine>
+          <AdrLine>No. 120  Mill Road</AdrLine>
+          <AdrLine>500 093  Telangana  Hyderabad</AdrLine>
+          <AdrLine>IN</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <Othr>
+            <Id>SYNTH-ACCT-0284</Id>
+          </Othr>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtTrfTxInf>
+        <PmtId>
+          <EndToEndId>SYNTH-E2E-0284</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="INR">2670.58</InstdAmt>
+        </Amt>
+        <CdtrAgt>
+          <FinInstnId>
+            <BICFI>TESTCA2LXXX</BICFI>
+          </FinInstnId>
+        </CdtrAgt>
+        <Cdtr>
+          <Nm>Copper Logistics Inc</Nm>
+          <PstlAdr>
+            <AdrLine>395</AdrLine>
+            <AdrLine>MARSHLL</AdrLine>
+            <AdrLine>CRESCENT,</AdrLine>
+            <AdrLine>FREDERICTON</AdrLine>
+            <AdrLine>NEW</AdrLine>
+            <AdrLine>BRUNSWICK</AdrLine>
+            <AdrLine>E3B 0W1,</AdrLine>
+            <AdrLine>CANADA</AdrLine>
+          </PstlAdr>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <Othr>
+              <Id>SYNTH-ACCT-5284</Id>
+            </Othr>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>

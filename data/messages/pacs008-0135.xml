@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0135</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0135</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">6176.24</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Sparrow Works Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>SUTTON</AdrLine>
+          <AdrLine>KEIGHTLEY TER</AdrLine>
+          <AdrLine>DUBLIN 13 D13 FCDP </AdrLine>
+          <AdrLine>CO. DUBLIN </AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTDE2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Tulip Moss GmbH</Nm>
+        <PstlAdr>
+          <AdrLine>Lessingweg 154 Berlin</AdrLine>
+          <AdrLine>Germany</AdrLine>
+          <AdrLine>10416</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

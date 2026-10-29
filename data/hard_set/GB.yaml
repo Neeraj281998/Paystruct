@@ -1,0 +1,44 @@
+# Hand-written hard set, GB. Format: data/hard_set/README.md
+# The two entries marked EXAMPLE only show the format. Delete them when you add your own.
+country: GB
+entries:
+  # ---- EXAMPLE (not part of the hard set) ----
+  - id: gb-x01
+    example: true
+    note: "EXAMPLE: shows the format only, left out of hard.jsonl"
+    tags: ["abbreviated", "building_name", "country_name", "flat"]
+    raw_lines:
+      - "Flat 3, Harbour View House"
+      - "22 Quay Rd"
+      - "PLYMOUTH PL1 2AB"
+      - "UK"
+    gold:
+      BldgNb: "22"
+      StrtNm: "Quay Rd"
+      BldgNm: "Harbour View House"
+      Room: "Flat 3"
+      PstCd: "PL1 2AB"
+      TwnNm: "PLYMOUTH"
+      Ctry: "GB"
+  # ---- EXAMPLE (not part of the hard set) ----
+  - id: gb-x02
+    example: true
+    note: "EXAMPLE: shows the format only, left out of hard.jsonl"
+    tags: ["building_name", "county", "locality", "no_country", "no_street_number"]
+    raw_lines:
+      - "Hillside Cottage"
+      - "Church Lane"
+      - "Little Mead"
+      - "Dorchester"
+      - "Dorset DT2 7QR"
+    gold:
+      StrtNm: "Church Lane"
+      BldgNm: "Hillside Cottage"
+      PstCd: "DT2 7QR"
+      TwnNm: "Dorchester"
+      TwnLctnNm: "Little Mead"
+      CtrySubDvsn: "Dorset"
+      Ctry: "GB"
+    country_hint: GB
+
+  # ---- your entries go below this line ----

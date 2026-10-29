@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0121</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0121</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">5125.63</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Cobalt Freight SARL</Nm>
+        <PstlAdr>
+          <AdrLine>124 Quai des Fleurs</AdrLine>
+          <AdrLine>44300 Nantes, FR</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTFR2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Tulip Foods Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>No. 17, Main Road,</AdrLine>
+          <AdrLine>Sector 52,</AdrLine>
+          <AdrLine>Noida, Uttar Pradesh 201 066,</AdrLine>
+          <AdrLine>IN</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

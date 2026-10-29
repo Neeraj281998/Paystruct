@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0039</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0039</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="INR">7711.45</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Meadow Handel Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Flat 938</AdrLine>
+          <AdrLine>House No. 51  Link Road</AdrLine>
+          <AdrLine>Maninagar </AdrLine>
+          <AdrLine>Ahmedabad Gujarat 380042  India </AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTGB2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Marrow Exports Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Flat 49 CT2 7BW</AdrLine>
+          <AdrLine>158 Manor St.</AdrLine>
+          <AdrLine>CANTERBURY</AdrLine>
+          <AdrLine>UK</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0167</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0167</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">5441.94</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Tulip Freight Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>P.O. Box 56411</AdrLine>
+          <AdrLine>Dublin 18 D18 3P96</AdrLine>
+          <AdrLine>Co. Dublin</AdrLine>
+          <AdrLine>Ireland</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Harbour Handel Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>179</AdrLine>
+          <AdrLine>Orchard</AdrLine>
+          <AdrLine>Court,</AdrLine>
+          <AdrLine>Sfhool</AdrLine>
+          <AdrLine>Street,</AdrLine>
+          <AdrLine>C15NNCK</AdrLine>
+          <AdrLine>Navan,</AdrLine>
+          <AdrLine>Co. Meath</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

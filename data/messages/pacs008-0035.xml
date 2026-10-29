@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0035</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0035</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="INR">6521.13</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Saffron Print Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>NO. 15, STATION ROAD</AdrLine>
+          <AdrLine>SUSHANT LOK</AdrLine>
+          <AdrLine>GURUGRAM, HARYANA 122032</AdrLine>
+          <AdrLine>INDIA</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Copper Freight Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>20 Corish St</AdrLine>
+          <AdrLine>Wilton</AdrLine>
+          <AdrLine>Cork T12 XH31</AdrLine>
+          <AdrLine>IE</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

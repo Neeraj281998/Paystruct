@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.13">
+  <CstmrCdtTrfInitn>
+    <GrpHdr>
+      <MsgId>SYNTH-PAIN001-0240</MsgId>
+      <CreDtTm>2026-10-13T08:00:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <InitgPty>
+        <Nm>Cobalt Freight Inc</Nm>
+      </InitgPty>
+    </GrpHdr>
+    <PmtInf>
+      <PmtInfId>SYNTH-PMT-0240</PmtInfId>
+      <PmtMtd>TRF</PmtMtd>
+      <ReqdExctnDt>
+        <Dt>2026-10-14</Dt>
+      </ReqdExctnDt>
+      <Dbtr>
+        <Nm>Brindle Exports Inc</Nm>
+        <PstlAdr>
+          <AdrLine>ÉDIFICE RYAL</AdrLine>
+          <AdrLine>497 RUE SAINTE-CATHERINE OUEST QUÉBEC</AdrLine>
+          <AdrLine>QC</AdrLine>
+          <AdrLine>G1V 6R7</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <Othr>
+            <Id>SYNTH-ACCT-0240</Id>
+          </Othr>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTCA2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtTrfTxInf>
+        <PmtId>
+          <EndToEndId>SYNTH-E2E-0240</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="CAD">3202.14</InstdAmt>
+        </Amt>
+        <CdtrAgt>
+          <FinInstnId>
+            <BICFI>TESTIE2LXXX</BICFI>
+          </FinInstnId>
+        </CdtrAgt>
+        <Cdtr>
+          <Nm>Alder Trading Ltd</Nm>
+          <PstlAdr>
+            <AdrLine>OAKWOOD HOUSE,</AdrLine>
+            <AdrLine>FERRYBANK,</AdrLine>
+            <AdrLine>WATERFORD,</AdrLine>
+            <AdrLine>COUNTY WATERFORD,</AdrLine>
+            <AdrLine>IE,</AdrLine>
+            <AdrLine>X91 DND6</AdrLine>
+          </PstlAdr>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <Othr>
+              <Id>SYNTH-ACCT-5240</Id>
+            </Othr>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>

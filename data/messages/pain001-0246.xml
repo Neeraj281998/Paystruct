@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.13">
+  <CstmrCdtTrfInitn>
+    <GrpHdr>
+      <MsgId>SYNTH-PAIN001-0246</MsgId>
+      <CreDtTm>2026-10-13T08:00:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <InitgPty>
+        <Nm>Willow Lights BV</Nm>
+      </InitgPty>
+    </GrpHdr>
+    <PmtInf>
+      <PmtInfId>SYNTH-PMT-0246</PmtInfId>
+      <PmtMtd>TRF</PmtMtd>
+      <ReqdExctnDt>
+        <Dt>2026-10-14</Dt>
+      </ReqdExctnDt>
+      <Dbtr>
+        <Nm>Saffron Systems BV</Nm>
+        <PstlAdr>
+          <AdrLine>Toren Centrum 6213 CR</AdrLine>
+          <AdrLine>Molenlaan</AdrLine>
+          <AdrLine>Unit 15</AdrLine>
+          <AdrLine>Maastricht</AdrLine>
+          <AdrLine>The Netherlands</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <Othr>
+            <Id>SYNTH-ACCT-0246</Id>
+          </Othr>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTNL2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtTrfTxInf>
+        <PmtId>
+          <EndToEndId>SYNTH-E2E-0246</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="EUR">4123.37</InstdAmt>
+        </Amt>
+        <CdtrAgt>
+          <FinInstnId>
+            <BICFI>TESTGB2LXXX</BICFI>
+          </FinInstnId>
+        </CdtrAgt>
+        <Cdtr>
+          <Nm>Alder Foods Ltd</Nm>
+          <PstlAdr>
+            <AdrLine>182</AdrLine>
+            <AdrLine>PARK</AdrLine>
+            <AdrLine>CLOSE</AdrLine>
+            <AdrLine>TILEHURST</AdrLine>
+            <AdrLine>READING</AdrLine>
+            <AdrLine>ENGLAND</AdrLine>
+            <AdrLine>GB</AdrLine>
+            <AdrLine>RG1 4AA</AdrLine>
+          </PstlAdr>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <Othr>
+              <Id>SYNTH-ACCT-5246</Id>
+            </Othr>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>

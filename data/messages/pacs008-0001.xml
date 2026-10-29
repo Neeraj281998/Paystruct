@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0001</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0001</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="INR">1070.02</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Meadow Lights Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>HOUSE NO. 20  CHURCH ROAD</AdrLine>
+          <AdrLine>GACHIBOWLI</AdrLine>
+          <AdrLine>HYDERABAD  TELANGANA 500042  IN</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTCA2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Harbour Freight Inc</Nm>
+        <PstlAdr>
+          <AdrLine> 994 MENDOZA ROAD W</AdrLine>
+          <AdrLine>MISSISSAUGA ONTARIO L5B 5L8</AdrLine>
+          <AdrLine>CA</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

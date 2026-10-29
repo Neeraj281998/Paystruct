@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0243</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0243</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">2328.49</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Tulip Systems GmbH</Nm>
+        <PstlAdr>
+          <AdrLine>Lessinggasse  92-94</AdrLine>
+          <AdrLine>81090 München</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTDE2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTGB2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Fernhill Supply Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>26</AdrLine>
+          <AdrLine>Morrison</AdrLine>
+          <AdrLine>Court</AdrLine>
+          <AdrLine>High Rd.</AdrLine>
+          <AdrLine>Heworth</AdrLine>
+          <AdrLine>YORK</AdrLine>
+          <AdrLine>YO1 6WZ</AdrLine>
+          <AdrLine>England</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

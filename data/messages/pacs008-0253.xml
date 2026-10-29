@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0253</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0253</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="INR">7107.13</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Marrow Exports Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Flat 669,</AdrLine>
+          <AdrLine>7th Floor,</AdrLine>
+          <AdrLine>Door No. 54-4-66, MG Street,</AdrLine>
+          <AdrLine>Connaught Place,</AdrLine>
+          <AdrLine>New Delhi, Delhi 110096,</AdrLine>
+          <AdrLine>IN</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTNL2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Marrow Handel BV</Nm>
+        <PstlAdr>
+          <AdrLine>Jansensteeg 106A,</AdrLine>
+          <AdrLine>2018 EL Haarlem, Holland</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

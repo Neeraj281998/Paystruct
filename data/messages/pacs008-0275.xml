@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0275</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0275</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="INR">5907.56</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Copper Textiles Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Flat 775</AdrLine>
+          <AdrLine>Plot 127 Airport Road </AdrLine>
+          <AdrLine>Malviya Nagar</AdrLine>
+          <AdrLine>Jaipur  Rajasthan  302002</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTCA2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Meadow Supply Inc</Nm>
+        <PstlAdr>
+          <AdrLine>Victoria,</AdrLine>
+          <AdrLine>British</AdrLine>
+          <AdrLine>Columbia</AdrLine>
+          <AdrLine>V8V</AdrLine>
+          <AdrLine>2T0</AdrLine>
+          <AdrLine>152</AdrLine>
+          <AdrLine>King</AdrLine>
+          <AdrLine>Ave, CA</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

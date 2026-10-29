@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0255</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0255</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="INR">7468.77</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Granite Lights Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>JAIPUR RAJASTHAN 302029</AdrLine>
+          <AdrLine>PLOT 184 MG ROAD</AdrLine>
+          <AdrLine>NEXT TO AXIS BANK ATM</AdrLine>
+          <AdrLine>MALVIYA NAGAR INDIA</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTNL2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Fernhill Systems BV</Nm>
+        <PstlAdr>
+          <AdrLine>Stinissingel 137B</AdrLine>
+          <AdrLine>Unit 16</AdrLine>
+          <AdrLine>4828 KZ Breda</AdrLine>
+          <AdrLine>NL</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

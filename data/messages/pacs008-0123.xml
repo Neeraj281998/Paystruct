@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0123</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0123</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">2205.89</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Alder Trading Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>ROSEWOOD HOUSE </AdrLine>
+          <AdrLine>LYSAGHT ROAD</AdrLine>
+          <AdrLine>CORK</AdrLine>
+          <AdrLine>T12 3P70</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Copper Labs Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Suite 44, </AdrLine>
+          <AdrLine>198 Harbour Avenue,</AdrLine>
+          <AdrLine> Dublin 15  D15 5K8P,</AdrLine>
+          <AdrLine> Co. Dublin, Republic of Ireland</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

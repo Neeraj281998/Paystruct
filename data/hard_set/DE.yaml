@@ -1,0 +1,37 @@
+# Hand-written hard set, DE. Format: data/hard_set/README.md
+# The two entries marked EXAMPLE only show the format. Delete them when you add your own.
+country: DE
+entries:
+  # ---- EXAMPLE (not part of the hard set) ----
+  - id: de-x01
+    example: true
+    note: "EXAMPLE: shows the format only, left out of hard.jsonl"
+    tags: ["abbreviated", "country_name", "flat"]
+    raw_lines:
+      - "Bahnhofstr. 5a"
+      - "Wohnung 12"
+      - "80335 München"
+      - "Deutschland"
+    gold:
+      StrtNm: "Bahnhofstr."
+      BldgNb: "5a"
+      Room: "Wohnung 12"
+      PstCd: "80335"
+      TwnNm: "München"
+      Ctry: "DE"
+  # ---- EXAMPLE (not part of the hard set) ----
+  - id: de-x02
+    example: true
+    note: "EXAMPLE: shows the format only, left out of hard.jsonl"
+    tags: ["no_country", "po_box"]
+    raw_lines:
+      - "Postfach 102030"
+      - "50667 Köln"
+    gold:
+      PstBx: "Postfach 102030"
+      PstCd: "50667"
+      TwnNm: "Köln"
+      Ctry: "DE"
+    country_hint: DE
+
+  # ---- your entries go below this line ----

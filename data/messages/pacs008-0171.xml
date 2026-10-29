@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0171</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0171</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="USD">4658.96</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Brindle Lights LLC</Nm>
+        <PstlAdr>
+          <AdrLine>San Diego CA 92020</AdrLine>
+          <AdrLine>10 Main Ave</AdrLine>
+          <AdrLine>Apt 58</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTUS2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTGB2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Willow Labs Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Hawkins Centre </AdrLine>
+          <AdrLine>Hunter St.</AdrLine>
+          <AdrLine>CAMBRIDGE </AdrLine>
+          <AdrLine>Cambridgeshire</AdrLine>
+          <AdrLine> CB2 5XE </AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

@@ -1,0 +1,37 @@
+# Hand-written hard set, FR. Format: data/hard_set/README.md
+# The two entries marked EXAMPLE only show the format. Delete them when you add your own.
+country: FR
+entries:
+  # ---- EXAMPLE (not part of the hard set) ----
+  - id: fr-x01
+    example: true
+    note: "EXAMPLE: shows the format only, left out of hard.jsonl"
+    tags: ["abbreviated", "building_name", "country_name"]
+    raw_lines:
+      - "Résidence Les Lilas Bât. B"
+      - "14 bis Av. Jean Jaurès"
+      - "69007 Lyon"
+      - "France"
+    gold:
+      StrtNm: "Av. Jean Jaurès"
+      BldgNb: "14 bis"
+      BldgNm: "Résidence Les Lilas Bât. B"
+      PstCd: "69007"
+      TwnNm: "Lyon"
+      Ctry: "FR"
+  # ---- EXAMPLE (not part of the hard set) ----
+  - id: fr-x02
+    example: true
+    note: "EXAMPLE: shows the format only, left out of hard.jsonl"
+    tags: ["cedex", "country_name", "po_box"]
+    raw_lines:
+      - "BP 245"
+      - "13617 Aix-en-Provence Cedex 1"
+      - "FRANCE"
+    gold:
+      PstBx: "BP 245"
+      PstCd: "13617"
+      TwnNm: "Aix-en-Provence Cedex 1"
+      Ctry: "FR"
+
+  # ---- your entries go below this line ----

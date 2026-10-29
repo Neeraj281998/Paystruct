@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0077</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0077</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">1598.45</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Meadow Textiles Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Castlebar F23 2T5V</AdrLine>
+          <AdrLine>Flat 25</AdrLine>
+          <AdrLine>11 Mill Terrace</AdrLine>
+          <AdrLine>County Mayo, IE</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTGB2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Brindle Works Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>94 Orchard Way</AdrLine>
+          <AdrLine>Chesterton</AdrLine>
+          <AdrLine>Cambridge</AdrLine>
+          <AdrLine>CB2 8GS</AdrLine>
+          <AdrLine>England</AdrLine>
+          <AdrLine>UK</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

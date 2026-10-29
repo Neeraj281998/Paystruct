@@ -20,7 +20,7 @@ def P(field, text):
 def test_abbreviate_street_and_apartment_words():
     for seed in range(20):
         parts = [P("StrtNm", "Main Street"), P("Room", "Apartment 5"), P("TwnNm", "Street")]
-        assert corrupt.abbreviate(parts, random.Random(seed))
+        assert corrupt.abbreviate(parts, random.Random(seed), IE)
         assert parts[0].text in ("Main St", "Main St.")
         assert parts[1].text in ("Apt 5", "Apt. 5")
         assert parts[2].text == "Street"  # only street and room fields are abbreviated
@@ -28,7 +28,7 @@ def test_abbreviate_street_and_apartment_words():
 
 def test_abbreviate_does_nothing_without_an_abbreviable_word():
     parts = [P("StrtNm", "Main Way"), P("Room", "Flat 2")]
-    assert not corrupt.abbreviate(parts, random.Random(1))
+    assert not corrupt.abbreviate(parts, random.Random(1), IE)
     assert [p.text for p in parts] == ["Main Way", "Flat 2"]
 
 
@@ -37,7 +37,7 @@ def test_typo_touches_one_word_of_one_street_or_building_name_only():
         parts = [P("StrtNm", "Kavanagh Road"), P("BldgNm", "Riverside Court"), P("TwnNm", "Galway"),
                  P("PstCd", "H91 AB12"), P("BldgNb", "12"), P("Ctry", "Ireland")]
         before = [p.text for p in parts]
-        assert corrupt.typo(parts, random.Random(seed))
+        assert corrupt.typo(parts, random.Random(seed), IE)
         changed = [i for i, (a, p) in enumerate(zip(before, parts)) if a != p.text]
         assert len(changed) == 1 and parts[changed[0]].field in ("StrtNm", "BldgNm")
         old, new = before[changed[0]].split(" "), parts[changed[0]].text.split(" ")
@@ -52,11 +52,11 @@ def test_typo_touches_one_word_of_one_street_or_building_name_only():
 def test_typo_never_applies_to_a_town_postcode_number_or_country():
     parts = [P("TwnNm", "Letterkenny"), P("PstCd", "F92 1VXA"), P("BldgNb", "12"), P("Ctry", "Ireland"),
              P("TwnLctnNm", "Ballincollig")]
-    assert not corrupt.typo(parts, random.Random(1))
+    assert not corrupt.typo(parts, random.Random(1), IE)
 
 
 def test_typo_needs_a_word_long_enough_to_break():
-    assert not corrupt.typo([P("StrtNm", "Main Street")], random.Random(1))  # "Main" has 4 letters
+    assert not corrupt.typo([P("StrtNm", "Main Street")], random.Random(1), IE)  # "Main" has 4 letters
 
 
 def test_postcode_no_space_and_all_caps():
@@ -210,3 +210,40 @@ def test_too_many_lines_is_rejected():
 
 def test_the_same_inputs_render_identically():
     assert _render(["all_caps", "extra_spaces", "reordered"], seed=5)[0] == _render(["all_caps", "extra_spaces", "reordered"], seed=5)[0]
+
+
+def test_postcode_split_when_the_postcode_starts_its_line():
+    """Postcode before town (NL, DE, FR): the first half ends the previous line and the second half stays."""
+    segments = [[P("StrtNm", "Keizersgracht"), P("BldgNb", "99")], [P("PstCd", "1015 CJ"), P("TwnNm", "Amsterdam")]]
+    assert corrupt.postcode_split(segments, random.Random(1), ("1015", "CJ"))
+    assert [[p.text for p in s] for s in segments] == [["Keizersgracht", "99", "1015"], ["CJ", "Amsterdam"]]
+
+
+def test_postcode_split_leaves_a_postcode_in_the_middle_of_a_line_alone():
+    segments = [[P("TwnNm", "Austin"), P("PstCd", "78701"), P("CtrySubDvsn", "TX")]]
+    assert not corrupt.postcode_split(segments, random.Random(1), ("787", "01"))
+
+
+def test_a_comma_after_a_part_is_written_inside_the_line_and_dropped_when_commas_are_missing():
+    truth = Truth("IE", "t", [[P("BldgNb", "12"), P("StrtNm", "Main Street")],
+                              [Part("TwnNm", "Galway", comma_after=True), P("CtrySubDvsn", "Co. Galway")]], set())
+    with_commas = render(truth, set(), IE, random.Random(1))
+    assert any("Galway, Co. Galway" in l for l in with_commas.raw_lines)
+    without = render(truth, {"missing_commas"}, IE, random.Random(1))
+    assert not any("," in l for l in without.raw_lines) and "missing_commas" in without.tags
+
+
+def test_unlabelled_text_is_written_but_never_in_gold():
+    truth = Truth("IE", "t", [[P("StrtNm", "Main Street")], [Part(None, "near City Mall")], [P("TwnNm", "Galway")]], set())
+    r = render(truth, {"all_caps"}, IE, random.Random(1))
+    assert any("NEAR CITY MALL" in l for l in r.raw_lines)
+    assert "NEAR CITY MALL" not in " ".join(r.gold.values()) and set(r.gold) == {"StrtNm", "TwnNm", "Ctry"}
+
+
+def test_extra_spaces_is_only_tagged_if_a_space_survives_the_line_wrapping():
+    """A trailing space at a wrap point is stripped; the tag must follow the final lines, not the request."""
+    for seed in range(200):
+        truth = Truth("IE", "t", [[P("BldgNm", "Block C Docklands Business Park and Enterprise Centre"), P("StrtNm", "Main Street")]], set())
+        r = render(truth, {"extra_spaces", "one_line"}, IE, random.Random(seed))
+        has_extra = any(l != l.strip() or "  " in l for l in r.raw_lines)
+        assert ("extra_spaces" in r.tags) == has_extra, (seed, r.raw_lines)

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0249</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0249</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="CAD">7359.31</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Tulip Logistics Inc</Nm>
+        <PstlAdr>
+          <AdrLine>rue de la Montagne Ouest,</AdrLine>
+          <AdrLine>Capktal Centre,</AdrLine>
+          <AdrLine>Montréal Québec H4A 9T3, Canada</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTCA2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Quarry Systems Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>PLOT 146,  LINK ROAD</AdrLine>
+          <AdrLine>JUHU</AdrLine>
+          <AdrLine>MUMBAI, MAHARASHTRA  400 095</AdrLine>
+          <AdrLine>IN</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

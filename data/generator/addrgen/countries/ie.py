@@ -77,6 +77,8 @@ class Ireland(CountryModule):
     building_words = (("House", 0.35), ("Court", 0.20), ("Lodge", 0.10), ("Tower", 0.05), ("Building", 0.05),
                       ("Centre", 0.05), ("Plaza", 0.03), ("Mansions", 0.03), ("Cottage", 0.14))
     place_names = ("Docklands", "Riverside", "Harbour", "Northgate", "Eastpoint", "Greenhills", "Westpark", "Lakeside")
+    postcode_pattern = r"([ACDEFHKNPRTVWXY][0-9]{2}|D6W) ?[0-9ACDEFHKNPRTVWXY]{4}"
+    region_pattern = r"(co\.|county) [a-z]+"
     template_weights = {
         "number_street": 6, "street_only": 2, "house_name_street": 2, "building_street_number": 1,
         "flat_number_street": 1.5, "flat_in_building": 1, "floor_number_street": 0.5, "unit_business_park": 1.5,
@@ -108,6 +110,9 @@ class Ireland(CountryModule):
         if county:
             segments.append([Part("CtrySubDvsn", county)])
         return TownBlock(segments, tags)
+
+    def known_towns(self) -> frozenset[str]:
+        return frozenset(t.casefold() for t, *_ in TOWNS) | frozenset(d.casefold() for d, _ in DUBLIN_DISTRICTS)
 
     def split_postcode(self, postcode: str) -> tuple[str, str] | None:
         parts = postcode.split(" ")

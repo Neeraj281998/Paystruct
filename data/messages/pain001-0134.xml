@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.13">
+  <CstmrCdtTrfInitn>
+    <GrpHdr>
+      <MsgId>SYNTH-PAIN001-0134</MsgId>
+      <CreDtTm>2026-10-13T08:00:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <InitgPty>
+        <Nm>Saffron Lights BV</Nm>
+      </InitgPty>
+    </GrpHdr>
+    <PmtInf>
+      <PmtInfId>SYNTH-PMT-0134</PmtInfId>
+      <PmtMtd>TRF</PmtMtd>
+      <ReqdExctnDt>
+        <Dt>2026-10-14</Dt>
+      </ReqdExctnDt>
+      <Dbtr>
+        <Nm>Harbour Lights BV</Nm>
+        <PstlAdr>
+          <AdrLine>OUDEDIJK 286-3</AdrLine>
+          <AdrLine>KAMER 27</AdrLine>
+          <AdrLine>6220 PN MAASTRICHT</AdrLine>
+          <AdrLine>THE NETHERLANDS</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <Othr>
+            <Id>SYNTH-ACCT-0134</Id>
+          </Othr>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTNL2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtTrfTxInf>
+        <PmtId>
+          <EndToEndId>SYNTH-E2E-0134</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="EUR">3603.64</InstdAmt>
+        </Amt>
+        <CdtrAgt>
+          <FinInstnId>
+            <BICFI>TESTIN2LXXX</BICFI>
+          </FinInstnId>
+        </CdtrAgt>
+        <Cdtr>
+          <Nm>Marrow Timber Pvt Ltd</Nm>
+          <PstlAdr>
+            <AdrLine>FLAT 786,</AdrLine>
+            <AdrLine>SILVER HEIGHTS,</AdrLine>
+            <AdrLine>PLOT 142, MILL RD,</AdrLine>
+            <AdrLine>BEHIND SBI BANK,</AdrLine>
+            <AdrLine>ALIGANJ,</AdrLine>
+            <AdrLine>LUCKNOW, UTTAR PRADESH 226020</AdrLine>
+          </PstlAdr>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <Othr>
+              <Id>SYNTH-ACCT-5134</Id>
+            </Othr>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>

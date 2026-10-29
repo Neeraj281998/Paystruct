@@ -2,7 +2,7 @@
 
 - [x] Phase 0: setup
 - [x] Phase 1: foundations and ingestion
-- [ ] Phase 2: synthetic data (2A done, 2B not started)
+- [x] Phase 2: synthetic data (2A and 2B done; the hand-written hard set is still to be written by the owner)
 - [ ] Phase 3: rules engine
 - [ ] Phase 4: evaluation harness and baselines
 - [ ] Phase 5: LLM fallback
@@ -31,3 +31,16 @@ Not built: the other six countries, the four splits, the frozen test split, the 
 
 Things to know:
 - Typos in gold stay as written, abbreviations are not expanded in gold, and the scorer folds the allowlisted expansions (guide sections 9 and 10).
+
+## Phase 2B notes
+
+Built: generators for FR, DE, NL, CA, US and IN (labelling guide sections 12-18); the dev (600), calibration (400) and test (1,000) splits in `data/splits/` with `splits.manifest.json`; the frozen test hash (`test.sha256`) and `scripts/verify_frozen.py`; `scripts/check_splits.py`; the hard-set scaffold (`data/hard_set/*.yaml`, validator, converter to `hard.jsonl`); the message builder and 300 sample messages in `data/messages/` with `manifest.json`; `scripts/split_stats.py`. 341 generator tests (`python -m pytest` in `data/generator`).
+
+Not built, by design: the 100 hand-written hard-set addresses (the owner writes them), rules, evaluation harness, scorer, baselines.
+
+Things to know:
+- `data/splits/hard.jsonl` is empty. Each country file holds two entries marked EXAMPLE, which are left out unless `--include-examples`. `build_hard_set.py` refuses fewer than 100 entries without `--allow-partial`.
+- The disjointness check does not open `test.jsonl`; it uses address-key hashes recorded when the splits were built (see `docs/decisions/splits-and-messages.md`). `--include-test-file` is there for the owner.
+- 25 of the 300 messages are XSD-invalid on purpose (`too_many_lines` fault); `manifest.json` says which.
+- Calibration and test tiers are balanced to within one record per country, not exactly equal (400 and 1,000 do not divide by 3).
+- New pinned dependencies: `lxml`, `PyYAML`.

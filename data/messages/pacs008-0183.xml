@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0183</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0183</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">2494.03</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Lantern Timber Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Unit 51</AdrLine>
+          <AdrLine>130 Kennellan Ln</AdrLine>
+          <AdrLine>Tullamore R35 V8YW, IE</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Juniper Print Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>HSR Layout</AdrLine>
+          <AdrLine>No. 18 Nehru Road</AdrLine>
+          <AdrLine>Bengaluru Karnataka 560005</AdrLine>
+          <AdrLine>IN</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0065</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0065</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="GBP">5689.18</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Quarry Timber Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Suite 16A,</AdrLine>
+          <AdrLine>51 Church Ave. READING</AdrLine>
+          <AdrLine>RG30 7FR,</AdrLine>
+          <AdrLine> GB</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTGB2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Alder Works Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Ground Floor</AdrLine>
+          <AdrLine>16 Riney Ln</AdrLine>
+          <AdrLine>Limerick V94 R37H Eire</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0209</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0209</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="INR">324.01</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Brindle Lights Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>SUNRISE</AdrLine>
+          <AdrLine>COMPLEX</AdrLine>
+          <AdrLine>PLOT 153</AdrLine>
+          <AdrLine>TEMPLE ROAD</AdrLine>
+          <AdrLine> KORAMANGALA</AdrLine>
+          <AdrLine>BENGALURU</AdrLine>
+          <AdrLine>KARNATAKA</AdrLine>
+          <AdrLine>560012 </AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTDE2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Alder Handel GmbH</Nm>
+        <PstlAdr>
+          <AdrLine> Hauptallee  88c 6. OG 48375 Münster  Germany </AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

@@ -12,22 +12,25 @@ from addrgen.model import Part, TownBlock
 from addrgen.validate import check_record
 
 
-def test_ie_and_gb_are_registered():
-    assert countries.codes() == ["GB", "IE"]
+ALL = ["CA", "DE", "FR", "GB", "IE", "IN", "NL", "US"]
+
+
+def test_all_eight_countries_are_registered():
+    assert countries.codes() == ALL
     assert countries.get("ie").code == "IE"
     with pytest.raises(KeyError, match="No country module"):
         countries.get("ZZ")
 
 
-@pytest.mark.parametrize("code", ["IE", "GB"])
+@pytest.mark.parametrize("code", ALL)
 def test_a_module_provides_everything_the_framework_needs(code):
     m = countries.get(code)
     assert len(m.code) == 2 and m.locale and m.country_names
     assert set(m.template_weights) <= set(_TEMPLATES)
     for tier, templates in TEMPLATES_BY_DIFFICULTY.items():
         assert any(t in m.template_weights for t in templates), tier
-    assert m.split_postcode("AB1 2CD") == ("AB1", "2CD")
-    assert m.split_postcode("AB12CD") is None
+    assert m.postcode_pattern and m.known_towns()
+    assert m.split_postcode("") is None
 
 
 def test_dublin_districts_follow_the_real_numbering():
@@ -74,6 +77,11 @@ def test_adding_a_country_is_adding_one_small_module():
         def split_postcode(self, postcode):
             return tuple(postcode.split(" "))
 
+        def known_towns(self):
+            return frozenset({"testville"})
+
+        postcode_pattern = r"AA\d \dAA"
+
     try:
         assert "XX" in countries.codes()
         for tier in ("easy", "medium", "hard"):
@@ -81,4 +89,4 @@ def test_adding_a_country_is_adding_one_small_module():
             assert rec["country"] == "XX" and rec["gold"]["Ctry"] == "XX" and check_record(rec) == []
     finally:
         _REGISTRY.pop("XX")
-    assert countries.codes() == ["GB", "IE"]
+    assert countries.codes() == ALL

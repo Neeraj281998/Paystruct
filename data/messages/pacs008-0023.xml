@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0023</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0023</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">8386.74</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Cobalt Moss BV</Nm>
+        <PstlAdr>
+          <AdrLine>Molenlaan 67 Begane grond 2325 CL Leiden Nederland</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTNL2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTUS2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Quarry Freight LLC</Nm>
+        <PstlAdr>
+          <AdrLine>SAN ANTONIO</AdrLine>
+          <AdrLine>TEXAS</AdrLine>
+          <AdrLine>78197 6241</AdrLine>
+          <AdrLine>S PONCE</AdrLine>
+          <AdrLine>STREET</AdrLine>
+          <AdrLine>UNITED</AdrLine>
+          <AdrLine>STATES OF</AdrLine>
+          <AdrLine>AMERICA</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

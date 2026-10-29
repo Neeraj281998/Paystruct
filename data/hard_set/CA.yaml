@@ -1,0 +1,39 @@
+# Hand-written hard set, CA. Format: data/hard_set/README.md
+# The two entries marked EXAMPLE only show the format. Delete them when you add your own.
+country: CA
+entries:
+  # ---- EXAMPLE (not part of the hard set) ----
+  - id: ca-x01
+    example: true
+    note: "EXAMPLE: shows the format only, left out of hard.jsonl"
+    tags: ["country_name", "county", "flat"]
+    raw_lines:
+      - "Suite 200, 1000 rue de la Gauchetière O"
+      - "Montréal QC H3B 4W5"
+      - "Canada"
+    gold:
+      StrtNm: "rue de la Gauchetière O"
+      BldgNb: "1000"
+      Room: "Suite 200"
+      PstCd: "H3B 4W5"
+      TwnNm: "Montréal"
+      CtrySubDvsn: "QC"
+      Ctry: "CA"
+  # ---- EXAMPLE (not part of the hard set) ----
+  - id: ca-x02
+    example: true
+    note: "EXAMPLE: shows the format only, left out of hard.jsonl"
+    tags: ["county", "no_country"]
+    raw_lines:
+      - "88 Elm Crescent"
+      - "Halifax NS B3H 1Z7"
+    gold:
+      StrtNm: "Elm Crescent"
+      BldgNb: "88"
+      PstCd: "B3H 1Z7"
+      TwnNm: "Halifax"
+      CtrySubDvsn: "NS"
+      Ctry: "CA"
+    country_hint: CA
+
+  # ---- your entries go below this line ----

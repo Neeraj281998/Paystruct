@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0007</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0007</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="GBP">6128.82</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Fernhill Logistics Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>153 Victoria Rd</AdrLine>
+          <AdrLine>Ground Floor</AdrLine>
+          <AdrLine>Lakenham</AdrLine>
+          <AdrLine>NORWICH NR1 5ZR</AdrLine>
+          <AdrLine>Norfolk</AdrLine>
+          <AdrLine>GB</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTGB2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Lantern Print Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>KOLKATA,  WEST BENGAL 700087, </AdrLine>
+          <AdrLine>NO. 54,  LINK ROAD,</AdrLine>
+          <AdrLine>NEW TOWN,</AdrLine>
+          <AdrLine> IN</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

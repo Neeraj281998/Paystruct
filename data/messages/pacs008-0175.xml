@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0175</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0175</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">5172.53</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Cobalt Freight SARL</Nm>
+        <PstlAdr>
+          <AdrLine>APPARTEMENT 45,</AdrLine>
+          <AdrLine>TOUR LES PLATANES,</AdrLine>
+          <AdrLine>139 RUE JOURDAN,</AdrLine>
+          <AdrLine>69008 LYON CEDEX 05,</AdrLine>
+          <AdrLine>FRANCE</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTFR2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTFR2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Harbour Freight SARL</Nm>
+        <PstlAdr>
+          <AdrLine>76100 Rouen</AdrLine>
+          <AdrLine>Bâtiment E</AdrLine>
+          <AdrLine>Rue du Marché</AdrLine>
+          <AdrLine>FR</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

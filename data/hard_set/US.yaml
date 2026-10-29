@@ -1,0 +1,38 @@
+# Hand-written hard set, US. Format: data/hard_set/README.md
+# The two entries marked EXAMPLE only show the format. Delete them when you add your own.
+country: US
+entries:
+  # ---- EXAMPLE (not part of the hard set) ----
+  - id: us-x01
+    example: true
+    note: "EXAMPLE: shows the format only, left out of hard.jsonl"
+    tags: ["abbreviated", "country_name", "county", "flat"]
+    raw_lines:
+      - "1600 Market St Ste 400"
+      - "Philadelphia, PA 19103-1234"
+      - "USA"
+    gold:
+      StrtNm: "Market St"
+      BldgNb: "1600"
+      Room: "Ste 400"
+      PstCd: "19103-1234"
+      TwnNm: "Philadelphia"
+      CtrySubDvsn: "PA"
+      Ctry: "US"
+  # ---- EXAMPLE (not part of the hard set) ----
+  - id: us-x02
+    example: true
+    note: "EXAMPLE: shows the format only, left out of hard.jsonl"
+    tags: ["county", "no_country", "po_box"]
+    raw_lines:
+      - "P.O. Box 4471"
+      - "Boise, Idaho 83701"
+    gold:
+      PstBx: "P.O. Box 4471"
+      PstCd: "83701"
+      TwnNm: "Boise"
+      CtrySubDvsn: "Idaho"
+      Ctry: "US"
+    country_hint: US
+
+  # ---- your entries go below this line ----

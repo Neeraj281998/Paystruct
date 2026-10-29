@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0081</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0081</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="CAD">4536.70</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Saffron Systems Inc</Nm>
+        <PstlAdr>
+          <AdrLine>Capital</AdrLine>
+          <AdrLine>Centre</AdrLine>
+          <AdrLine>977  rue</AdrLine>
+          <AdrLine>Sherbrooke</AdrLine>
+          <AdrLine>Montréal</AdrLine>
+          <AdrLine>Québec</AdrLine>
+          <AdrLine> CA</AdrLine>
+          <AdrLine>H2X 0M4 </AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTCA2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTNL2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Saffron Labs BV</Nm>
+        <PstlAdr>
+          <AdrLine>Gebouw D</AdrLine>
+          <AdrLine>Van Wintersstraat</AdrLine>
+          <AdrLine>Unit 23</AdrLine>
+          <AdrLine>3064 ED Rotterdam</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

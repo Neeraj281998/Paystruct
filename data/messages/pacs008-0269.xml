@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0269</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0269</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="INR">2502.50</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Juniper Textiles Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>Flat 357</AdrLine>
+          <AdrLine>Plot 46 15th Cross</AdrLine>
+          <AdrLine>C-Scheme</AdrLine>
+          <AdrLine>302071 Rajasthan Jaipur</AdrLine>
+          <AdrLine>India</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTFR2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Granite Labs SARL</Nm>
+        <PstlAdr>
+          <AdrLine>45 ter Av. Gambetta,</AdrLine>
+          <AdrLine>67200 Strasbourg,</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

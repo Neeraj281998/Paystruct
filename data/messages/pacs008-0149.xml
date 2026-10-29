@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0149</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0149</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">4886.27</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Copper Logistics GmbH</Nm>
+        <PstlAdr>
+          <AdrLine>SCHULSTRASSE 152,</AdrLine>
+          <AdrLine>HAMBURG 20174,</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTDE2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTGB2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Juniper Moss Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>67 Walker Dr,</AdrLine>
+          <AdrLine>Sturry,</AdrLine>
+          <AdrLine>Canterbury,</AdrLine>
+          <AdrLine>CT2 7LN,</AdrLine>
+          <AdrLine>Kent,</AdrLine>
+          <AdrLine>GB</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

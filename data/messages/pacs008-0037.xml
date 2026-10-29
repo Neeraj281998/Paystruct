@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0037</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0037</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">737.56</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Granite Handel BV</Nm>
+        <PstlAdr>
+          <AdrLine>Gebouw</AdrLine>
+          <AdrLine>E</AdrLine>
+          <AdrLine>Havenweg </AdrLine>
+          <AdrLine>Unit</AdrLine>
+          <AdrLine>33</AdrLine>
+          <AdrLine>3062</AdrLine>
+          <AdrLine>RS</AdrLine>
+          <AdrLine>Rotterdam</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTNL2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Cobalt Trading Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>78 MAIN STREET CAVAN H12 F0PX IE</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

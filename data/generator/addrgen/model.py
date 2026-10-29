@@ -5,15 +5,21 @@ from dataclasses import dataclass
 
 @dataclass
 class Part:
-    """One labelled value. text is how it is (or will be) written, which is also its gold value."""
+    """One written value. text is how it is (or will be) written, which is also its gold value.
 
-    field: str
+    field is None for unlabelled text (an Indian landmark): it is written in the raw lines but is never in gold.
+    comma_after asks the renderer to follow this part with a comma inside its line ("Austin, TX 78701"); it is
+    dropped when commas are missing or the text already ends with a full stop.
+    """
+
+    field: str | None
     text: str
+    comma_after: bool = False
 
 
 @dataclass
 class TownBlock:
-    """Locality, town plus postcode, and county lines of an address, as segments."""
+    """Locality, town plus postcode (and region), and county lines of an address, as segments."""
 
     segments: list[list[Part]]
     tags: set[str]

@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0257</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0257</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="USD">4415.17</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Alder Textiles LLC</Nm>
+        <PstlAdr>
+          <AdrLine> PO BOX 92622, </AdrLine>
+          <AdrLine> DETROIT, MICHIGAN 48259</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTUS2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTUS2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Meadow Supply LLC</Nm>
+        <PstlAdr>
+          <AdrLine>7445</AdrLine>
+          <AdrLine>Washington</AdrLine>
+          <AdrLine>Drive</AdrLine>
+          <AdrLine>25th Floor</AdrLine>
+          <AdrLine>Boston MA</AdrLine>
+          <AdrLine>02253-8764</AdrLine>
+          <AdrLine>United</AdrLine>
+          <AdrLine>States</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

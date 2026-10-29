@@ -8,7 +8,6 @@ import random
 
 from addrgen.limits import LIMITS
 from addrgen.model import Part
-from addrgen.words import BUILDING_PHRASES, BUILDING_WORDS, ROOM_ABBREVIATIONS, STREET_ABBREVIATIONS, STREET_WORDS
 
 _KEYBOARD_NEIGHBOURS = {
     "a": "qwsz", "b": "vghn", "c": "xdfv", "d": "serfcx", "e": "wsdr", "f": "drtgvc", "g": "ftyhbv", "h": "gyujnb",
@@ -16,47 +15,41 @@ _KEYBOARD_NEIGHBOURS = {
     "q": "wa", "r": "edft", "s": "awedxz", "t": "rfgy", "u": "yhji", "v": "cfgb", "w": "qase", "x": "zsdc",
     "y": "tghu", "z": "asx",
 }
-_NON_NAME_WORDS = {w.lower() for w in STREET_WORDS | BUILDING_WORDS} | {
-    w.lower() for phrase in BUILDING_PHRASES for w in phrase.split()
-}
 
 
 # ---- text-level ------------------------------------------------------------------------------------------------
-def abbreviate(parts: list[Part], rng: random.Random) -> bool:
-    """Street (Street -> St, Road -> Rd, ...) and room (Apartment -> Apt) words, written abbreviated."""
+def abbreviate(parts: list[Part], rng: random.Random, module) -> bool:
+    """Street and room words written abbreviated, using the country's own table (guide: one list per country)."""
     changed = False
     for part in parts:
-        table = {"StrtNm": STREET_ABBREVIATIONS, "Room": ROOM_ABBREVIATIONS}.get(part.field)
-        if table is None:
+        if part.field == "StrtNm":
+            new = module.abbreviate_street(part.text, rng)
+        elif part.field == "Room":
+            new = module.abbreviate_room(part.text, rng)
+        else:
             continue
-        words = part.text.split(" ")
-        index = len(words) - 1 if part.field == "StrtNm" else 0
-        if words[index] in table:
-            words[index] = rng.choice(table[words[index]])
-            part.text = " ".join(words)
+        if new != part.text:
+            part.text = new
             changed = True
     return changed
 
 
-def typo(parts: list[Part], rng: random.Random) -> bool:
+def typo(parts: list[Part], rng: random.Random, module) -> bool:
     """One typo in one word of a street or building name: never the first letter, never the street or building word,
-    never a town, postcode, number or country."""
+    never a town, postcode, number or country. The country says where a typo may go."""
     candidates = []
     for part in parts:
-        if part.field not in ("StrtNm", "BldgNm"):
-            continue
-        for i, word in enumerate(part.text.split(" ")):
-            if word.isalpha() and len(word) >= 5 and word.lower() not in _NON_NAME_WORDS:
-                candidates.append((part, i))
+        if part.field in ("StrtNm", "BldgNm"):
+            for span in module.typo_spans(part.field, part.text):
+                candidates.append((part, span))
     if not candidates:
         return False
-    part, index = rng.choice(candidates)
-    words = part.text.split(" ")
-    word = words[index]
+    part, (start, end) = rng.choice(candidates)
+    word = part.text[start:end]
     for _ in range(10):
         broken = _break(word, rng)
         if broken != word:
-            candidate = " ".join(words[:index] + [broken] + words[index + 1:])
+            candidate = part.text[:start] + broken + part.text[end:]
             if len(candidate) <= LIMITS[part.field].max_length:
                 part.text = candidate
                 return True
@@ -156,17 +149,28 @@ def postcode_wrong_line(segments: list[list[Part]], rng: random.Random) -> bool:
 
 
 def postcode_split(segments: list[list[Part]], rng: random.Random, halves: tuple[str, str] | None) -> bool:
-    """The postcode's two halves end one line and start the next. Gold keeps the whole postcode."""
+    """The postcode's two halves are on neighbouring lines. Gold keeps the whole postcode.
+
+    A postcode that ends its line ("Galway H91 | AB12") has its first half stay and its second half start the next
+    line. A postcode that starts its line ("1015 | CJ Amsterdam", postcode before town) has its first half end the
+    previous line and its second half stay. A postcode in the middle of a line is left alone."""
     found = _find(segments, "PstCd")
     if found is None or halves is None:
         return False
     si, pi = found
-    if pi != len(segments[si]) - 1:
-        return False
-    segments[si][pi] = Part("PstCd", halves[0])
-    second = Part("PstCd", halves[1])
-    if si + 1 < len(segments):
-        segments[si + 1].insert(0, second)
-    else:
-        segments.append([second])
-    return True
+    first, second = Part("PstCd", halves[0]), Part("PstCd", halves[1])
+    if pi == len(segments[si]) - 1:
+        segments[si][pi] = first
+        if si + 1 < len(segments):
+            segments[si + 1].insert(0, second)
+        else:
+            segments.append([second])
+        return True
+    if pi == 0:
+        segments[si][pi] = second
+        if si > 0:
+            segments[si - 1].append(first)
+        else:
+            segments.insert(0, [first])
+        return True
+    return False

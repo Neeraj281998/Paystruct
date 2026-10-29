@@ -13,6 +13,15 @@ Status: accepted (Phase 2A)
 - **Faker is used for surnames only** (in street and building names, with the `en_IE` and `en_GB` locales). Towns, counties, routing keys and outward codes come from small curated tables, because Faker's cities are not real places. Faker is pinned in `requirements.txt` because its output can change between versions.
 - **One module per country**, discovered by importing the `countries` package. The country supplies its data, a town block and a postcode split; templates, corruptions, tags and validation are shared.
 
+## Phase 2B: the six further countries
+
+- **Hooks, not branches.** Number position, where a flat or unit line goes, whether the street word comes first, abbreviation tables, where a typo may go, and every format check are methods or attributes on the country module with IE/GB defaults. Corruptions and the renderer call the module, so no country is special-cased in shared code.
+- **Unlabelled text.** A `Part` with no field is written but never in gold. It exists for Indian landmarks (guide section 18). The raw-token test exempts only that phrase, and only if it is one contiguous span.
+- **Commas inside a line.** `Part.comma_after` writes "Austin, TX 78701" and is dropped by `missing_commas`. A copy bug that lost it for US, CA and IN was caught by a test.
+- **Localities are tied to their town** for IE, GB and IN (tables in each module, tested against every generated record). FR, DE, NL, CA and US write no locality.
+- **Tags follow the final lines.** `extra_spaces` is decided after line wrapping, because wrapping strips the spaces at a break.
+- **Canadian French** towns (Montréal, Québec) get extra weight so about a quarter of CA addresses are in French.
+
 ## Python version
 
 Python 3.12 (tested on 3.12.16 with the pinned `requirements.txt`).

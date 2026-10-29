@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0199</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0199</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">4531.77</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Fernhill Supply SARL</Nm>
+        <PstlAdr>
+          <AdrLine>13008</AdrLine>
+          <AdrLine>Marseille</AdrLine>
+          <AdrLine>8e  Villa</AdrLine>
+          <AdrLine>Les</AdrLine>
+          <AdrLine>Platanes</AdrLine>
+          <AdrLine>152</AdrLine>
+          <AdrLine>Quai du</AdrLine>
+          <AdrLine>Moulin FR</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTFR2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTNL2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Harbour Textiles BV</Nm>
+        <PstlAdr>
+          <AdrLine>6515</AdrLine>
+          <AdrLine>CH</AdrLine>
+          <AdrLine>Nijmegen</AdrLine>
+          <AdrLine>Gebouw</AdrLine>
+          <AdrLine>Centrum</AdrLine>
+          <AdrLine>Osterhoudtstraat</AdrLine>
+          <AdrLine>1</AdrLine>
+          <AdrLine>NL</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0203</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0203</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">7472.33</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Saffron Freight BV</Nm>
+        <PstlAdr>
+          <AdrLine>3525 EA  Utrecht </AdrLine>
+          <AdrLine> Van Vastenhouwstraat 60</AdrLine>
+          <AdrLine>Begane grond</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTNL2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTUS2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Copper Handel LLC</Nm>
+        <PstlAdr>
+          <AdrLine>Austin,</AdrLine>
+          <AdrLine>Texas</AdrLine>
+          <AdrLine>78613,</AdrLine>
+          <AdrLine>Capitol</AdrLine>
+          <AdrLine>Complex,</AdrLine>
+          <AdrLine>6393</AdrLine>
+          <AdrLine>Church</AdrLine>
+          <AdrLine>Street</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

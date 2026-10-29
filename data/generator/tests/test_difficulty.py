@@ -21,6 +21,8 @@ from addrgen.difficulty import CORRUPTION_TAGS, difficulty_of
     ({"postcode_split"}, "hard"),
     ({"postcode_wrong_line"}, "hard"),
     ({"typo"}, "hard"),
+    ({"landmark"}, "hard"),
+    ({"cedex"}, "hard"),
     ({"flat", "typo"}, "hard"),
 ])
 def test_difficulty_follows_the_guide(tags, expected):
@@ -29,6 +31,10 @@ def test_difficulty_follows_the_guide(tags, expected):
 
 def test_postcode_no_space_alone_is_not_hard():
     assert difficulty_of({"postcode_no_space"}) == "easy"
+
+
+def test_landmark_and_cedex_are_structure_tags_not_corruptions():
+    assert not {"landmark", "cedex"} & CORRUPTION_TAGS
 
 
 def test_corruption_tag_list_matches_the_guide():

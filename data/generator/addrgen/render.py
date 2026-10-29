@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import random
+from dataclasses import replace
 
 from addrgen import corrupt
 from addrgen.countries.base import CountryModule
@@ -19,7 +20,7 @@ class RenderError(Exception):
 
 
 def render(truth: Truth, ops: set[str], module: CountryModule, rng: random.Random) -> Rendered:
-    segments = [[Part(p.field, p.text) for p in seg] for seg in truth.segments]
+    segments = [[replace(p) for p in seg] for seg in truth.segments]  # copies, keeping comma_after
     tags = set(truth.tags)
 
     # Country: absent, a name, or the ISO code. It is not part of the truth segments; it is the last line.
@@ -35,11 +36,11 @@ def render(truth: Truth, ops: set[str], module: CountryModule, rng: random.Rando
 
     # Text-level corruptions change the written value, and so the gold.
     parts = [p for seg in segments for p in seg] + ([country_part] if country_part else [])
-    if "abbreviated" in ops and corrupt.abbreviate(parts, rng):
+    if "abbreviated" in ops and corrupt.abbreviate(parts, rng, module):
         tags.add("abbreviated")
-    if "typo" in ops and corrupt.typo(parts, rng):
+    if "typo" in ops and corrupt.typo(parts, rng, module):
         tags.add("typo")
-    if "postcode_no_space" in ops and corrupt.postcode_no_space(parts):
+    if "postcode_no_space" in ops and module.can_drop_postcode_space and corrupt.postcode_no_space(parts):
         tags.add("postcode_no_space")
     if "all_caps" in ops and corrupt.all_caps(parts):
         tags.add("all_caps")
@@ -47,6 +48,8 @@ def render(truth: Truth, ops: set[str], module: CountryModule, rng: random.Rando
     gold: dict[str, str] = {}
     for seg in segments:
         for part in seg:
+            if part.field is None:  # unlabelled text (an Indian landmark) is written but never in gold
+                continue
             if part.field in gold:
                 raise RenderError(f"duplicate field {part.field}")
             gold[part.field] = part.text
@@ -77,8 +80,6 @@ def render(truth: Truth, ops: set[str], module: CountryModule, rng: random.Rando
 
     raw_lines, extra_applied, comma_sites = _format(lines, rng, extra="extra_spaces" in ops,
                                                     commas="missing_commas" not in ops)
-    if "extra_spaces" in ops and extra_applied:
-        tags.add("extra_spaces")
     if "missing_commas" in ops and comma_sites > 0:  # only a corruption if there was a comma to leave out
         tags.add("missing_commas")
 
@@ -90,6 +91,9 @@ def render(truth: Truth, ops: set[str], module: CountryModule, rng: random.Rando
         wrapped.extend(pieces)
     if len(wrapped) > MAX_LINES:
         raise RenderError("too many lines")
+    # Wrapping strips the spaces at a break, so judge extra_spaces by the lines as they finally are.
+    if "extra_spaces" in ops and extra_applied and any(line != line.strip() or "  " in line for line in wrapped):
+        tags.add("extra_spaces")
 
     return Rendered(wrapped, gold, tags, module.code if "no_country" in ops else None)
 
@@ -106,10 +110,12 @@ def _format(lines, rng, extra: bool, commas: bool) -> tuple[list[str], bool, int
         for si, segment in enumerate(line):
             # Extra spaces only ever go between values, never inside one, so gold keeps single spaces.
             seg_text = segment[0].text
-            for part in segment[1:]:
+            for prev, part in zip(segment, segment[1:]):
+                can_comma = prev.comma_after and not seg_text.endswith(".")
+                comma_sites += can_comma
                 double = extra and rng.random() < 0.5
                 extra_applied |= double
-                seg_text += ("  " if double else " ") + part.text
+                seg_text += ("," if commas and can_comma else "") + ("  " if double else " ") + part.text
             if si > 0:
                 can_comma = not text.endswith(".")
                 comma_sites += can_comma

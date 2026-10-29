@@ -1,0 +1,46 @@
+# Hand-written hard set, IN. Format: data/hard_set/README.md
+# The two entries marked EXAMPLE only show the format. Delete them when you add your own.
+country: IN
+entries:
+  # ---- EXAMPLE (not part of the hard set) ----
+  - id: in-x01
+    example: true
+    note: "EXAMPLE: shows the format only, left out of hard.jsonl"
+    tags: ["building_name", "country_name", "county", "flat", "landmark", "locality"]
+    raw_lines:
+      - "Flat No. 12, Lakeview Residency"
+      - "Plot 8, Baner Road"
+      - "Baner"
+      - "Pune, Maharashtra 411045"
+      - "near Westend Mall"
+      - "India"
+    gold:
+      StrtNm: "Baner Road"
+      BldgNb: "Plot 8"
+      BldgNm: "Lakeview Residency"
+      Room: "Flat No. 12"
+      PstCd: "411045"
+      TwnNm: "Pune"
+      TwnLctnNm: "Baner"
+      CtrySubDvsn: "Maharashtra"
+      Ctry: "IN"
+  # ---- EXAMPLE (not part of the hard set) ----
+  - id: in-x02
+    example: true
+    note: "EXAMPLE: shows the format only, left out of hard.jsonl"
+    tags: ["county", "locality", "no_country"]
+    raw_lines:
+      - "House No. 45, 3rd Cross"
+      - "Jayanagar 4th Block"
+      - "Bengaluru, Karnataka 560011"
+    gold:
+      StrtNm: "3rd Cross"
+      BldgNb: "House No. 45"
+      TwnNm: "Bengaluru"
+      TwnLctnNm: "Jayanagar 4th Block"
+      CtrySubDvsn: "Karnataka"
+      PstCd: "560011"
+      Ctry: "IN"
+    country_hint: IN
+
+  # ---- your entries go below this line ----

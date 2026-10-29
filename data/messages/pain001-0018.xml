@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.13">
+  <CstmrCdtTrfInitn>
+    <GrpHdr>
+      <MsgId>SYNTH-PAIN001-0018</MsgId>
+      <CreDtTm>2026-10-13T08:00:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <InitgPty>
+        <Nm>Harbour Labs LLC</Nm>
+      </InitgPty>
+    </GrpHdr>
+    <PmtInf>
+      <PmtInfId>SYNTH-PMT-0018</PmtInfId>
+      <PmtMtd>TRF</PmtMtd>
+      <ReqdExctnDt>
+        <Dt>2026-10-14</Dt>
+      </ReqdExctnDt>
+      <Dbtr>
+        <Nm>Lantern Logistics LLC</Nm>
+        <PstlAdr>
+          <AdrLine>Minneapolis,</AdrLine>
+          <AdrLine>MN</AdrLine>
+          <AdrLine>55403</AdrLine>
+          <AdrLine>5485</AdrLine>
+          <AdrLine>Ortega</AdrLine>
+          <AdrLine>Dr</AdrLine>
+          <AdrLine>Ste 825B</AdrLine>
+          <AdrLine>US </AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAcct>
+        <Id>
+          <Othr>
+            <Id>SYNTH-ACCT-0018</Id>
+          </Othr>
+        </Id>
+      </DbtrAcct>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTUS2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtTrfTxInf>
+        <PmtId>
+          <EndToEndId>SYNTH-E2E-0018</EndToEndId>
+        </PmtId>
+        <Amt>
+          <InstdAmt Ccy="USD">421.53</InstdAmt>
+        </Amt>
+        <CdtrAgt>
+          <FinInstnId>
+            <BICFI>TESTIN2LXXX</BICFI>
+          </FinInstnId>
+        </CdtrAgt>
+        <Cdtr>
+          <Nm>Fernhill Systems Pvt Ltd</Nm>
+          <PstlAdr>
+            <AdrLine>Flat 591</AdrLine>
+            <AdrLine>Plot 180</AdrLine>
+            <AdrLine>Mill Marg</AdrLine>
+            <AdrLine>Gachibowli</AdrLine>
+            <AdrLine>Hyderabad</AdrLine>
+            <AdrLine>Telangana</AdrLine>
+            <AdrLine>500</AdrLine>
+            <AdrLine>091 IN</AdrLine>
+          </PstlAdr>
+        </Cdtr>
+        <CdtrAcct>
+          <Id>
+            <Othr>
+              <Id>SYNTH-ACCT-5018</Id>
+            </Othr>
+          </Id>
+        </CdtrAcct>
+      </CdtTrfTxInf>
+    </PmtInf>
+  </CstmrCdtTrfInitn>
+</Document>

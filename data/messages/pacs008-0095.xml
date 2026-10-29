@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0095</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0095</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">1841.04</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Quarry Lights Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>95 PRIORY LN,  DÚN LAOGHAIRE A96VV66</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIE2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Lantern Design Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>CHURCH</AdrLine>
+          <AdrLine>GROVE</AdrLine>
+          <AdrLine>SANDYCOVE</AdrLine>
+          <AdrLine>DÚN</AdrLine>
+          <AdrLine>LAOGHAIRE</AdrLine>
+          <AdrLine>A96</AdrLine>
+          <AdrLine>TDYY</AdrLine>
+          <AdrLine>IE</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

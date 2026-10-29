@@ -2,7 +2,7 @@
 
 Builds the correct structured address first (the ground truth), then renders it into messy free text, so every record is labelled automatically. All data is synthetic. Every labelling decision is in `../labelling-guide.md`.
 
-Countries so far: IE, GB. Adding a country is adding one module in `addrgen/countries/` (see `ie.py`, `gb.py`, and `tests/test_countries.py`, which registers a throwaway country to prove it).
+Countries: IE, GB, FR, DE, NL, CA, US, IN. Adding a country is adding one module in `addrgen/countries/` that supplies its data and overrides only the hooks where its conventions differ (see `ie.py` for the plain case, `de.py` or `in_.py` for the unusual ones). `tests/test_countries.py` registers a throwaway country to prove it, and each country has its own `tests/test_country_*.py`.
 
 ## Setup
 
@@ -29,6 +29,22 @@ Options: `--difficulties easy,medium,hard`, `--start-index N` (first record numb
 ```bash
 .venv/bin/python -m pytest
 ```
+
+## Splits, hard set, messages
+
+Run from the repository root (`PY=data/generator/.venv/bin/python`):
+
+```bash
+$PY scripts/build_splits.py          # dev 600, calibration 400, test 1000 (test is never rewritten once frozen)
+$PY scripts/check_splits.py          # no address or id in two splits
+$PY scripts/verify_frozen.py         # fails if test.jsonl changed
+$PY scripts/split_stats.py dev calibration   # counts by country, difficulty, tag
+$PY scripts/validate_hard_set.py     # data/hard_set/*.yaml, format in data/hard_set/README.md
+$PY scripts/build_hard_set.py --allow-partial   # data/splits/hard.jsonl
+$PY scripts/build_messages.py        # 300 messages from dev into data/messages/ with manifest.json
+```
+
+Decisions: `docs/decisions/splits-and-messages.md`.
 
 ## Record format
 

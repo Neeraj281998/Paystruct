@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0221</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0221</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="GBP">3817.72</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Sparrow Moss Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>165A JONES STREET,</AdrLine>
+          <AdrLine>READING RG1 4TB,</AdrLine>
+          <AdrLine>BERKSHIRE,</AdrLine>
+          <AdrLine>GB</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTGB2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTIN2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Quarry Systems Pvt Ltd</Nm>
+        <PstlAdr>
+          <AdrLine>House No. 178, Link Road,</AdrLine>
+          <AdrLine>Salt Lake,</AdrLine>
+          <AdrLine>Kolkata, West Bengal 700057,</AdrLine>
+          <AdrLine>IN</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>

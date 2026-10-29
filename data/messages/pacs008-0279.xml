@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.14">
+  <FIToFICstmrCdtTrf>
+    <GrpHdr>
+      <MsgId>SYNTH-PACS008-0279</MsgId>
+      <CreDtTm>2026-10-12T09:30:00Z</CreDtTm>
+      <NbOfTxs>1</NbOfTxs>
+      <SttlmInf>
+        <SttlmMtd>INDA</SttlmMtd>
+      </SttlmInf>
+    </GrpHdr>
+    <CdtTrfTxInf>
+      <PmtId>
+        <EndToEndId>SYNTH-E2E-0279</EndToEndId>
+      </PmtId>
+      <IntrBkSttlmAmt Ccy="EUR">628.20</IntrBkSttlmAmt>
+      <ChrgBr>SHAR</ChrgBr>
+      <Dbtr>
+        <Nm>Marrow Logistics GmbH</Nm>
+        <PstlAdr>
+          <AdrLine>22010 Hamburg</AdrLine>
+          <AdrLine>Gebäude F</AdrLine>
+          <AdrLine>Schulstraße 146 DE</AdrLine>
+        </PstlAdr>
+      </Dbtr>
+      <DbtrAgt>
+        <FinInstnId>
+          <BICFI>TESTDE2LXXX</BICFI>
+        </FinInstnId>
+      </DbtrAgt>
+      <CdtrAgt>
+        <FinInstnId>
+          <BICFI>TESTNL2LXXX</BICFI>
+        </FinInstnId>
+      </CdtrAgt>
+      <Cdtr>
+        <Nm>Sparrow Exports BV</Nm>
+        <PstlAdr>
+          <AdrLine>GEBOUW ZUID 6227 KW</AdrLine>
+          <AdrLine>BRISEESTRAAT</AdrLine>
+          <AdrLine>MAASTRICHT</AdrLine>
+          <AdrLine>NEDERLAND</AdrLine>
+        </PstlAdr>
+      </Cdtr>
+    </CdtTrfTxInf>
+  </FIToFICstmrCdtTrf>
+</Document>
