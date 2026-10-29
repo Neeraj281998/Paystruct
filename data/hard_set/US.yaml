@@ -206,16 +206,16 @@ entries:
       PstCd: "28211"
       Ctry: "US"
     country_hint: US
+  # NOTE: 12203 is Albany, NY; the town is deliberately absent, the state NY is written.
   - id: us-h013
-    tags: ["abbreviated", "county", "no_country"]
+    tags: ["abbreviated", "county", "no_country", "no_town"]
     raw_lines:
-      - "2600 Alder Ave S"
-      - "Minneapolis, MN 55407-1122"
+      - "2290 Lindenwald Dr"
+      - "NY 12203"
     gold:
-      BldgNb: "2600"
-      StrtNm: "Alder Ave S"
-      TwnNm: "Minneapolis"
-      CtrySubDvsn: "MN"
-      PstCd: "55407-1122"
+      BldgNb: "2290"
+      StrtNm: "Lindenwald Dr"
+      CtrySubDvsn: "NY"
+      PstCd: "12203"
       Ctry: "US"
     country_hint: US

@@ -1,6 +1,6 @@
 # Labelling guide
 
-Status: approved, sections 0 to 19. Settles every ambiguous case once, so gold labels never contradict each other. The generator, the hand-written hard set and the scorer all follow this file. If a case is not covered, add a rule here before labelling it.
+Status: approved, sections 0 to 19. Section 20 (records with no town) awaits approval. Settles every ambiguous case once, so gold labels never contradict each other. The generator, the hand-written hard set and the scorer all follow this file. If a case is not covered, add a rule here before labelling it.
 
 Element names and maximum lengths come from the XSD (`docs/decisions/xsd-versions.md`), not from the spec table. Fields used in v1: `StrtNm`, `BldgNb`, `BldgNm`, `Flr`, `Room`, `PstBx`, `PstCd`, `TwnNm`, `TwnLctnNm`, `CtrySubDvsn`, `Ctry`. Not used in v1: `Dept`, `SubDept`, `UnitNb`, `DstrctNm`, `CareOf`.
 
@@ -104,7 +104,7 @@ Difficulty is computed from the tags, so it cannot drift from them.
 - **medium:** otherwise, two or three corruption tags, or any of `no_street_number`, `flat`, `building_name`, `floor`.
 - **easy:** everything else.
 
-Structure tags: `no_street_number`, `postal_district`, `flat`, `building_name`, `floor`, `po_box`, `county` (any `CtrySubDvsn`: a county, state or province), `locality`, `landmark` (India, section 18), `cedex` (France, section 13), `partial_postcode` (a lone routing key or outward code, section 5; hand-written set only), `not_in_geonames` (section 19; hand-written set only, optional). Neither of the last two changes the difficulty tier, and the generator never writes them.
+Structure tags: `no_street_number`, `postal_district`, `flat`, `building_name`, `floor`, `po_box`, `county` (any `CtrySubDvsn`: a county, state or province), `locality`, `landmark` (India, section 18), `cedex` (France, section 13), `partial_postcode` (a lone routing key or outward code, section 5; hand-written set only), `not_in_geonames` (section 19; hand-written set only, optional), `no_town` (section 20; hand-written set only). None of the last three changes the difficulty tier, and the generator never writes them.
 
 ## 12. Rules common to the six new countries
 
@@ -198,3 +198,12 @@ Rules for labelling:
 - Gold still keeps the text as written (section 0); the tie says nothing about accents or case.
 - The pairings not confirmed by GeoNames are listed in `docs/decisions/postcode-ties.md`: IE (Ennis V95, Navan C15, Killarney V93, all county and all locality-to-key ties), GB (18 post-town codes, 30 localities), CA (Montréal H2X and H4A, Québec G1V), IN (20 localities).
 - Because the generator and the rules engine both use GeoNames, town and postcode accuracy on the synthetic splits is optimistic. See `docs/decisions/geonames-circularity.md`; report the hard-set result beside it.
+
+## 20. Records with no town (`no_town`)
+
+Some real addresses arrive with a postcode (or nothing) but no town. Hand-written set only; the generator never writes one. Tag `no_town`.
+
+- **Gold has no `TwnNm`.** Gold may only hold text that is in the raw lines (section 0), and there is no town text. Every other field is labelled as usual, and a postcode that is present stays in `PstCd`.
+- **`Ctry` is still the true country.** If the country is not in the text, the record also carries `country_hint` and the tag `no_country` (section 8).
+- **Expected system behaviour: output no town and route the record to review.** A system must not derive a town from the postcode, a gazetteer or the country; that would invent a value that is not in the input. Phase 4 reports these records separately, because the right answer is an empty `TwnNm`, not a guess.
+- `no_town` is the only case where `TwnNm` may be missing from gold. The hard-set validator requires `TwnNm` in every other record.

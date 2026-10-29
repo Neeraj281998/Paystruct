@@ -20,7 +20,7 @@ One file per country, `IE.yaml`, `GB.yaml`, ... Every entry:
   note: ""                 # optional
 ```
 
-Rules the validator enforces: `TwnNm` and `Ctry` are required; `Ctry` equals the file's country; every other gold value appears in the raw lines exactly as written (guide section 0); lengths and patterns come from the XSD; tags are known tags (including the optional `partial_postcode` and `not_in_geonames`, which do not change the difficulty tier); ids are unique. The difficulty tier is computed from the tags (guide section 11), so you do not write it. Landmarks and any text with no field stay out of gold (guide section 18).
+Rules the validator enforces: `TwnNm` and `Ctry` are required (`TwnNm` is absent, and must be, in entries tagged `no_town`, guide section 20); `Ctry` equals the file's country; every other gold value appears in the raw lines exactly as written (guide section 0); lengths and patterns come from the XSD; tags are known tags (including the optional `partial_postcode`, `not_in_geonames` and `no_town`, which do not change the difficulty tier); ids are unique. The difficulty tier is computed from the tags (guide section 11), so you do not write it. Landmarks and any text with no field stay out of gold (guide section 18).
 
 Entries with `example: true` only show the format. They are left out of `hard.jsonl` and you delete them when you write your own.
 

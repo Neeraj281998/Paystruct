@@ -122,18 +122,18 @@ entries:
       CtrySubDvsn: "BC"
       Ctry: "CA"
     country_hint: CA
+  # NOTE: H2L is central Montréal; the town is deliberately absent, the province QC is written.
   - id: ca-h007
-    tags: ["country_name", "county"]
+    tags: ["country_name", "county", "no_town"]
     raw_lines:
-      - "67 Tundra Road"
-      - "Whitehorse, YT Y1A 3S8"
+      - "600 rue Beaulieu-Neuve"
+      - "QC H2L 4G5"
       - "Canada"
     gold:
-      BldgNb: "67"
-      StrtNm: "Tundra Road"
-      TwnNm: "Whitehorse"
-      CtrySubDvsn: "YT"
-      PstCd: "Y1A 3S8"
+      BldgNb: "600"
+      StrtNm: "rue Beaulieu-Neuve"
+      CtrySubDvsn: "QC"
+      PstCd: "H2L 4G5"
       Ctry: "CA"
   - id: ca-h008
     tags: ["abbreviated", "county", "no_country", "postcode_no_space", "typo"]

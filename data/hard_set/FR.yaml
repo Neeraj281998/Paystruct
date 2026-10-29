@@ -75,17 +75,18 @@ entries:
       TwnNm: "Annecy"
       Ctry: "FR"
     country_hint: FR
+  # NOTE: 69003 is Lyon 3e; the town is deliberately absent.
   - id: fr-h004
-    tags: ["no_country", "po_box"]
+    tags: ["country_name", "no_town"]
     raw_lines:
-      - "BP 17"
-      - "29200 Brest"
+      - "27 rue des Acacias-Fleuris"
+      - "69003"
+      - "France"
     gold:
-      PstBx: "BP 17"
-      PstCd: "29200"
-      TwnNm: "Brest"
+      BldgNb: "27"
+      StrtNm: "rue des Acacias-Fleuris"
+      PstCd: "69003"
       Ctry: "FR"
-    country_hint: FR
   - id: fr-h005
     tags: ["country_name"]
     raw_lines:

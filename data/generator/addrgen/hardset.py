@@ -18,9 +18,10 @@ from addrgen.limits import GOLD_FIELDS, LIMITS, MAX_LINE_LENGTH, MAX_LINES
 
 TARGET_SIZE = 100
 STRUCTURE_TAGS = frozenset({"no_street_number", "postal_district", "flat", "building_name", "floor", "po_box", "county",
-                            "locality", "landmark", "cedex", "partial_postcode", "not_in_geonames"})
+                            "locality", "landmark", "cedex", "partial_postcode", "not_in_geonames", "no_town"})
 KNOWN_TAGS = CORRUPTION_TAGS | STRUCTURE_TAGS
 REQUIRED_GOLD = ("TwnNm", "Ctry")  # CBPR+ makes town and country mandatory; everything else is optional
+# TwnNm may be missing only in a record tagged no_town (guide section 20), and must then be absent.
 _ID = re.compile(r"^([a-z]{2})-(h\d{3}|x\d{2})$")  # h001 for a real entry, x01 for an example
 _ENTRY_KEYS = {"id", "example", "tags", "raw_lines", "gold", "country_hint", "note"}
 
@@ -77,9 +78,12 @@ def validate_entry(entry: dict, country: str) -> list[str]:
     if not isinstance(gold, dict) or not gold:
         problems.append("gold must be a mapping of element name to value")
         return problems
+    no_town = "no_town" in tags
     for name in REQUIRED_GOLD:
-        if name not in gold:
+        if name not in gold and not (no_town and name == "TwnNm"):
             problems.append(f"gold is missing the required {name}")
+    if no_town and "TwnNm" in gold:
+        problems.append("a no_town record has no TwnNm in gold (guide section 20)")
     text = _norm(" ".join(lines))
     for name, value in gold.items():
         if name not in GOLD_FIELDS:

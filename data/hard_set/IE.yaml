@@ -89,16 +89,16 @@ entries:
       PstCd: "T12 K4Y9"
       Ctry: "IE"
     country_hint: IE
+  # NOTE: D24 is the routing key of Dublin 24 (Tallaght); the town is deliberately absent.
   - id: ie-h005
-    tags: ["no_country"]
+    tags: ["building_name", "flat", "no_country", "no_street_number", "no_town", "partial_postcode"]
     raw_lines:
-      - "12 Ballina Walk"
-      - "Limerick V94 3NX"
+      - "Unit 5, Fenway Business Park"
+      - "D24"
     gold:
-      BldgNb: "12"
-      StrtNm: "Ballina Walk"
-      TwnNm: "Limerick"
-      PstCd: "V94 3NX"
+      Room: "Unit 5"
+      BldgNm: "Fenway Business Park"
+      PstCd: "D24"
       Ctry: "IE"
     country_hint: IE
   - id: ie-h006

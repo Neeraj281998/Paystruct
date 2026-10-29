@@ -174,15 +174,15 @@ entries:
       TwnNm: "NIJMEGEN"
       Ctry: "NL"
     country_hint: NL
+  # NOTE: 1071 is Amsterdam (Museumkwartier); the town is deliberately absent. The letters DJ are invented.
   - id: nl-h012
-    tags: ["country_name"]
+    tags: ["no_country", "no_town"]
     raw_lines:
-      - "Stationsplein 9-11"
-      - "8011 CW Zwolle"
-      - "Holland"
+      - "Zwanenlaan 21"
+      - "1071 DJ"
     gold:
-      StrtNm: "Stationsplein"
-      BldgNb: "9-11"
-      PstCd: "8011 CW"
-      TwnNm: "Zwolle"
+      StrtNm: "Zwanenlaan"
+      BldgNb: "21"
+      PstCd: "1071 DJ"
       Ctry: "NL"
+    country_hint: NL

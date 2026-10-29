@@ -227,4 +227,32 @@ def test_the_two_tags_do_not_change_the_difficulty_tier():
 
 def test_the_generator_never_writes_the_hand_written_only_tags(records):
     used = {t for r in records for t in r["tags"]}
-    assert not used & {"partial_postcode", "not_in_geonames"}
+    assert not used & {"partial_postcode", "not_in_geonames", "no_town"}
+
+
+def test_no_town_entry_has_no_twnnm_and_is_valid():
+    entry = {"id": "ie-h001", "tags": ["no_country", "no_town", "partial_postcode"], "country_hint": "IE",
+             "raw_lines": ["Unit 5 Fenway Business Park", "D24"],
+             "gold": {"Room": "Unit 5", "BldgNm": "Fenway Business Park", "PstCd": "D24", "Ctry": "IE"}}
+    assert validate_entry(entry, "IE") == []
+
+
+def test_no_town_forbids_twnnm_and_still_requires_ctry():
+    base = {"id": "ie-h001", "tags": ["no_country", "no_town"], "country_hint": "IE",
+            "raw_lines": ["12 Main St", "Cork"], "gold": {"StrtNm": "Main St", "Ctry": "IE"}}
+    assert validate_entry(base, "IE") == []
+    with_town = dict(base, gold={"StrtNm": "Main St", "TwnNm": "Cork", "Ctry": "IE"})
+    assert any("no_town record has no TwnNm" in p for p in validate_entry(with_town, "IE"))
+    no_ctry = dict(base, gold={"StrtNm": "Main St"})
+    assert any("missing the required Ctry" in p for p in validate_entry(no_ctry, "IE"))
+
+
+def test_a_missing_town_without_the_tag_is_still_an_error():
+    entry = {"id": "ie-h001", "tags": ["no_country"], "country_hint": "IE", "raw_lines": ["12 Main St"],
+             "gold": {"StrtNm": "Main St", "Ctry": "IE"}}
+    assert any("missing the required TwnNm" in p for p in validate_entry(entry, "IE"))
+
+
+def test_no_town_does_not_change_the_difficulty_tier():
+    from addrgen.difficulty import difficulty_of
+    assert difficulty_of({"no_town"}) == "easy" and difficulty_of({"flat", "no_town"}) == "medium"

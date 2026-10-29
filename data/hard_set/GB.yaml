@@ -118,18 +118,17 @@ entries:
       TwnNm: "London"
       PstCd: "E8"
       Ctry: "GB"
+  # NOTE: Neither postcode nor town: only the street and the country 'UK'.
   - id: gb-h006
-    tags: ["no_country", "po_box"]
+    tags: ["country_name", "flat", "no_town"]
     raw_lines:
-      - "PO Box 318"
-      - "Norwich"
-      - "NR3 1PX"
+      - "Flat 2, 18 Quillan Road"
+      - "UK"
     gold:
-      PstBx: "PO Box 318"
-      TwnNm: "Norwich"
-      PstCd: "NR3 1PX"
+      Room: "Flat 2"
+      BldgNb: "18"
+      StrtNm: "Quillan Road"
       Ctry: "GB"
-    country_hint: GB
   # GUIDE?: 'Thornhill Terrace' is a building name but contains a street word (Terrace); guide section 3 would make it a StrtNm. Gold follows the real-world reading (BldgNm).
   - id: gb-h007
     tags: ["building_name", "no_country"]

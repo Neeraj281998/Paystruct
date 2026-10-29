@@ -91,21 +91,19 @@ entries:
       PstCd: "560034"
       Ctry: "IN"
     country_hint: IN
+  # NOTE: 400076 is Powai, Mumbai; the town is deliberately absent, the locality Powai is written.
   - id: in-h004
-    tags: ["building_name", "country_name", "county", "flat", "locality"]
+    tags: ["building_name", "country_name", "locality", "no_town"]
     raw_lines:
-      - "Apartment 5C, Palm Grove Apartments"
-      - "Haldar Lane, Ballygunge"
-      - "Kolkata 700 019, West Bengal"
+      - "Plot 31, Lakeside Heights"
+      - "Powai"
+      - "400076"
       - "India"
     gold:
-      Room: "Apartment 5C"
-      BldgNm: "Palm Grove Apartments"
-      StrtNm: "Haldar Lane"
-      TwnLctnNm: "Ballygunge"
-      TwnNm: "Kolkata"
-      PstCd: "700 019"
-      CtrySubDvsn: "West Bengal"
+      BldgNb: "Plot 31"
+      BldgNm: "Lakeside Heights"
+      TwnLctnNm: "Powai"
+      PstCd: "400076"
       Ctry: "IN"
   # GUIDE?: 'Bungalow 7' as a house number with its keyword; the guide lists Plot, House No. and Door No. only.
   - id: in-h005

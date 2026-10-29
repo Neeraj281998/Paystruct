@@ -115,16 +115,17 @@ entries:
       BldgNb: "11"
       Ctry: "DE"
     country_hint: DE
+  # NOTE: 20457 is Hamburg (HafenCity); the town is deliberately absent.
   - id: de-h007
-    tags: ["country_name"]
+    tags: ["country_name", "no_town"]
     raw_lines:
-      - "Sonnenhalde 5"
-      - "Freiburg im Breisgau"
-      - "Germany"
+      - "Rabenstieg 3"
+      - "20457"
+      - "Deutschland"
     gold:
-      StrtNm: "Sonnenhalde"
-      BldgNb: "5"
-      TwnNm: "Freiburg im Breisgau"
+      StrtNm: "Rabenstieg"
+      BldgNb: "3"
+      PstCd: "20457"
       Ctry: "DE"
   - id: de-h008
     tags: ["flat", "floor", "no_country"]
