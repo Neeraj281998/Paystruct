@@ -44,3 +44,14 @@ Things to know:
 - 25 of the 300 messages are XSD-invalid on purpose (`too_many_lines` fault); `manifest.json` says which.
 - Calibration and test tiers are balanced to within one record per country, not exactly equal (400 and 1,000 do not divide by 3).
 - New pinned dependencies: `lxml`, `PyYAML`.
+
+## Phase 2B follow-up: postcode-to-town ties (2026-10-29)
+
+Checked every postcode-to-town table against the GeoNames files. Found wrong ties in US (13 of 41 pairings contradicted), DE and IN, and a locality-to-outward-code gap in GB. Fixed: US, DE and IN now write only postcodes GeoNames lists for the town (100% confirmed); IN sectors and localities and GB localities use their own codes where GeoNames gives them; NL Amsterdam stops at 1098. dev, calibration, test and the sample messages were regenerated and the test split was re-frozen once, with the owner's approval (new `test.sha256`, `test.jsonl` not opened).
+
+Decision records: `postcode-ties.md` (lists every pairing GeoNames does not confirm), `geonames-circularity.md`, and the re-freeze entry in `splits-and-messages.md`. Labelling guide section 19 awaits approval.
+
+Things to know:
+- The generator and the Phase 3 rules engine will both use GeoNames, so town and postcode accuracy on synthetic data is optimistic; the hand-written hard set is the independent check and must be reported beside it.
+- The test split must not be regenerated again without the owner's explicit approval.
+

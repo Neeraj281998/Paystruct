@@ -46,6 +46,10 @@ $PY scripts/build_messages.py        # 300 messages from dev into data/messages/
 
 Decisions: `docs/decisions/splits-and-messages.md`.
 
+`scripts/audit_postcode_ties.py` checks the postcode-to-town tables against the GeoNames files, and `scripts/build_postcode_ties.py` rebuilds `addrgen/data/postcode_ties.json` from them (the GeoNames files go in `data/reference/geonames-postal/`, which git ignores). `build_splits.py --refreeze` replaces the frozen test split and needs the project owner's approval.
+
+Postcode and town data: GeoNames postal code data, CC BY 4.0, https://www.geonames.org (GB: includes Royal Mail data, see the GeoNames readme).
+
 ## Record format
 
 One JSON object per line: `id`, `country`, `difficulty`, `tags`, `raw_lines`, `gold`, and `country_hint` only when the country is absent from the text. Gold element names and maximum lengths come from the XSD (`addrgen/limits.py` reads `service/src/main/resources/xsd/pacs.008.001.14.xsd`), not from the spec table.
