@@ -2,10 +2,13 @@ spring:
   application:
     name: paystruct-service
   datasource:
-    # Credentials come from the environment (see ../.env.example); nothing secret is stored here.
-    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    # Defaults are for the local Docker Compose database only (see ../.env.example and ../docker-compose.yml).
+    # Environment variables override them; point POSTGRES_* at anything else and set a real password there.
+    # Spring Boot does not read .env, so these defaults are what make `./mvnw spring-boot:run` work after
+    # `docker compose up -d`.
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:paystruct}
+    username: ${POSTGRES_USER:paystruct}
+    password: ${POSTGRES_PASSWORD:paystruct}
   flyway:
     enabled: true
 

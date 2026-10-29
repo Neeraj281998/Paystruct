@@ -19,12 +19,13 @@ TODO (Phase 9): the results table is generated from `eval_runs` records. No numb
 Prerequisites: Java 21 and Docker. Maven is not needed; the wrapper is in `service/`.
 
 ```bash
-cp .env.example .env              # local-only credentials, gitignored
+cp .env.example .env              # local-only credentials for Docker Compose, gitignored
 docker compose up -d --wait       # PostgreSQL 16 (pgvector) and Redis, both with healthchecks
 cd service
-set -a; source ../.env; set +a    # export the database settings to the app
 ./mvnw spring-boot:run            # http://localhost:8080
 ```
+
+That is all. The service connects to the Compose database with built-in local-development defaults (database, user and password are all `paystruct`). Spring Boot does not read `.env`; to point the service somewhere else, set `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_DB`, `POSTGRES_USER` and `POSTGRES_PASSWORD` in the environment, which override the defaults. If a datasource setting is left unresolved the service refuses to start and says which one.
 
 Try it with the synthetic samples:
 
@@ -64,6 +65,10 @@ review-ui/      review screen and demo page
 rule-cards/     rule cards for the explanation layer
 docs/           spec, progress, decision records
 ```
+
+## Schemas
+
+The XSDs in `service/src/main/resources/xsd/` are `pacs.008.001.14` and `pain.001.001.13`, taken from the ISO 20022 message definitions published at iso20022.org and downloaded on 28 Oct 2026. They are the source of truth for element names and maximum lengths; see `docs/decisions/xsd-versions.md`.
 
 ## Attribution
 
