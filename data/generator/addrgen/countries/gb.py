@@ -5,6 +5,7 @@ import random
 
 from addrgen.countries.base import CountryModule, register
 from addrgen.model import Part, TownBlock
+from addrgen.ties import ties
 
 # (post town, outward codes, county or None, constituent country, localities). A locality is written only next to
 # the post town it belongs to.
@@ -64,13 +65,17 @@ class UnitedKingdom(CountryModule):
 
     def town_block(self, rng: random.Random, difficulty: str, want_locality: bool) -> TownBlock:
         town, outwards, county, constituent, suburbs = rng.choice(POST_TOWNS)
-        postcode = f"{rng.choice(outwards)} {rng.randint(1, 9)}{rng.choice(_INWARD_LETTERS)}{rng.choice(_INWARD_LETTERS)}"
+        locality = rng.choice(suburbs) if want_locality or rng.random() < 0.2 else None
+        # A locality is written with an outward code GeoNames lists for it; otherwise any code of the post town.
+        tied = ties()["GB"]["localities"].get(f"{town}|{locality}") if locality else None
+        outward = rng.choice(tied or outwards)
+        postcode = f"{outward} {rng.randint(1, 9)}{rng.choice(_INWARD_LETTERS)}{rng.choice(_INWARD_LETTERS)}"
         # UK post towns are conventionally written in capitals; that is a natural variation, not a corruption.
         town_text = town.upper() if rng.random() < 0.4 else town
 
         segments: list[list[Part]] = []
-        if want_locality or rng.random() < 0.2:
-            segments.append([Part("TwnLctnNm", rng.choice(suburbs))])
+        if locality:
+            segments.append([Part("TwnLctnNm", locality)])
         if rng.random() < 0.25:  # postcode on its own line is standard UK practice
             segments.append([Part("TwnNm", town_text)])
             segments.append([Part("PstCd", postcode)])

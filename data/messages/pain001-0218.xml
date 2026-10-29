@@ -18,8 +18,10 @@
       <Dbtr>
         <Nm>Fernhill Supply Pvt Ltd</Nm>
         <PstlAdr>
-          <AdrLine>Flat 1012, Orchid Apartments, Gandhi Road, behind SBI Bank, Satellite,</AdrLine>
-          <AdrLine>Ahmedabad, Gujarat 380098</AdrLine>
+          <AdrLine>Plot 3 Gandhi Road</AdrLine>
+          <AdrLine>behind Bus Stand</AdrLine>
+          <AdrLine>Vaishali Nagar</AdrLine>
+          <AdrLine>Jaipur Rajasthan 302021 India</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAcct>
@@ -49,7 +51,10 @@
         <Cdtr>
           <Nm>Saffron Moss Pvt Ltd</Nm>
           <PstlAdr>
-            <AdrLine>Plot 93, Market Lane, Sector 48, Noida, Uttar Pradesh 201072, IN</AdrLine>
+            <AdrLine>Plot 93, Market Lane,</AdrLine>
+            <AdrLine>Sector 122,</AdrLine>
+            <AdrLine>Noida, Uttar Pradesh 201316,</AdrLine>
+            <AdrLine>IN</AdrLine>
           </PstlAdr>
         </Cdtr>
         <CdtrAcct>

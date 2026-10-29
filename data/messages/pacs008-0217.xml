@@ -18,8 +18,8 @@
       <Dbtr>
         <Nm>Lantern Textiles LLC</Nm>
         <PstlAdr>
-          <AdrLine>Maple Street</AdrLine>
-          <AdrLine>Dallas TX 75217</AdrLine>
+          <AdrLine>Dallas,  TX  75216-0778,</AdrLine>
+          <AdrLine>Maple Street,</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -35,9 +35,9 @@
       <Cdtr>
         <Nm>Fernhill Foods GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Waldblick Center</AdrLine>
-          <AdrLine>Zobelstraße</AdrLine>
-          <AdrLine>28167 Bremen Germany</AdrLine>
+          <AdrLine>Waldblick Center, </AdrLine>
+          <AdrLine>Zobestr.</AdrLine>
+          <AdrLine>28211  Bremen,  DE</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

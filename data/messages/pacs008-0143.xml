@@ -18,8 +18,8 @@
       <Dbtr>
         <Nm>Harbour Freight GmbH</Nm>
         <PstlAdr>
-          <AdrLine>JUNITSTR. 131, 50673 KÖLN,</AdrLine>
-          <AdrLine>GERMANY</AdrLine>
+          <AdrLine> Junitzstraße  131, 50769  Köln,</AdrLine>
+          <AdrLine>Deutschland</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -35,9 +35,9 @@
       <Cdtr>
         <Nm>Copper Trading LLC</Nm>
         <PstlAdr>
-          <AdrLine>882 Hill Road,</AdrLine>
-          <AdrLine>Atlanta, Georgia 30028, </AdrLine>
-          <AdrLine>US </AdrLine>
+          <AdrLine>882 Hill Rd</AdrLine>
+          <AdrLine>Atlanta, GA 30342</AdrLine>
+          <AdrLine>US</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

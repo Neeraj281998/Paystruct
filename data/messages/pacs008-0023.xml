@@ -34,14 +34,14 @@
       <Cdtr>
         <Nm>Quarry Freight LLC</Nm>
         <PstlAdr>
-          <AdrLine>SAN ANTONIO</AdrLine>
-          <AdrLine>TEXAS</AdrLine>
-          <AdrLine>78197 6241</AdrLine>
-          <AdrLine>S PONCE</AdrLine>
-          <AdrLine>STREET</AdrLine>
-          <AdrLine>UNITED</AdrLine>
-          <AdrLine>STATES OF</AdrLine>
-          <AdrLine>AMERICA</AdrLine>
+          <AdrLine>6241</AdrLine>
+          <AdrLine>S</AdrLine>
+          <AdrLine>Ponce</AdrLine>
+          <AdrLine>St,</AdrLine>
+          <AdrLine>San</AdrLine>
+          <AdrLine>Antonio,</AdrLine>
+          <AdrLine>TX</AdrLine>
+          <AdrLine>78237</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

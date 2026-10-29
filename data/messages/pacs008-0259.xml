@@ -18,8 +18,8 @@
       <Dbtr>
         <Nm>Copper Lights GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Handestraße 21</AdrLine>
-          <AdrLine>28231 Bremen</AdrLine>
+          <AdrLine>Handstr. 21</AdrLine>
+          <AdrLine>28329 Bremen</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -35,8 +35,8 @@
       <Cdtr>
         <Nm>Granite Logistics GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Spießstraße 37b</AdrLine>
-          <AdrLine>Büro 47 48136 Münster</AdrLine>
+          <AdrLine>Gartestr. 95 Münster</AdrLine>
+          <AdrLine>48079</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

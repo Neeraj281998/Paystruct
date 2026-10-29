@@ -18,9 +18,9 @@
       <Dbtr>
         <Nm>Copper Handel Pvt Ltd</Nm>
         <PstlAdr>
-          <AdrLine>Plot 149, Market Marg,</AdrLine>
-          <AdrLine>T. Nagar,</AdrLine>
-          <AdrLine>Chennai, Tamil Nadu 600001,</AdrLine>
+          <AdrLine>Plot 149 Market Marg</AdrLine>
+          <AdrLine>T. Nagar</AdrLine>
+          <AdrLine>Chennai Tamil Nadu 600017</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -36,10 +36,7 @@
       <Cdtr>
         <Nm>Lantern Trading GmbH</Nm>
         <PstlAdr>
-          <AdrLine>53387 Bonn</AdrLine>
-          <AdrLine>Bergweg 107b</AdrLine>
-          <AdrLine>4. OG</AdrLine>
-          <AdrLine>DE</AdrLine>
+          <AdrLine>Bergweg  107b,  4. OG,  53127  Bonn, DE</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

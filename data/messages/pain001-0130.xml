@@ -18,12 +18,7 @@
       <Dbtr>
         <Nm>Juniper Moss Ltd</Nm>
         <PstlAdr>
-          <AdrLine>144 MOORE ROAD</AdrLine>
-          <AdrLine>APARTMENT 39</AdrLine>
-          <AdrLine>ABERDEEN</AdrLine>
-          <AdrLine>AB11 9LB</AdrLine>
-          <AdrLine>SCOTLAND</AdrLine>
-          <AdrLine>GB</AdrLine>
+          <AdrLine>Apt 39, 144 Moore Rd, Aberdeen AB11 1LR, Great Britain</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAcct>
@@ -55,8 +50,8 @@
           <PstlAdr>
             <AdrLine>24 KINGSWAY MANSIONS</AdrLine>
             <AdrLine>CROSS STREET</AdrLine>
-            <AdrLine>GOSFORTH</AdrLine>
-            <AdrLine>NEWCASTLE UPON TYNE NE1 3FZ UK</AdrLine>
+            <AdrLine>JESMOND</AdrLine>
+            <AdrLine>NEWCASTLE UPON TYNE NE2 7EB UK</AdrLine>
           </PstlAdr>
         </Cdtr>
         <CdtrAcct>

@@ -19,8 +19,9 @@
         <Nm>Alder Design Ltd</Nm>
         <PstlAdr>
           <AdrLine>162A Smith Avenue</AdrLine>
-          <AdrLine>Leeds LS1 1LP</AdrLine>
-          <AdrLine>England</AdrLine>
+          <AdrLine>Headingley</AdrLine>
+          <AdrLine>Leeds LS2 6XA</AdrLine>
+          <AdrLine>West Yorkshire</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAcct>
@@ -50,9 +51,9 @@
         <Cdtr>
           <Nm>Harbour Works Ltd</Nm>
           <PstlAdr>
-            <AdrLine>Unit 43,</AdrLine>
-            <AdrLine>130B Park Lane, Edinburgh</AdrLine>
-            <AdrLine>EH2 9BR</AdrLine>
+            <AdrLine> 130B  PARK LANE</AdrLine>
+            <AdrLine>UNIT 43 EDINBURGH</AdrLine>
+            <AdrLine>EH31RU, GREAT BRITAIN</AdrLine>
           </PstlAdr>
         </Cdtr>
         <CdtrAcct>

@@ -18,9 +18,9 @@
       <Dbtr>
         <Nm>Granite Moss LLC</Nm>
         <PstlAdr>
-          <AdrLine>Empire Center,</AdrLine>
-          <AdrLine>6002 Madison Drive,</AdrLine>
-          <AdrLine>San Diego, California 92052</AdrLine>
+          <AdrLine>EMPIRE CENTER,</AdrLine>
+          <AdrLine>6002 MADISON DRIVE, </AdrLine>
+          <AdrLine>92159  CA SAN DIEGO </AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAcct>
@@ -50,7 +50,9 @@
         <Cdtr>
           <Nm>Lantern Systems Ltd</Nm>
           <PstlAdr>
-            <AdrLine>186 Windsor Rd. EXETER EX4 4HR, Great Britain</AdrLine>
+            <AdrLine> Exeter EX1 4RJ</AdrLine>
+            <AdrLine>186  Windsor Road </AdrLine>
+            <AdrLine>GB</AdrLine>
           </PstlAdr>
         </Cdtr>
         <CdtrAcct>

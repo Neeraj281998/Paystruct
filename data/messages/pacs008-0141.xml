@@ -18,9 +18,7 @@
       <Dbtr>
         <Nm>Saffron Freight GmbH</Nm>
         <PstlAdr>
-          <AdrLine>WOHNUNG 44</AdrLine>
-          <AdrLine>LINDENSTRASSE 115 48385 MÜNSTER</AdrLine>
-          <AdrLine>DEUTSCHLAND</AdrLine>
+          <AdrLine>WOHNUNG 44 LINDENSTRASSE 115 48167 MÜNSTER</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -36,8 +34,8 @@
       <Cdtr>
         <Nm>Meadow Supply GmbH</Nm>
         <PstlAdr>
-          <AdrLine>GOETHESTR. 164</AdrLine>
-          <AdrLine>22028 HAMBURG</AdrLine>
+          <AdrLine>40237 DÜSSELDORF</AdrLine>
+          <AdrLine>POSTFACH 66092</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

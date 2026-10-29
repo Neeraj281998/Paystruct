@@ -18,9 +18,9 @@
       <Dbtr>
         <Nm>Juniper Supply Ltd</Nm>
         <PstlAdr>
-          <AdrLine>ABERDEEN AB11 7BU,</AdrLine>
-          <AdrLine>199 Fisher Gardens,</AdrLine>
-          <AdrLine>Cults, GB</AdrLine>
+          <AdrLine>199 Fisher Gardens</AdrLine>
+          <AdrLine>AB10 8HE ABERDEEN</AdrLine>
+          <AdrLine>GB</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -36,8 +36,8 @@
       <Cdtr>
         <Nm>Alder Moss GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Schulgasse 127</AdrLine>
-          <AdrLine>80303 München</AdrLine>
+          <AdrLine>Schulgasse 127,</AdrLine>
+          <AdrLine>80337 München,</AdrLine>
           <AdrLine>DE</AdrLine>
         </PstlAdr>
       </Cdtr>

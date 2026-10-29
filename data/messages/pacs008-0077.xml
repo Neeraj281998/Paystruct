@@ -37,12 +37,10 @@
       <Cdtr>
         <Nm>Brindle Works Ltd</Nm>
         <PstlAdr>
-          <AdrLine>94 Orchard Way</AdrLine>
-          <AdrLine>Chesterton</AdrLine>
-          <AdrLine>Cambridge</AdrLine>
-          <AdrLine>CB2 8GS</AdrLine>
-          <AdrLine>England</AdrLine>
-          <AdrLine>UK</AdrLine>
+          <AdrLine>94 Orchard Way,</AdrLine>
+          <AdrLine>Cambridge,</AdrLine>
+          <AdrLine>CB4 8GS,</AdrLine>
+          <AdrLine>GB</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

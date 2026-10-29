@@ -18,10 +18,9 @@
       <Dbtr>
         <Nm>Brindle Lights GmbH</Nm>
         <PstlAdr>
-          <AdrLine>ROSENGASSE 17</AdrLine>
-          <AdrLine>HAUS MERKUR</AdrLine>
-          <AdrLine>53133 BONN</AdrLine>
-          <AdrLine>DE</AdrLine>
+          <AdrLine>Haus Merkur</AdrLine>
+          <AdrLine>Rosengasse 17</AdrLine>
+          <AdrLine>53125 Bonn DE</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAcct>
@@ -52,8 +51,9 @@
           <Nm>Brindle Handel Pvt Ltd</Nm>
           <PstlAdr>
             <AdrLine>House No. 58, Mill Road,</AdrLine>
-            <AdrLine>Banjara Hills,</AdrLine>
-            <AdrLine>Hyderabad, Telangana 500 074, India</AdrLine>
+            <AdrLine>Gachibowli,</AdrLine>
+            <AdrLine>Hyderabad, Telangana 500 066,</AdrLine>
+            <AdrLine>IN</AdrLine>
           </PstlAdr>
         </Cdtr>
         <CdtrAcct>

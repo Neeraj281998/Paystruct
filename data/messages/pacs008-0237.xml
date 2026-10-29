@@ -18,9 +18,8 @@
       <Dbtr>
         <Nm>Harbour Print LLC</Nm>
         <PstlAdr>
-          <AdrLine>789 Whitehead Drive Dallas,</AdrLine>
-          <AdrLine>TX 75213</AdrLine>
-          <AdrLine>US</AdrLine>
+          <AdrLine>789 Whitehead Drive, Dallas,</AdrLine>
+          <AdrLine>TX 75382, US</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -36,10 +35,7 @@
       <Cdtr>
         <Nm>Brindle Logistics GmbH</Nm>
         <PstlAdr>
-          <AdrLine>70368 STUTTGART</AdrLine>
-          <AdrLine>BERGERSTRASSE 77</AdrLine>
-          <AdrLine>WHG. 41</AdrLine>
-          <AdrLine>3. OG DE</AdrLine>
+          <AdrLine>70376 Stuttgart, Bergerstraße 77, Whg. 41, 3. OG, DE</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

@@ -130,6 +130,16 @@ def test_write_splits_never_rewrites_a_frozen_test_split(tmp_path, seed):
     assert test.read_bytes() == before
 
 
+def test_refreeze_replaces_the_test_split_and_its_hash_only_when_asked(tmp_path, seed):
+    write_splits(tmp_path, seed)
+    old_hash = (tmp_path / "test.sha256").read_text()
+    with pytest.raises(SystemExit):
+        write_splits(tmp_path, seed + 1)
+    assert (tmp_path / "test.sha256").read_text() == old_hash
+    manifest = write_splits(tmp_path, seed + 1, refreeze=True)
+    assert (tmp_path / "test.sha256").read_text().split()[0] == manifest["splits"]["test"]["sha256"] != old_hash.split()[0]
+
+
 def test_committed_dev_and_calibration_match_the_seed(built):
     for name in ("dev", "calibration"):
         assert (REPO / "data" / "splits" / f"{name}.jsonl").read_bytes() == dump_jsonl(built[name])

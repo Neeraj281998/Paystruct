@@ -37,10 +37,9 @@
       <Cdtr>
         <Nm>Granite Print Ltd</Nm>
         <PstlAdr>
-          <AdrLine>CARDIFF</AdrLine>
-          <AdrLine> Newton Lane</AdrLine>
-          <AdrLine>CF11 5JQ </AdrLine>
-          <AdrLine>GB</AdrLine>
+          <AdrLine>NEWTON LANE,</AdrLine>
+          <AdrLine>CARDIFF,</AdrLine>
+          <AdrLine>CF10 6BL, GB</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

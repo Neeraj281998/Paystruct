@@ -18,8 +18,9 @@
       <Dbtr>
         <Nm>Willow Handel LLC</Nm>
         <PstlAdr>
-          <AdrLine>14 MAPLE ROAD</AdrLine>
-          <AdrLine>HOUSTON TX 77224</AdrLine>
+          <AdrLine>444 Park Street,</AdrLine>
+          <AdrLine>Fl 15,</AdrLine>
+          <AdrLine>Portland, OR 97205</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -35,10 +36,10 @@
       <Cdtr>
         <Nm>Alder Design LLC</Nm>
         <PstlAdr>
-          <AdrLine>Capitol Tower</AdrLine>
-          <AdrLine> N Park St </AdrLine>
+          <AdrLine>CAPITOL TOWER</AdrLine>
+          <AdrLine>N PARK ST</AdrLine>
           <AdrLine>#22C</AdrLine>
-          <AdrLine>Phoenix Arizona  85054</AdrLine>
+          <AdrLine>PHOENIX AZ 85013</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

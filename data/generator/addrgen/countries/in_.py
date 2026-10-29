@@ -6,6 +6,7 @@ import re
 
 from addrgen.countries.base import CountryModule, _pick, ordinal, register
 from addrgen.model import Part, TownBlock
+from addrgen.ties import ties
 
 # (city, state, first three digits of its PIN codes, localities). A locality is written only next to its own city.
 # "{n}" in a locality is a sector number, for planned cities.
@@ -104,14 +105,25 @@ class India(CountryModule):
         return text.split(" ")[-1].rstrip(".").casefold() in _STREET_WORDS
 
     def town_block(self, rng: random.Random, difficulty: str, want_locality: bool) -> TownBlock:
+        """The PIN is one GeoNames lists for the city. A sector is written only with its own PIN, and a locality with
+        its own PIN when one is known (addrgen/data/postcode_ties.json); otherwise with any PIN of the city."""
         town, state, prefix, localities = rng.choice(CITIES)
-        pin = f"{prefix}{rng.randint(1, 99):03d}"
+        tie = ties()["IN"]
+        segments: list[list[Part]] = []
+        pin = None
+        if want_locality or rng.random() < 0.85:
+            locality = rng.choice(localities)
+            if "{n}" in locality:
+                sectors = tie["sectors"][town]
+                n = rng.choice(sorted(sectors, key=int))
+                locality, pin = locality.replace("{n}", n), sectors[n]
+            elif f"{town}|{locality}" in tie["localities"]:
+                pin = rng.choice(tie["localities"][f"{town}|{locality}"]["pins"])
+            segments.append([Part("TwnLctnNm", locality)])
+        if pin is None:
+            pin = rng.choice(tie["cities"][town])
         if rng.random() < 0.2:
             pin = f"{pin[:3]} {pin[3:]}"  # also written with a space
-        segments: list[list[Part]] = []
-        if want_locality or rng.random() < 0.85:
-            locality = rng.choice(localities).replace("{n}", str(rng.randint(1, 120)))
-            segments.append([Part("TwnLctnNm", locality)])
         segments.append([Part("TwnNm", town, comma_after=True), Part("CtrySubDvsn", state), Part("PstCd", pin)])
         return TownBlock(segments, set())
 

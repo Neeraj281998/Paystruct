@@ -19,8 +19,7 @@
         <Nm>Cobalt Logistics GmbH</Nm>
         <PstlAdr>
           <AdrLine>Eichenstraße 29d</AdrLine>
-          <AdrLine>30407 Hannover</AdrLine>
-          <AdrLine>DE</AdrLine>
+          <AdrLine>30559 Hannover, DE</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAcct>
@@ -50,7 +49,10 @@
         <Cdtr>
           <Nm>Meadow Freight Ltd</Nm>
           <PstlAdr>
-            <AdrLine>FREEEMAN STREET, SWANSEA SA1 4XB</AdrLine>
+            <AdrLine>173 VICTORKA STREET BT9 7QY </AdrLine>
+            <AdrLine>MALONE</AdrLine>
+            <AdrLine>BELFAST</AdrLine>
+            <AdrLine>GB</AdrLine>
           </PstlAdr>
         </Cdtr>
         <CdtrAcct>

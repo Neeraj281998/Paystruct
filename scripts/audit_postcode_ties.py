@@ -74,14 +74,11 @@ def pairings(country: str):
     """(town, state, label, codes) for each table entry, read from the generator's own tables."""
     m = sys.modules[f"addrgen.countries.{ {'IN': 'in_'}.get(country, country.lower()) }"]
     if country == "US":
-        for city, code, _name, spans in m.CITIES:
-            for span in spans:
-                lo, hi = (int(span[:3]) * 100, int(span[:3]) * 100 + 99) if isinstance(span, str) else span
-                yield city, code, f"{lo:05d}-{hi:05d}", [f"{z:05d}" for z in range(lo, hi + 1)]
+        for city, code, _name, zips in m.CITIES:
+            yield city, code, "listed ZIPs", list(zips)
     elif country == "DE":
-        for town, prefixes in m.TOWNS:
-            for p in prefixes:
-                yield town, None, f"{p}xx", [f"{p}{n:02d}" for n in range(100)]
+        for town, codes in m.TOWNS:
+            yield town, None, "listed postcodes", list(codes)
     elif country == "NL":
         for town, lo, hi in m.TOWNS:
             yield town, None, f"{lo}-{hi}", [str(z) for z in range(lo, hi + 1)]
@@ -105,14 +102,10 @@ def pairings(country: str):
             for f in fsas:
                 yield town, prov, f, [f]
     elif country == "IN":
-        if hasattr(m, "LOCALITY_PINS"):  # a draft with tighter ties
-            for town, state, prefix, _locs in m.CITIES:
-                k = town.casefold()
-                pins = set(m.CITY_PINS.get(k, ())) | {p for (t, _), ps in m.LOCALITY_PINS.items() if t == k for p in ps}
-                yield town, state, "known PINs", sorted(pins) or [f"{prefix}{n:03d}" for n in range(1, 100)]
-        else:
-            for town, state, prefix, _locs in m.CITIES:
-                yield town, state, f"{prefix}xxx", [f"{prefix}{n:03d}" for n in range(1, 100)]
+        from addrgen.ties import ties
+
+        for town, state, _prefix, _locs in m.CITIES:
+            yield town, state, "listed PINs", list(ties()["IN"]["cities"][town])
 
 
 def audit(country: str, verbose: bool) -> None:

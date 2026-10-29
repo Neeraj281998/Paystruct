@@ -5,16 +5,13 @@ import random
 
 from addrgen.countries.base import CountryModule, _pick, register
 from addrgen.model import Part, TownBlock
+from addrgen.ties import ties
 
-# (town, three-digit postcode prefixes); the last two digits are random.
-TOWNS = (
-    ("Berlin", ("101", "104", "107", "109", "120", "130")), ("Hamburg", ("200", "201", "203", "220")),
-    ("München", ("803", "805", "810", "812")), ("Köln", ("506", "507", "509")),
-    ("Frankfurt am Main", ("603", "604", "608")), ("Stuttgart", ("701", "703")), ("Düsseldorf", ("402", "404")),
-    ("Leipzig", ("041", "042")), ("Dresden", ("010", "011")), ("Bremen", ("281", "282")), ("Hannover", ("301", "304")),
-    ("Nürnberg", ("904", "905")), ("Bonn", ("531", "533")), ("Münster", ("481", "483")),
-    ("Heidelberg", ("691", "692")), ("Freiburg im Breisgau", ("790", "791")),
-)
+# (town, postcodes). The postcodes are the ones GeoNames lists under the town's own place name (not the corporate
+# codes it also lists), so every postcode written exists in that town; see addrgen/data/postcode_ties.json.
+_TOWN_NAMES = ("Berlin", "Hamburg", "München", "Köln", "Frankfurt am Main", "Stuttgart", "Düsseldorf", "Leipzig", "Dresden",
+               "Bremen", "Hannover", "Nürnberg", "Bonn", "Münster", "Heidelberg", "Freiburg im Breisgau")
+TOWNS = tuple((town, tuple(ties()["DE"][town])) for town in _TOWN_NAMES)
 
 _STEMS = ("Haupt", "Bahnhofs", "Schiller", "Goethe", "Linden", "Garten", "Kirch", "Markt", "Schul", "Berg", "Wald",
           "Mühlen", "Lessing", "Bismarck", "Rosen", "Eichen", "Dorf", "Park")
@@ -114,8 +111,8 @@ class Germany(CountryModule):
         return any(last.endswith(e) for e in _ENDING_WORDS)
 
     def town_block(self, rng: random.Random, difficulty: str, want_locality: bool) -> TownBlock:
-        town, prefixes = rng.choice(TOWNS)
-        postcode = f"{rng.choice(prefixes)}{rng.randint(0, 99):02d}"
+        town, codes = rng.choice(TOWNS)
+        postcode = rng.choice(codes)
         return TownBlock([[Part("PstCd", postcode), Part("TwnNm", town)]], set())
 
     def split_postcode(self, postcode):

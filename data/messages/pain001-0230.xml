@@ -18,7 +18,11 @@
       <Dbtr>
         <Nm>Marrow Design Ltd</Nm>
         <PstlAdr>
-          <AdrLine>181D Porter Lodge, Queen Avenue, Manchester, M13 4PG, GB</AdrLine>
+          <AdrLine>Queen Avenue</AdrLine>
+          <AdrLine>181D Porter Lodge</AdrLine>
+          <AdrLine>Manchester M13 4PG</AdrLine>
+          <AdrLine>Greater Manchester</AdrLine>
+          <AdrLine>GB</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAcct>
@@ -48,9 +52,8 @@
         <Cdtr>
           <Nm>Alder Design LLC</Nm>
           <PstlAdr>
-            <AdrLine>9565 Church Drive, Seattle,</AdrLine>
-            <AdrLine>WA 98182,</AdrLine>
-            <AdrLine>US</AdrLine>
+            <AdrLine>9565 Church Dr, Seattle,</AdrLine>
+            <AdrLine>WA 98104, US</AdrLine>
           </PstlAdr>
         </Cdtr>
         <CdtrAcct>

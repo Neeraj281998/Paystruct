@@ -18,7 +18,10 @@
       <Dbtr>
         <Nm>Granite Timber GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Bismarckstraße 124, Haus Atlas, 50617 Köln, DE</AdrLine>
+          <AdrLine>Haus Atlas,</AdrLine>
+          <AdrLine>Bismarckstraße 124,</AdrLine>
+          <AdrLine>50678 Köln,</AdrLine>
+          <AdrLine>DE</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAcct>
@@ -48,8 +51,7 @@
         <Cdtr>
           <Nm>Granite Supply LLC</Nm>
           <PstlAdr>
-            <AdrLine> 956  E Oak Ave,</AdrLine>
-            <AdrLine>Dallas,  TX 75387, United States</AdrLine>
+            <AdrLine>553 W Wilson Street Chicago Illinois 60691 US</AdrLine>
           </PstlAdr>
         </Cdtr>
         <CdtrAcct>

@@ -18,9 +18,9 @@
       <Dbtr>
         <Nm>Willow Foods LLC</Nm>
         <PstlAdr>
-          <AdrLine>Phoenix, AZ 85231,</AdrLine>
-          <AdrLine>5775 Elm Drive,</AdrLine>
-          <AdrLine>USA</AdrLine>
+          <AdrLine>552 Elm Ave</AdrLine>
+          <AdrLine>San Diego CA 92121</AdrLine>
+          <AdrLine>US</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -37,8 +37,7 @@
         <Nm>Cobalt Handel LLC</Nm>
         <PstlAdr>
           <AdrLine>9262 Jefferson Avenue SW</AdrLine>
-          <AdrLine>Houston, TX 77030</AdrLine>
-          <AdrLine>US</AdrLine>
+          <AdrLine>Houston, TX 77282-3929, US</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

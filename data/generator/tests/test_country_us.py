@@ -9,12 +9,12 @@ from tests.helpers import appears_in_order, written_text
 CITIES = {c[0].casefold(): c for c in us.CITIES}
 
 
-def test_state_matches_the_town_and_the_zip_prefix(by_country):
+def test_state_matches_the_town_and_the_zip_belongs_to_it(by_country):
     for rec in by_country["US"]:
         gold = rec["gold"]
-        _, code, name, prefixes = CITIES[gold["TwnNm"].casefold()]
+        _, code, name, zips = CITIES[gold["TwnNm"].casefold()]
         assert gold["CtrySubDvsn"].casefold() in {code.casefold(), name.casefold()}, rec["id"]
-        assert gold["PstCd"][:3] in prefixes, rec["id"]
+        assert gold["PstCd"][:5] in zips, rec["id"]
 
 
 def test_zip_and_zip_plus_four_keep_their_hyphen(by_country):

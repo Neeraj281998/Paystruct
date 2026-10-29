@@ -18,10 +18,10 @@
       <Dbtr>
         <Nm>Cobalt Logistics Pvt Ltd</Nm>
         <PstlAdr>
-          <AdrLine>Flat 949</AdrLine>
-          <AdrLine>Plot 88, Market Road</AdrLine>
-          <AdrLine>Sector 28 201 097 Uttar Pradesh Noida,</AdrLine>
-          <AdrLine>India</AdrLine>
+          <AdrLine>Flat 949,</AdrLine>
+          <AdrLine>Plot 88,  Market Road, </AdrLine>
+          <AdrLine>Sector 128, 201 317 Uttar Pradesh  Noida,</AdrLine>
+          <AdrLine>IN</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -37,7 +37,7 @@
       <Cdtr>
         <Nm>Cobalt Foods Pvt Ltd</Nm>
         <PstlAdr>
-          <AdrLine>Suntise Heights  Market Lane  Velachery  Chennai  Tamil Nadu 600050</AdrLine>
+          <AdrLine>Suntise Heights  Market Lane  Anna Nagar  Chennai  Tamil Nadu 600040</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

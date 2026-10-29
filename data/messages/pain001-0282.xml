@@ -18,10 +18,8 @@
       <Dbtr>
         <Nm>Quarry Moss Pvt Ltd</Nm>
         <PstlAdr>
-          <AdrLine>Door No. 28-7-13, Airport Road</AdrLine>
-          <AdrLine>Kothrud</AdrLine>
-          <AdrLine>Pune, Maharashtra 411025</AdrLine>
-          <AdrLine>IN</AdrLine>
+          <AdrLine>Door No. 28-7-13, Airport Road,</AdrLine>
+          <AdrLine>Pune, Maharashtra 411 038, IN</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAcct>
@@ -51,8 +49,8 @@
         <Cdtr>
           <Nm>Copper Design LLC</Nm>
           <PstlAdr>
-            <AdrLine>507 W 20th Dr</AdrLine>
-            <AdrLine>Atlanta GA 30317</AdrLine>
+            <AdrLine>507 W 20th Drive</AdrLine>
+            <AdrLine>Atlanta, GA 30380-2247</AdrLine>
           </PstlAdr>
         </Cdtr>
         <CdtrAcct>

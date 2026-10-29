@@ -18,9 +18,10 @@
       <Dbtr>
         <Nm>Marrow Logistics GmbH</Nm>
         <PstlAdr>
-          <AdrLine>22010 Hamburg</AdrLine>
           <AdrLine>Gebäude F</AdrLine>
-          <AdrLine>Schulstraße 146 DE</AdrLine>
+          <AdrLine>Schulstraße 146</AdrLine>
+          <AdrLine>22115 Hamburg</AdrLine>
+          <AdrLine>DE</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>

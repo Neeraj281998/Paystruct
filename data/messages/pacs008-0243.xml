@@ -18,8 +18,7 @@
       <Dbtr>
         <Nm>Tulip Systems GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Lessinggasse  92-94</AdrLine>
-          <AdrLine>81090 München</AdrLine>
+          <AdrLine>Gebäude F, Haupstr. 146,  53225  Bonn</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -35,14 +34,10 @@
       <Cdtr>
         <Nm>Fernhill Supply Ltd</Nm>
         <PstlAdr>
-          <AdrLine>26</AdrLine>
-          <AdrLine>Morrison</AdrLine>
-          <AdrLine>Court</AdrLine>
-          <AdrLine>High Rd.</AdrLine>
-          <AdrLine>Heworth</AdrLine>
-          <AdrLine>YORK</AdrLine>
-          <AdrLine>YO1 6WZ</AdrLine>
-          <AdrLine>England</AdrLine>
+          <AdrLine>Manchester</AdrLine>
+          <AdrLine>104 Davies Road</AdrLine>
+          <AdrLine>Ancoats</AdrLine>
+          <AdrLine>M21NX</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

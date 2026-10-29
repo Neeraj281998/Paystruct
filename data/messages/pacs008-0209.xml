@@ -22,10 +22,10 @@
           <AdrLine>COMPLEX</AdrLine>
           <AdrLine>PLOT 153</AdrLine>
           <AdrLine>TEMPLE ROAD</AdrLine>
-          <AdrLine> KORAMANGALA</AdrLine>
+          <AdrLine> WHITEFIELD</AdrLine>
           <AdrLine>BENGALURU</AdrLine>
           <AdrLine>KARNATAKA</AdrLine>
-          <AdrLine>560012 </AdrLine>
+          <AdrLine>560 066 </AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -41,7 +41,8 @@
       <Cdtr>
         <Nm>Alder Handel GmbH</Nm>
         <PstlAdr>
-          <AdrLine> Hauptallee  88c 6. OG 48375 Münster  Germany </AdrLine>
+          <AdrLine>60388  FRANKFURT AM MAIN </AdrLine>
+          <AdrLine>LESSINGUFER  87</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

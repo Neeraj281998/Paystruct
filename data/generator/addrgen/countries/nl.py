@@ -6,9 +6,10 @@ import random
 from addrgen.countries.base import CountryModule, _pick, register
 from addrgen.model import Part, TownBlock
 
-# (town, lowest and highest four-digit postcode of its range)
+# (town, lowest and highest four-digit postcode of its range). Amsterdam stops at 1098: GeoNames lists 1099 under
+# Amsterdam-Duivendrecht, which is a different place.
 TOWNS = (
-    ("Amsterdam", 1011, 1109), ("Rotterdam", 3011, 3088), ("Den Haag", 2511, 2597), ("Utrecht", 3511, 3584),
+    ("Amsterdam", 1011, 1098), ("Rotterdam", 3011, 3088), ("Den Haag", 2511, 2597), ("Utrecht", 3511, 3584),
     ("Eindhoven", 5611, 5658), ("Groningen", 9711, 9747), ("Tilburg", 5011, 5049), ("Almere", 1311, 1359),
     ("Breda", 4811, 4837), ("Nijmegen", 6511, 6546), ("Haarlem", 2011, 2036), ("Arnhem", 6811, 6846),
     ("Maastricht", 6211, 6229), ("Leiden", 2311, 2334), ("Zwolle", 8011, 8043), ("Delft", 2611, 2629),

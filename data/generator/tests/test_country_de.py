@@ -7,7 +7,7 @@ from addrgen.countries import de
 from tests.helpers import appears_in_order, written_text
 
 ENDINGS = ("straße", "strasse", "str", "weg", "allee", "platz", "gasse", "ring", "damm", "ufer")
-PREFIXES = {t.casefold(): set(p) for t, p in de.TOWNS}
+POSTCODES = {t.casefold(): set(codes) for t, codes in de.TOWNS}
 
 
 def test_number_after_the_street(by_country):
@@ -28,7 +28,7 @@ def test_postcode_before_the_town_unless_reordered(by_country):
 def test_postcodes_are_five_digits_and_belong_to_the_town(by_country):
     for rec in by_country["DE"]:
         pc = rec["gold"]["PstCd"]
-        assert re.fullmatch(r"\d{5}", pc) and pc[:3] in PREFIXES[rec["gold"]["TwnNm"].casefold()], rec["id"]
+        assert re.fullmatch(r"\d{5}", pc) and pc in POSTCODES[rec["gold"]["TwnNm"].casefold()], rec["id"]
 
 
 def test_street_names_are_compounds_or_two_words_and_end_in_a_street_word(by_country):

@@ -18,9 +18,8 @@
       <Dbtr>
         <Nm>Cobalt Trading GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Waldstraße 60,</AdrLine>
-          <AdrLine>80579 München,</AdrLine>
-          <AdrLine>DE</AdrLine>
+          <AdrLine>Waldstraße 60</AdrLine>
+          <AdrLine>80798 München DE</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -36,9 +35,9 @@
       <Cdtr>
         <Nm>Marrow Design Pvt Ltd</Nm>
         <PstlAdr>
-          <AdrLine>House No. 183  Airport Road </AdrLine>
-          <AdrLine>Connaught Place </AdrLine>
-          <AdrLine>110029  Delhi New Delhi </AdrLine>
+          <AdrLine> House No. 183  Airport Rd</AdrLine>
+          <AdrLine>New Delhi Delhi  110075</AdrLine>
+          <AdrLine> India</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

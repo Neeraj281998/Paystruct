@@ -18,9 +18,7 @@
       <Dbtr>
         <Nm>Harbour Print Ltd</Nm>
         <PstlAdr>
-          <AdrLine>164 Clark Crescent</AdrLine>
-          <AdrLine>Belfast BT2</AdrLine>
-          <AdrLine>5DR GB</AdrLine>
+          <AdrLine>BELFAST BT2 2RY, 164 CLARK CRESCENT, NORTHERN IRELAND</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -36,9 +34,9 @@
       <Cdtr>
         <Nm>Juniper Design Pvt Ltd</Nm>
         <PstlAdr>
-          <AdrLine>No. 182, Link Marg,</AdrLine>
-          <AdrLine>Juhu,</AdrLine>
-          <AdrLine>Mumbai, Maharashtra 400079, IN</AdrLine>
+          <AdrLine>House No. 29, Residency Lane</AdrLine>
+          <AdrLine>Vaishali Nagar</AdrLine>
+          <AdrLine>Jaipur, Rajasthan 302021, India</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

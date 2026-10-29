@@ -36,8 +36,9 @@
       <Cdtr>
         <Nm>Saffron Systems GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Parstr.  22  01177</AdrLine>
+          <AdrLine>Parstr. 22</AdrLine>
           <AdrLine>Dresden</AdrLine>
+          <AdrLine>01257</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

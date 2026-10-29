@@ -18,11 +18,9 @@
       <Dbtr>
         <Nm>Willow Timber LLC</Nm>
         <PstlAdr>
-          <AdrLine>CAPOTOL BUILDING,</AdrLine>
-          <AdrLine>1840  ELM ST NW,</AdrLine>
-          <AdrLine>MIAMI,  FL, </AdrLine>
-          <AdrLine> US,</AdrLine>
-          <AdrLine>33141-8968</AdrLine>
+          <AdrLine>Capiotl Building </AdrLine>
+          <AdrLine>1840 Elm Street NW</AdrLine>
+          <AdrLine>Miami,  Florida  33137</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -38,7 +36,7 @@
       <Cdtr>
         <Nm>Lantern Moss GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Postfach 370733, 60438 Frankfurt am Main,</AdrLine>
+          <AdrLine>Postfach 370733 60386 Frankfurt am Main</AdrLine>
           <AdrLine>DE</AdrLine>
         </PstlAdr>
       </Cdtr>

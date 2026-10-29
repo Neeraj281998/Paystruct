@@ -18,7 +18,10 @@
       <Dbtr>
         <Nm>Tulip Trading Ltd</Nm>
         <PstlAdr>
-          <AdrLine>Ground Floor, 99 Webster Way, Norwich NR2 3SW, England, GB</AdrLine>
+          <AdrLine>Ground Floor</AdrLine>
+          <AdrLine>99 Webster Way</AdrLine>
+          <AdrLine>NR1 7WW Norwich</AdrLine>
+          <AdrLine>GB</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>

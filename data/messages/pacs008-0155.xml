@@ -18,9 +18,10 @@
       <Dbtr>
         <Nm>Sparrow Labs Pvt Ltd</Nm>
         <PstlAdr>
-          <AdrLine>Maple Residency</AdrLine>
-          <AdrLine>Plot 38, Link Street</AdrLine>
-          <AdrLine>Pune, Maharashtra 411088</AdrLine>
+          <AdrLine>Maple Residency,</AdrLine>
+          <AdrLine>Plot 38, Link Street,</AdrLine>
+          <AdrLine>Viman Nagar,</AdrLine>
+          <AdrLine>Pune, Maharashtra 411 014</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -36,14 +37,14 @@
       <Cdtr>
         <Nm>Alder Print Pvt Ltd</Nm>
         <PstlAdr>
-          <AdrLine>House</AdrLine>
-          <AdrLine>No. 171,</AdrLine>
-          <AdrLine>Gandhi Rd</AdrLine>
-          <AdrLine>Powai</AdrLine>
-          <AdrLine>Mumbai,</AdrLine>
-          <AdrLine>Maharashtra</AdrLine>
-          <AdrLine>400 046,</AdrLine>
-          <AdrLine>India</AdrLine>
+          <AdrLine>HOUSE</AdrLine>
+          <AdrLine>NO. 171,</AdrLine>
+          <AdrLine>GANDHI ROAD,</AdrLine>
+          <AdrLine>POWAI,</AdrLine>
+          <AdrLine>MUMBAI,</AdrLine>
+          <AdrLine>MAHARASHTRA</AdrLine>
+          <AdrLine>400 014,</AdrLine>
+          <AdrLine>INDIA</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

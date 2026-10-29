@@ -18,9 +18,9 @@
       <Dbtr>
         <Nm>Granite Freight Pvt Ltd</Nm>
         <PstlAdr>
-          <AdrLine>Lajpat Nagar,</AdrLine>
-          <AdrLine>House No. 64, Main Road,</AdrLine>
-          <AdrLine>New Delhi, Delhi 110066,</AdrLine>
+          <AdrLine>House No. 64, Main Road</AdrLine>
+          <AdrLine>Saket</AdrLine>
+          <AdrLine>New Delhi, Delhi 110017</AdrLine>
           <AdrLine>IN</AdrLine>
         </PstlAdr>
       </Dbtr>
@@ -37,8 +37,7 @@
       <Cdtr>
         <Nm>Marrow Works GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Misichergasse  43</AdrLine>
-          <AdrLine>2. OG 28273  Bremen</AdrLine>
+          <AdrLine>2. OG, Misichergasse 43, 28759 Bremen</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

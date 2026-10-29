@@ -20,7 +20,7 @@
         <PstlAdr>
           <AdrLine>165A JONES STREET,</AdrLine>
           <AdrLine>READING RG1 4TB,</AdrLine>
-          <AdrLine>BERKSHIRE,</AdrLine>
+          <AdrLine>ENGLAND,</AdrLine>
           <AdrLine>GB</AdrLine>
         </PstlAdr>
       </Dbtr>
@@ -37,10 +37,9 @@
       <Cdtr>
         <Nm>Quarry Systems Pvt Ltd</Nm>
         <PstlAdr>
-          <AdrLine>House No. 178, Link Road,</AdrLine>
-          <AdrLine>Salt Lake,</AdrLine>
-          <AdrLine>Kolkata, West Bengal 700057,</AdrLine>
-          <AdrLine>IN</AdrLine>
+          <AdrLine>House No. 178, Link Road</AdrLine>
+          <AdrLine>Behala</AdrLine>
+          <AdrLine>Kolkata, West Bengal 700 034, IN</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

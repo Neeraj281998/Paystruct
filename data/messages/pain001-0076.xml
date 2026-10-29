@@ -18,8 +18,8 @@
       <Dbtr>
         <Nm>Meadow Exports GmbH</Nm>
         <PstlAdr>
-          <AdrLine>MÜHLENWEG 45</AdrLine>
-          <AdrLine>04188 LEIPZIG</AdrLine>
+          <AdrLine>Mühlenweg 45,</AdrLine>
+          <AdrLine>04357 Leipzig,</AdrLine>
           <AdrLine>DE</AdrLine>
         </PstlAdr>
       </Dbtr>
@@ -50,7 +50,10 @@
         <Cdtr>
           <Nm>Quarry Logistics LLC</Nm>
           <PstlAdr>
-            <AdrLine>885 MAPLE AVENUE, APARTMENT 9B, MINNEAPOLIS,  MN 55372, US </AdrLine>
+            <AdrLine>Apt 9B</AdrLine>
+            <AdrLine>885  Maple Ave</AdrLine>
+            <AdrLine>Minneapolis,  Minnesota  55459</AdrLine>
+            <AdrLine>US</AdrLine>
           </PstlAdr>
         </Cdtr>
         <CdtrAcct>

@@ -19,7 +19,8 @@
         <Nm>Meadow Logistics Ltd</Nm>
         <PstlAdr>
           <AdrLine>131 Albert Road,</AdrLine>
-          <AdrLine>Reading RG30 8JW, GB</AdrLine>
+          <AdrLine>READING RG1 9UQ,</AdrLine>
+          <AdrLine>GB</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -35,10 +36,9 @@
       <Cdtr>
         <Nm>Harbour Foods Pvt Ltd</Nm>
         <PstlAdr>
-          <AdrLine>Mumbai,  Maharashtra 400032</AdrLine>
-          <AdrLine>House No. 19,  19th Cross</AdrLine>
-          <AdrLine>Dadar</AdrLine>
-          <AdrLine>India </AdrLine>
+          <AdrLine> House No. 19,  19th Cross,</AdrLine>
+          <AdrLine>400018 Maharashtra Mumbai,</AdrLine>
+          <AdrLine>IN</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

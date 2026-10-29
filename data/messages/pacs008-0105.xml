@@ -18,9 +18,7 @@
       <Dbtr>
         <Nm>Granite Trading GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Haus Atlas</AdrLine>
-          <AdrLine>Lindenplatz</AdrLine>
-          <AdrLine>69200 Heidelberg</AdrLine>
+          <AdrLine>SCHILLERSTRASSE 136  WOHNUNG 34  70563 STUTTGART  DE</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -36,12 +34,7 @@
       <Cdtr>
         <Nm>Fernhill Foods Ltd</Nm>
         <PstlAdr>
-          <AdrLine>Queen Street</AdrLine>
-          <AdrLine>Heaton</AdrLine>
-          <AdrLine>NEWCASTLE UPON TYNE</AdrLine>
-          <AdrLine>NE1 4AH</AdrLine>
-          <AdrLine>Tyne and Wear</AdrLine>
-          <AdrLine>UK</AdrLine>
+          <AdrLine>QUEEN STREET, JESMOND, NEWCASTLE UPON TYNE NE2 4GP, GB</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

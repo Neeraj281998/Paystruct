@@ -18,10 +18,7 @@
       <Dbtr>
         <Nm>Copper Design LLC</Nm>
         <PstlAdr>
-          <AdrLine>4662 Washington Boulevard,</AdrLine>
-          <AdrLine>#18,</AdrLine>
-          <AdrLine>Detroit, Michigan 48150-6205,</AdrLine>
-          <AdrLine>US</AdrLine>
+          <AdrLine>4662 Washington Boulevard, #18, Detroit, MI 48243, USA</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAcct>
@@ -52,8 +49,8 @@
           <Nm>Meadow Textiles Ltd</Nm>
           <PstlAdr>
             <AdrLine>Room 58</AdrLine>
-            <AdrLine>195 King Street</AdrLine>
-            <AdrLine>LONDON NW1 6FU, GB</AdrLine>
+            <AdrLine>195 King Street </AdrLine>
+            <AdrLine>London  SE1 3UD, United Kingdom</AdrLine>
           </PstlAdr>
         </Cdtr>
         <CdtrAcct>

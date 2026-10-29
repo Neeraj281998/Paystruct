@@ -19,8 +19,7 @@
         <Nm>Copper Labs LLC</Nm>
         <PstlAdr>
           <AdrLine>9865 Lincoln Street</AdrLine>
-          <AdrLine>Dallas, TX 75371</AdrLine>
-          <AdrLine>US</AdrLine>
+          <AdrLine>Dallas, TX 75242, US</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -36,8 +35,8 @@
       <Cdtr>
         <Nm>Sparrow Exports GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Schillestr. 123-125,</AdrLine>
-          <AdrLine>70181 Stuttgart,</AdrLine>
+          <AdrLine>Schillestr. 123-125</AdrLine>
+          <AdrLine>70184 Stuttgart</AdrLine>
           <AdrLine>DE</AdrLine>
         </PstlAdr>
       </Cdtr>

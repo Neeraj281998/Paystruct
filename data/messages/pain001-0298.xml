@@ -18,7 +18,8 @@
       <Dbtr>
         <Nm>Harbour Exports Ltd</Nm>
         <PstlAdr>
-          <AdrLine>105 Albert Lane, Llandaff, Cardiff CF24 8LH</AdrLine>
+          <AdrLine>105 Albert Lane</AdrLine>
+          <AdrLine>CARDIFF CF11 5HD</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAcct>
@@ -48,9 +49,7 @@
         <Cdtr>
           <Nm>Fernhill Trading GmbH</Nm>
           <PstlAdr>
-            <AdrLine>Schulplatz 7,</AdrLine>
-            <AdrLine>Wohnung 34,</AdrLine>
-            <AdrLine>Köln 50700,</AdrLine>
+            <AdrLine>Schulplatz 7, Wohnung 34, 50996 Köln</AdrLine>
           </PstlAdr>
         </Cdtr>
         <CdtrAcct>

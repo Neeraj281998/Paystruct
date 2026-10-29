@@ -18,9 +18,7 @@
       <Dbtr>
         <Nm>Copper Foods LLC</Nm>
         <PstlAdr>
-          <AdrLine>5441 8th Way</AdrLine>
-          <AdrLine>Suite 275</AdrLine>
-          <AdrLine>Chicago, Illinois 60756-5061, US</AdrLine>
+          <AdrLine>5441 8th Way Suite 275 Chicago IL 60652 United States</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -36,8 +34,9 @@
       <Cdtr>
         <Nm>Marrow Labs LLC</Nm>
         <PstlAdr>
-          <AdrLine>796  Cross Place,</AdrLine>
-          <AdrLine>San Diego,  CA  92155-8819,  US </AdrLine>
+          <AdrLine>796 Cross Place</AdrLine>
+          <AdrLine>San Diego, California 92101</AdrLine>
+          <AdrLine>US</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

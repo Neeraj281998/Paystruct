@@ -48,7 +48,11 @@
         <Cdtr>
           <Nm>Meadow Exports Ltd</Nm>
           <PstlAdr>
-            <AdrLine>135 Elmwood Court, Station Street, BELFAST, BT12AF, Northern Ireland</AdrLine>
+            <AdrLine>135 Elmwood Court,</AdrLine>
+            <AdrLine>Station Street,</AdrLine>
+            <AdrLine>Stranmillis,</AdrLine>
+            <AdrLine>Belfast,</AdrLine>
+            <AdrLine>BT93LF</AdrLine>
           </PstlAdr>
         </Cdtr>
         <CdtrAcct>

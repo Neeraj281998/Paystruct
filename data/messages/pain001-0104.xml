@@ -19,10 +19,9 @@
         <Nm>Tulip Labs Ltd</Nm>
         <PstlAdr>
           <AdrLine>21 Ward Place</AdrLine>
-          <AdrLine>Heworth</AdrLine>
-          <AdrLine>York</AdrLine>
-          <AdrLine>YO1 3RS</AdrLine>
-          <AdrLine>England, Great Britain</AdrLine>
+          <AdrLine>Acomb</AdrLine>
+          <AdrLine>YORK YO10 8GA</AdrLine>
+          <AdrLine>North Yorkshire, Great Britain</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAcct>
@@ -52,7 +51,7 @@
         <Cdtr>
           <Nm>Marrow Labs GmbH</Nm>
           <PstlAdr>
-            <AdrLine>HÖLZENBECHERSTRASSE 186, 90527 NÜRNBERG,</AdrLine>
+            <AdrLine>Hölzenbecherstrasse  186 90489 Nürnberg</AdrLine>
             <AdrLine>DE</AdrLine>
           </PstlAdr>
         </Cdtr>

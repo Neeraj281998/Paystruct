@@ -20,7 +20,7 @@
         <PstlAdr>
           <AdrLine>37 Chspel Avenue,</AdrLine>
           <AdrLine>Swansea SA1,</AdrLine>
-          <AdrLine>4BP Great Britain</AdrLine>
+          <AdrLine>1PB Great Britain</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -36,12 +36,7 @@
       <Cdtr>
         <Nm>Juniper Print Ltd</Nm>
         <PstlAdr>
-          <AdrLine> 117 Saunders Street</AdrLine>
-          <AdrLine>Widcombe</AdrLine>
-          <AdrLine>BATH</AdrLine>
-          <AdrLine>BA1 1AF</AdrLine>
-          <AdrLine>Somerset</AdrLine>
-          <AdrLine>GB</AdrLine>
+          <AdrLine>Jericho, 140 Green St. Oxford OX4 4SU, Oxfordshire, GB</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

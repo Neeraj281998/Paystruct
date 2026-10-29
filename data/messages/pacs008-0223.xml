@@ -18,8 +18,8 @@
       <Dbtr>
         <Nm>Tulip Logistics LLC</Nm>
         <PstlAdr>
-          <AdrLine>Detroit, MI 48241 </AdrLine>
-          <AdrLine>554  S Highland Drive </AdrLine>
+          <AdrLine>554 S Highland Dr</AdrLine>
+          <AdrLine>Detroit MI 48272</AdrLine>
           <AdrLine>US</AdrLine>
         </PstlAdr>
       </Dbtr>
@@ -36,9 +36,7 @@
       <Cdtr>
         <Nm>Copper Foods GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Berliner Allee 160-162,</AdrLine>
-          <AdrLine>EG,</AdrLine>
-          <AdrLine>01015 Dresden</AdrLine>
+          <AdrLine>DÖRRSTRASSE 53, LEIPZIG 04329</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

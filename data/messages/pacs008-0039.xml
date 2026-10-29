@@ -20,8 +20,8 @@
         <PstlAdr>
           <AdrLine>Flat 938</AdrLine>
           <AdrLine>House No. 51  Link Road</AdrLine>
-          <AdrLine>Maninagar </AdrLine>
-          <AdrLine>Ahmedabad Gujarat 380042  India </AdrLine>
+          <AdrLine>Vastrapur </AdrLine>
+          <AdrLine>Ahmedabad Gujarat 380015  India </AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -37,10 +37,11 @@
       <Cdtr>
         <Nm>Marrow Exports Ltd</Nm>
         <PstlAdr>
-          <AdrLine>Flat 49 CT2 7BW</AdrLine>
-          <AdrLine>158 Manor St.</AdrLine>
-          <AdrLine>CANTERBURY</AdrLine>
-          <AdrLine>UK</AdrLine>
+          <AdrLine>158 MANOR STREET</AdrLine>
+          <AdrLine> FLAT 49</AdrLine>
+          <AdrLine>CANTERBURY CT21WR</AdrLine>
+          <AdrLine>KENT</AdrLine>
+          <AdrLine>GB</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

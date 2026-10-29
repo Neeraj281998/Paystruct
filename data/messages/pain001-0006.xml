@@ -18,8 +18,8 @@
       <Dbtr>
         <Nm>Quarry Lights GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Postfach 794222</AdrLine>
-          <AdrLine>28275 Bremen</AdrLine>
+          <AdrLine>Postfach 794222,</AdrLine>
+          <AdrLine>28355 Bremen</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAcct>
@@ -49,10 +49,7 @@
         <Cdtr>
           <Nm>Sparrow Works Ltd</Nm>
           <PstlAdr>
-            <AdrLine>Caversham</AdrLine>
-            <AdrLine>101D Iqbal Ln</AdrLine>
-            <AdrLine>Reading RG1 4HJ</AdrLine>
-            <AdrLine>Berkshire</AdrLine>
+            <AdrLine> 101D Iqbal Lane, Caversham,  READING,  RG44JW, Berkshire</AdrLine>
           </PstlAdr>
         </Cdtr>
         <CdtrAcct>

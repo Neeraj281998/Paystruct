@@ -18,8 +18,14 @@
       <Dbtr>
         <Nm>Juniper Textiles Ltd</Nm>
         <PstlAdr>
-          <AdrLine>40 High St.</AdrLine>
-          <AdrLine>BATH BA1 8GH</AdrLine>
+          <AdrLine>40</AdrLine>
+          <AdrLine>High</AdrLine>
+          <AdrLine>St,</AdrLine>
+          <AdrLine>Bath</AdrLine>
+          <AdrLine>BA2</AdrLine>
+          <AdrLine>3HR,</AdrLine>
+          <AdrLine>Somerset,</AdrLine>
+          <AdrLine>GB</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAcct>
@@ -49,8 +55,9 @@
         <Cdtr>
           <Nm>Cobalt Lights Pvt Ltd</Nm>
           <PstlAdr>
-            <AdrLine>Door No. 98-5-15, Church Road,</AdrLine>
-            <AdrLine>Jaipur, Rajasthan 302039,</AdrLine>
+            <AdrLine>Door No. 98-5-15, Church Rd</AdrLine>
+            <AdrLine>C-Scheme</AdrLine>
+            <AdrLine>Jaipur, Rajasthan 302001</AdrLine>
             <AdrLine>IN</AdrLine>
           </PstlAdr>
         </Cdtr>

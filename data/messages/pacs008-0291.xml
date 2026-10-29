@@ -18,9 +18,10 @@
       <Dbtr>
         <Nm>Marrow Labs Ltd</Nm>
         <PstlAdr>
-          <AdrLine>154 Webster Road</AdrLine>
-          <AdrLine>Harborne</AdrLine>
-          <AdrLine>BIRMINGHAM B15 3PF</AdrLine>
+          <AdrLine>154 WEBSTER ROAD,</AdrLine>
+          <AdrLine>BIRMINGHAM,</AdrLine>
+          <AdrLine>B15 6FG,</AdrLine>
+          <AdrLine>WEST MIDLANDS,</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -36,7 +37,9 @@
       <Cdtr>
         <Nm>Marrow Foods GmbH</Nm>
         <PstlAdr>
-          <AdrLine>Gartenweg 21 90583 Nürnberg</AdrLine>
+          <AdrLine>HAMBURGER STRASSE 57</AdrLine>
+          <AdrLine>ERDGESCHOSS 48145 MÜNSTER</AdrLine>
+          <AdrLine>DEUTSCHLAND</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

@@ -18,12 +18,9 @@
       <Dbtr>
         <Nm>Fernhill Logistics Ltd</Nm>
         <PstlAdr>
-          <AdrLine>153 Victoria Rd</AdrLine>
-          <AdrLine>Ground Floor</AdrLine>
-          <AdrLine>Lakenham</AdrLine>
-          <AdrLine>NORWICH NR1 5ZR</AdrLine>
-          <AdrLine>Norfolk</AdrLine>
-          <AdrLine>GB</AdrLine>
+          <AdrLine>LONDON</AdrLine>
+          <AdrLine>122 Khan Street</AdrLine>
+          <AdrLine>EC1A 3GT, United Kingdom</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -39,10 +36,7 @@
       <Cdtr>
         <Nm>Lantern Print Pvt Ltd</Nm>
         <PstlAdr>
-          <AdrLine>KOLKATA,  WEST BENGAL 700087, </AdrLine>
-          <AdrLine>NO. 54,  LINK ROAD,</AdrLine>
-          <AdrLine>NEW TOWN,</AdrLine>
-          <AdrLine> IN</AdrLine>
+          <AdrLine>C-Scheme, No. 165, Station Road, Jaipur, Rajasthan 302001, IN</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>

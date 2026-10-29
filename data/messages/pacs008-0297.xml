@@ -18,7 +18,9 @@
       <Dbtr>
         <Nm>Quarry Textiles LLC</Nm>
         <PstlAdr>
-          <AdrLine>252 S Johnson Avenue, Unit 2, Miami, FL 33060-0057, US</AdrLine>
+          <AdrLine>252 S Johnson Avenue</AdrLine>
+          <AdrLine>Unit 2</AdrLine>
+          <AdrLine>Miami, FL 33183, US</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>

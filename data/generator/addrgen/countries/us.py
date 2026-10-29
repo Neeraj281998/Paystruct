@@ -5,20 +5,20 @@ import random
 
 from addrgen.countries.base import CountryModule, _pick, ordinal, register
 from addrgen.model import Part, TownBlock
+from addrgen.ties import ties
 
-# (city, state code, state name, three-digit ZIP prefixes); the last two digits are random.
-CITIES = (
-    ("New York", "NY", "New York", ("100", "101", "102")), ("Los Angeles", "CA", "California", ("900", "901")),
-    ("Chicago", "IL", "Illinois", ("606", "607")), ("Houston", "TX", "Texas", ("770", "772")),
-    ("Phoenix", "AZ", "Arizona", ("850", "852")), ("Philadelphia", "PA", "Pennsylvania", ("191", "190")),
-    ("San Antonio", "TX", "Texas", ("782", "781")), ("San Diego", "CA", "California", ("921", "920")),
-    ("Dallas", "TX", "Texas", ("752", "753")), ("Austin", "TX", "Texas", ("787", "786")),
-    ("Seattle", "WA", "Washington", ("981", "980")), ("Denver", "CO", "Colorado", ("802", "800")),
-    ("Boston", "MA", "Massachusetts", ("021", "022")), ("Atlanta", "GA", "Georgia", ("303", "300")),
-    ("Miami", "FL", "Florida", ("331", "330")), ("Minneapolis", "MN", "Minnesota", ("554", "553")),
-    ("Portland", "OR", "Oregon", ("972", "970")), ("Nashville", "TN", "Tennessee", ("372", "370")),
-    ("Detroit", "MI", "Michigan", ("482", "481")), ("Charlotte", "NC", "North Carolina", ("282", "281")),
+# (city, state code, state name, ZIP codes). The ZIPs are the ones GeoNames lists under the city (place name and state),
+# so every ZIP written is one that exists in that city; see addrgen/data/postcode_ties.json. ZIP+4 extensions are random.
+_CITY_NAMES = (
+    ("New York", "NY", "New York"), ("Los Angeles", "CA", "California"), ("Chicago", "IL", "Illinois"),
+    ("Houston", "TX", "Texas"), ("Phoenix", "AZ", "Arizona"), ("Philadelphia", "PA", "Pennsylvania"),
+    ("San Antonio", "TX", "Texas"), ("San Diego", "CA", "California"), ("Dallas", "TX", "Texas"),
+    ("Austin", "TX", "Texas"), ("Seattle", "WA", "Washington"), ("Denver", "CO", "Colorado"),
+    ("Boston", "MA", "Massachusetts"), ("Atlanta", "GA", "Georgia"), ("Miami", "FL", "Florida"),
+    ("Minneapolis", "MN", "Minnesota"), ("Portland", "OR", "Oregon"), ("Nashville", "TN", "Tennessee"),
+    ("Detroit", "MI", "Michigan"), ("Charlotte", "NC", "North Carolina"),
 )
+CITIES = tuple((city, code, name, tuple(ties()["US"][city])) for city, code, name in _CITY_NAMES)
 _TYPES = (("Street", 0.40), ("Avenue", 0.15), ("Boulevard", 0.06), ("Drive", 0.10), ("Lane", 0.05), ("Road", 0.10),
           ("Court", 0.03), ("Way", 0.03), ("Place", 0.02), ("Parkway", 0.02), ("Circle", 0.02), ("Trail", 0.01),
           ("Highway", 0.01))
@@ -97,8 +97,8 @@ class UnitedStates(CountryModule):
         return any(w.rstrip(".").casefold() in self.street_words for w in text.split(" "))
 
     def town_block(self, rng: random.Random, difficulty: str, want_locality: bool) -> TownBlock:
-        city, code, name, prefixes = rng.choice(CITIES)
-        zip_code = f"{rng.choice(prefixes)}{rng.randint(0, 99):02d}"
+        city, code, name, zips = rng.choice(CITIES)
+        zip_code = rng.choice(zips)
         if rng.random() < 0.2:
             zip_code += f"-{rng.randint(0, 9999):04d}"
         state = code if rng.random() < 0.6 else name

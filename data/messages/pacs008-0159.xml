@@ -18,7 +18,8 @@
       <Dbtr>
         <Nm>Saffron Foods GmbH</Nm>
         <PstlAdr>
-          <AdrLine>LINDENALLEE 124, ZIMMER 34, 10968 BERLIN</AdrLine>
+          <AdrLine>69124 HEIDELBERG</AdrLine>
+          <AdrLine>KOCHSTRASSE 126</AdrLine>
         </PstlAdr>
       </Dbtr>
       <DbtrAgt>
@@ -37,11 +38,11 @@
           <AdrLine>Lakeside</AdrLine>
           <AdrLine>Plaza,</AdrLine>
           <AdrLine>9488</AdrLine>
-          <AdrLine>Moore</AdrLine>
-          <AdrLine>Ln,</AdrLine>
-          <AdrLine>30015 GA</AdrLine>
+          <AdrLine>Moore Ln,</AdrLine>
           <AdrLine>Atlanta,</AdrLine>
-          <AdrLine>US</AdrLine>
+          <AdrLine>GA</AdrLine>
+          <AdrLine>30359-9670,</AdrLine>
+          <AdrLine>USA</AdrLine>
         </PstlAdr>
       </Cdtr>
     </CdtTrfTxInf>
