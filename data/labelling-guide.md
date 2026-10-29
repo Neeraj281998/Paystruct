@@ -100,11 +100,11 @@ Abbreviations: gold keeps the text as written, but a system must not be penalise
 Difficulty is computed from the tags, so it cannot drift from them.
 
 - **Corruption tags:** `all_caps`, `extra_spaces`, `one_line`, `missing_commas`, `reordered`, `postcode_split`, `postcode_no_space`, `postcode_wrong_line`, `typo`, `abbreviated`, `country_name`, `no_country`, `long_line_split`.
-- **hard:** four or more corruption tags, or any of `postal_district`, `no_country`, `postcode_split`, `postcode_wrong_line`, `typo`, `landmark`, `cedex`.
+- **hard:** four or more corruption tags, or any of `postal_district`, `no_country`, `postcode_split`, `postcode_wrong_line`, `typo`, `landmark`, `cedex`, `no_town`.
 - **medium:** otherwise, two or three corruption tags, or any of `no_street_number`, `flat`, `building_name`, `floor`.
 - **easy:** everything else.
 
-Structure tags: `no_street_number`, `postal_district`, `flat`, `building_name`, `floor`, `po_box`, `county` (any `CtrySubDvsn`: a county, state or province), `locality`, `landmark` (India, section 18), `cedex` (France, section 13), `partial_postcode` (a lone routing key or outward code, section 5; hand-written set only), `not_in_geonames` (section 19; hand-written set only, optional), `no_town` (section 20; hand-written set only). None of the last three changes the difficulty tier, and the generator never writes them.
+Structure tags: `no_street_number`, `postal_district`, `flat`, `building_name`, `floor`, `po_box`, `county` (any `CtrySubDvsn`: a county, state or province), `locality`, `landmark` (India, section 18), `cedex` (France, section 13), `partial_postcode` (a lone routing key or outward code, section 5; hand-written set only), `not_in_geonames` (section 19; hand-written set only, optional), `no_town` (section 20; hand-written set only). `no_town` makes a record hard; `partial_postcode` and `not_in_geonames` do not change the tier. The generator never writes any of the three.
 
 ## 12. Rules common to the six new countries
 
@@ -206,4 +206,5 @@ Some real addresses arrive with a postcode (or nothing) but no town. Hand-writte
 - **Gold has no `TwnNm`.** Gold may only hold text that is in the raw lines (section 0), and there is no town text. Every other field is labelled as usual, and a postcode that is present stays in `PstCd`.
 - **`Ctry` is still the true country.** If the country is not in the text, the record also carries `country_hint` and the tag `no_country` (section 8).
 - **Expected system behaviour: output no town and route the record to review.** A system must not derive a town from the postcode, a gazetteer or the country; that would invent a value that is not in the input. Phase 4 reports these records separately, because the right answer is an empty `TwnNm`, not a guess.
+- **Difficulty: hard** (section 11), whatever else the record carries.
 - `no_town` is the only case where `TwnNm` may be missing from gold. The hard-set validator requires `TwnNm` in every other record.

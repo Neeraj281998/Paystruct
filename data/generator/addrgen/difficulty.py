@@ -5,7 +5,7 @@ CORRUPTION_TAGS = frozenset({
     "all_caps", "extra_spaces", "one_line", "missing_commas", "reordered", "postcode_split", "postcode_no_space",
     "postcode_wrong_line", "typo", "abbreviated", "country_name", "no_country", "long_line_split",
 })
-HARD_TAGS = frozenset({"postal_district", "no_country", "postcode_split", "postcode_wrong_line", "typo", "landmark", "cedex"})
+HARD_TAGS = frozenset({"postal_district", "no_country", "postcode_split", "postcode_wrong_line", "typo", "landmark", "cedex", "no_town"})
 MEDIUM_TAGS = frozenset({"no_street_number", "flat", "building_name", "floor"})
 DIFFICULTIES = ("easy", "medium", "hard")
 

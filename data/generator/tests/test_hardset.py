@@ -253,6 +253,20 @@ def test_a_missing_town_without_the_tag_is_still_an_error():
     assert any("missing the required TwnNm" in p for p in validate_entry(entry, "IE"))
 
 
-def test_no_town_does_not_change_the_difficulty_tier():
+def test_no_town_makes_a_record_hard():
     from addrgen.difficulty import difficulty_of
-    assert difficulty_of({"no_town"}) == "easy" and difficulty_of({"flat", "no_town"}) == "medium"
+    assert difficulty_of({"no_town"}) == "hard" and difficulty_of({"flat", "no_town"}) == "hard"
+    assert difficulty_of({"partial_postcode", "not_in_geonames"}) == "easy"  # the other two hand-written tags do not
+
+
+def test_a_no_town_entry_converts_to_a_hard_record():
+    entry = {"id": "fr-h001", "tags": ["country_name", "no_town"], "raw_lines": ["27 rue des Acacias", "69003", "France"],
+             "gold": {"BldgNb": "27", "StrtNm": "rue des Acacias", "PstCd": "69003", "Ctry": "FR"}}
+    assert validate_entry(entry, "FR") == []
+    assert to_record(entry)["difficulty"] == "hard"
+
+
+def test_every_committed_no_town_entry_converts_to_a_hard_record():
+    _, entries = validate_dir(HARD_DIR)
+    tagged = [e for _, e in entries if "no_town" in e.get("tags", [])]
+    assert len(tagged) >= 8 and all(to_record(e)["difficulty"] == "hard" for e in tagged)
