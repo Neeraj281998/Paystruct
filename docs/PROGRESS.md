@@ -8,12 +8,11 @@ Scope changed on 2026-10-30 to a one-week merged plan: see `docs/PLAN.md` and `d
 - [x] Phase 1: foundations and ingestion (Java service, kept as the front door)
 - [x] Phase 2A: labelling guide and IE/GB generator
 - [x] Phase 2B: all 8 countries, dev, calibration and frozen test splits, sample messages
-
-**Pending:** the hard-set review. The files in `data/hard_set/` are still AI drafts (each keeps its "Drafted by AI" header) and `docs/hard-set-review.md` has 8 VERIFY and 28 GUIDE? items waiting for the owner. `data/splits/hard.jsonl` is empty.
+- [x] Phase 2 hard set: reviewed by delegation to the AI, tagged `phase-2`. N = 40 (5 per country), AI-drafted and AI-verified, **not manually reviewed by the owner**. `data/splits/hard.jsonl` is built. See `docs/decisions/hard-set.md` and `docs/hard-set-verification.md`.
 
 ## The seven days (2026-10-30 onward)
 
-- [ ] Day 1: finish and build the hard set (about 40 entries, report the real N)
+- [x] Day 1: finish and build the hard set (real N = 40)
 - [ ] Day 2: Python rules engine for all 8 countries, tuned on dev only
 - [ ] Day 3: small eval harness and rules-only results table
 - [ ] Day 4: agent loop, grounding check, retries, routing, property tests
@@ -61,10 +60,10 @@ Things to know:
 
 Built: generators for FR, DE, NL, CA, US and IN (labelling guide sections 12-18); the dev (600), calibration (400) and test (1,000) splits in `data/splits/` with `splits.manifest.json`; the frozen test hash (`test.sha256`) and `scripts/verify_frozen.py`; `scripts/check_splits.py`; the hard-set scaffold (`data/hard_set/*.yaml`, validator, converter to `hard.jsonl`); the message builder and 300 sample messages in `data/messages/` with `manifest.json`; `scripts/split_stats.py`. 341 generator tests (`python -m pytest` in `data/generator`).
 
-Not built, by design: the 100 hand-written hard-set addresses (the owner writes them), rules, evaluation harness, scorer, baselines.
+Not built, by design: the hard set (done in the Day 1 review, see the top of this file), rules, evaluation harness, scorer, baselines.
 
 Things to know:
-- `data/splits/hard.jsonl` is empty. Each country file holds two entries marked EXAMPLE, which are left out unless `--include-examples`. `build_hard_set.py` refuses fewer than 100 entries without `--allow-partial`.
+- `data/splits/hard.jsonl` now holds the 40-entry hard set. Each country file holds two entries marked EXAMPLE, which are left out unless `--include-examples`. `build_hard_set.py` takes `--min-entries` (default 40).
 - The disjointness check does not open `test.jsonl`; it uses address-key hashes recorded when the splits were built (see `docs/decisions/splits-and-messages.md`). `--include-test-file` is there for the owner.
 - 25 of the 300 messages are XSD-invalid on purpose (`too_many_lines` fault); `manifest.json` says which.
 - Calibration and test tiers are balanced to within one record per country, not exactly equal (400 and 1,000 do not divide by 3).
@@ -77,6 +76,6 @@ Checked every postcode-to-town table against the GeoNames files. Found wrong tie
 Decision records: `postcode-ties.md` (lists every pairing GeoNames does not confirm), `geonames-circularity.md`, and the re-freeze entry in `splits-and-messages.md`. Labelling guide section 19 awaits approval.
 
 Things to know:
-- The generator and the Phase 3 rules engine will both use GeoNames, so town and postcode accuracy on synthetic data is optimistic; the hand-written hard set is the independent check and must be reported beside it.
+- The generator and the Phase 3 rules engine will both use GeoNames, so town and postcode accuracy on synthetic data is optimistic; the AI-drafted, AI-verified hard set is the independent check (N = 40) and must be reported beside it.
 - The test split must not be regenerated again without the owner's explicit approval.
 
