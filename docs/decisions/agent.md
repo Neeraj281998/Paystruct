@@ -116,3 +116,81 @@ What this costs: a higher share of REVIEW. What it buys: the model can no longer
 ### The development-only audit set
 
 `python -m evals.run --system agent --source robustness --limit 30` runs the 30 addresses of `agent/audit/robustness_cases.py` (written by the author, in styles the guide does not describe) and scores them against the author's own "want". Several of those "wants" are the author's judgement, and some cases are known to be hard. These run records carry `development_only: true`, are kept with per-record details, and are **left out of every table of `docs/eval-results.md`**. They are not results and prove nothing about accuracy; they exist to see how the agent behaves on unusual input. Per-record details are kept for dev and calibration as before; hard-set and test records keep counts only.
+
+## First real runs after the fixes (2026-10-30, git 093ead5)
+
+Two real runs of `claude-haiku-5-5`, prompt `repair-v2`, after the completeness / locking / hybrid / skip fixes. Source records: `evals/results/20261030T141103Z_agent_dev_first30_093ead5.json` (the first 30 dev records) and `evals/results/20261030T141533Z_agent_robustness_first30_093ead5.json` (the 30 audit addresses; **development-only, not a result**, scored against the author's own "want", and left out of `docs/eval-results.md`). Everything below was read from those two records; no code was changed and no API call was made for this analysis. "Last proposal" is the model's last submitted proposal, or the rules' output when the model submitted none.
+
+### Cost and tokens (as reported by the records; compare with the Console)
+
+| run | model API calls | tokens in | tokens out | cost_usd_total | latency p50 / p95 |
+|---|---|---|---|---|---|
+| dev, first 30 | 0 | 0 | 0 | $0.0000 | 2.2 ms / 2.9 ms |
+| robustness, 30 cases | 94 (36 attempts; 55 `validate_candidate`, 36 `submit_repair`, 6 `country_lookup`, 1 `parse_address` tool calls) | 402,896 | 46,524 | $0.0636 | 7.6 ms / 25.7 s |
+
+The cost matches the price table (402,896 x $0.10 + 46,524 x $0.50 per million). That is $0.0042 per case that reached the model (15 cases), and 4,300 input tokens per call. The estimate the CLI prints ("typical", about $0.02 for these 30) is about three times too low for this run, and six to seven times too low per case that reaches the model: it assumes 3,000 tokens in and 400 out per attempt and 1.3 attempts, but real attempts make about 2.6 calls (the model validates its draft before submitting) and cases that fail retry up to three times. The estimate constants in `agent/repair/worker.py` should be raised before a larger run; the hard cap and the run budget are unaffected.
+
+### Dev, first 30 records
+
+26 records are rules ACCEPT and were REPAIRED without a model call (all exact). The other 4 (`in-00001`, `in-00002`, `ie-00003`, `in-00003`, the four of the first diagnosis) are rules NEEDS_LLM with only an unsupported elimination locality, so fix 5 sent them to REVIEW (`ELIMINATION_ONLY_NO_EVIDENCE`) with no model call. False repairs: 0 of 26. The agent equals the rules on these 30. The rules' proposal for all four REVIEW records is exactly gold. Note on the report's `exact_all` of 26/30 for the agent: REVIEW records publish no fields, so they count as not exact; they are not false repairs.
+
+### Robustness, one row per case
+
+| id | rules route | model called | final route | attempts | reasons for the last rejection | last proposal | equals want? |
+|---|---|---|---|---|---|---|---|
+| IE-1 | NEEDS_LLM | no | REVIEW | 0 | ELIMINATION_ONLY_NO_EVIDENCE | rules | no: BldgNm:missing+TwnLctnNm:extra |
+| IE-2 | ACCEPT | no | REPAIRED | 0 | - | rules | yes |
+| IE-3 | NEEDS_LLM | no | REVIEW | 0 | ELIMINATION_ONLY_NO_EVIDENCE | rules | no: BldgNm:missing+TwnLctnNm:extra |
+| IE-4 | NEEDS_LLM | no | REVIEW | 0 | ELIMINATION_ONLY_NO_EVIDENCE | rules | yes |
+| GB-1 | NEEDS_LLM | yes | REVIEW | 2 | HYBRID_FOR_REVIEW | model | no: BldgNb:extra+BldgNm:missing+Room:missing (+AdrLine) |
+| GB-2 | NEEDS_LLM | no | REVIEW | 0 | ELIMINATION_ONLY_NO_EVIDENCE | rules | no: StrtNm:missing+TwnLctnNm:extra |
+| GB-3 | NEEDS_LLM | no | REVIEW | 0 | ELIMINATION_ONLY_NO_EVIDENCE | rules | no: StrtNm:wrong+TwnLctnNm:extra |
+| GB-4 | REVIEW | no | REVIEW | 0 | RULES_REVIEW; country_ambiguous | rules | no: BldgNb:wrong+Room:missing+StrtNm:wrong+TwnLctnNm:extra |
+| FR-1 | NEEDS_LLM | yes | REVIEW | 3 | UNGROUNDED_COUNTRY | model | no: BldgNb:missing+PstCd:missing+StrtNm:missing (+AdrLine) |
+| FR-2 | REVIEW | no | REVIEW | 0 | RULES_REVIEW; country_ambiguous | rules | yes |
+| FR-3 | ACCEPT | no | REPAIRED | 0 | - | rules | yes |
+| FR-4 | NEEDS_LLM | yes | REVIEW | 3 | UNGROUNDED_COUNTRY | model | yes |
+| DE-1 | NEEDS_LLM | yes | REVIEW | 3 | UNGROUNDED_COUNTRY | model | yes |
+| DE-2 | NEEDS_LLM | yes | REVIEW | 3 | UNGROUNDED_COUNTRY | model | no: BldgNb:missing+StrtNm:missing (+AdrLine) |
+| DE-3 | NEEDS_LLM | yes | REVIEW | 3 | UNGROUNDED_COUNTRY; UNSUPPORTED_FIELD:StrtNm; UNSUPPORTED_FIELD:CtrySubDvsn | model | no: CtrySubDvsn:extra |
+| DE-4 | ACCEPT | no | REPAIRED | 0 | - | rules | yes |
+| NL-1 | NEEDS_LLM | yes | REVIEW | 1 | HYBRID_FOR_REVIEW | model | fields yes, plus AdrLine |
+| NL-2 | NEEDS_LLM | no | REVIEW | 0 | ELIMINATION_ONLY_NO_EVIDENCE | rules | no: BldgNb:missing+StrtNm:wrong |
+| NL-3 | ACCEPT | no | REPAIRED | 0 | - | rules | yes |
+| CA-1 | ACCEPT | no | REPAIRED | 0 | - | rules | yes |
+| CA-2 | NEEDS_LLM | yes | REVIEW | 1 | HYBRID_FOR_REVIEW | model | fields yes, plus AdrLine |
+| CA-3 | REVIEW | no | REVIEW | 0 | RULES_REVIEW; country_ambiguous | rules | yes |
+| US-1 | NEEDS_LLM | yes | REVIEW | 3 | UNGROUNDED_COUNTRY | model | yes |
+| US-2 | NEEDS_LLM | yes | REVIEW | 3 | UNGROUNDED_COUNTRY; UNSUPPORTED_FIELD:CtrySubDvsn | model | no: BldgNb:wrong+StrtNm:wrong (+AdrLine) |
+| US-3 | NEEDS_LLM | yes | REVIEW | 3 | MISSING_CTRY; UNSUPPORTED_FIELD on 6 fields | model | no: Ctry:missing |
+| US-4 | NEEDS_LLM | yes | REVIEW | 3 | MISSING_CTRY; UNSUPPORTED_FIELD:TwnNm | model | no: BldgNb:missing+Ctry:missing+CtrySubDvsn:missing+StrtNm:missing (+AdrLine) |
+| IN-1 | NEEDS_LLM | yes | REVIEW | 1 | HYBRID_FOR_REVIEW | model | no: BldgNb:missing+CtrySubDvsn:extra+TwnLctnNm:missing+TwnNm:wrong (+AdrLine) |
+| IN-2 | NEEDS_LLM | yes | REVIEW | 1 | HYBRID_FOR_REVIEW | model | no: BldgNb:extra (+AdrLine) |
+| IN-3 | ACCEPT | no | REPAIRED | 0 | - | rules | yes |
+| IN-4 | NEEDS_LLM | yes | REVIEW | 3 | MISSING_CTRY; UNSUPPORTED_FIELD:TwnNm | model | no: BldgNb:missing+Ctry:missing+CtrySubDvsn:missing+TwnLctnNm:missing (+AdrLine) |
+
+"fields yes, plus AdrLine" means the structured fields equal the want and the model also put unlabelled text in `AdrLine`. Several wants are the author's own judgement (see `docs/decisions/rules-engine.md`), so "no" does not always mean the proposal was bad.
+
+### The four counts
+
+1. **Reached the model: 15 of 30** (GB-1, FR-1, FR-4, DE-1, DE-2, DE-3, NL-1, CA-2, US-1, US-2, US-3, US-4, IN-1, IN-2, IN-4). **Skipped under fix 5: 6** (IE-1, IE-3, IE-4, GB-2, GB-3, NL-2). The other 9 never reach it: 6 rules ACCEPT and 3 rules REVIEW (GB-4, FR-2, CA-3, all `country_ambiguous`).
+2. **REPAIRED: 6, and all 6 are rules ACCEPTs that the model never touched** (IE-2, FR-3, DE-4, NL-3, CA-1, IN-3). The model produced 0 repairs.
+3. **Of the 15 the model handled, 5 had a last proposal whose structured fields exactly match the want**: FR-4, DE-1 and US-1 exactly (including Ctry), and NL-1 and CA-2 with the same fields plus an `AdrLine`. What blocked them:
+   - **FR-4, DE-1, US-1: the country was not derivable (`UNGROUNDED_COUNTRY`)** after three attempts. The proposal was right, but the text names no country, the robustness cases carry no country hint, and a five-digit postcode belongs to FR, DE and US alike. The rule works as designed; with a hint, which real messages carry and the dev `no_country` records do, these would not be blocked on this ground.
+   - **NL-1, CA-2: hybrid.** The text "t.a.v. Administratie" and "Stn Main" has no field. The labelling guide leaves such text unlabelled; the completeness check says every piece of text must be accounted for, so the only valid answer is `AdrLine`, which makes a hybrid, which routes to REVIEW. These two cases reveal a tension between the guide (unlabelled text stays out) and the completeness rule (nothing may be lost): no address with unlabelled text other than a recognised landmark can be both gold-equal and REPAIRED.
+   - The other 10 did not match: country not derivable with a different or lossy proposal (FR-1, DE-2, DE-3, US-2), model omitted Ctry after being told it was ungrounded (`MISSING_CTRY` in US-3, US-4, IN-4: 14 attempts across the run lacked Ctry), or a valid hybrid (GB-1, IN-1, IN-2).
+   - Across all 36 attempts the hard reasons were `UNGROUNDED_COUNTRY` 16 times, `MISSING_CTRY` 14, `CONTRADICTS_RULES` 2 (US-2, attempt 1, on StrtNm and BldgNb), and `DROPS_TEXT` never; `UNSUPPORTED_FIELD` appeared 61 times in feedback. The cost cap, the tool-call cap, the citation guard, the budget and refusals never fired. All 36 attempts submitted.
+   - Summary of the final blocker for the 15: country not derivable or missing 10 (UNGROUNDED_COUNTRY 7, MISSING_CTRY 3), valid hybrid 5.
+4. **Of the 24 records routed to REVIEW, 8 carried a proposal whose structured fields exactly match the want**: IE-4 (rules proposal, skipped under fix 5), FR-2 and CA-3 (rules proposals, `country_ambiguous`), FR-4, DE-1, US-1 (model proposals, country not derivable), and NL-1, CA-2 (model proposals plus `AdrLine`). Six of the eight match with no `AdrLine` at all.
+
+### Does the agent add repairs beyond the rules on these cases?
+
+**No.** On the dev records and on the 30 audit addresses it added none: every REPAIRED record was a rules ACCEPT that the model never saw (26 on dev, 6 on the audit set). On the audit set it spent $0.0636, 94 calls and 36 attempts on 15 cases and repaired none of them, and it never produced a wrong repair either: nothing wrong was published, which is what the checks are for. The checks, working as designed, turn every case the rules cannot support into REVIEW; the model, which has no tool that supplies independent evidence, can only re-state what the rules know, place text into `AdrLine`, or fail to name a country it cannot derive. In the cases where it proposed the exact want, the verifier was right to hold it back on the rules as written (country not stated, unlabelled text), but the result is a REVIEW rate that is higher than the rules alone for a record class that a person could settle at a glance (country evident to a human, address otherwise perfect).
+
+This is a result about these cases, not about the model: dev cannot show a gain (every record the model could see was already gold-exact under the rules), and the audit set was written to be hard for the rules. A real test of value needs records where the rules fail and the evidence is available to the checks.
+
+### Questions for the owner (nothing changed)
+
+- **Country derivation for the model.** Should a country that the rules' own cue scoring found (and the model confirms) count as derivable, or should REVIEW stay the answer when no text and no hint names the country? Today the second.
+- **Unlabelled text vs completeness.** Should text the guide leaves unlabelled (c/o, attention lines, postal stations, rural routes) be a recognised "non-field text" like landmarks (that needs a rules change: the rules would have to mark it), or is a hybrid-to-REVIEW the intended answer?
+- **Estimate constants** in `worker.py` need raising (see the cost section).
