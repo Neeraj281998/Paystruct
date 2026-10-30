@@ -14,10 +14,13 @@ import sys
 from pathlib import Path
 
 from evals import guards
-from evals.metrics import compute, evaluate_record
+from evals.metrics import compute, evaluate_record, record_details
 from evals.systems import SYSTEMS, NotAvailable
 
 RESULTS_DIR = guards.REPO_ROOT / "evals" / "results"
+# Per-record details (input, output, gold, reasons, steps) are kept for tuning splits only. For the hard set and the test split a record
+# keeps counts only, so nobody reads individual failures there.
+PER_RECORD_SPLITS = ("dev", "calibration")
 
 
 def git(*args: str) -> str:
@@ -41,8 +44,15 @@ def run_system(system, records: list[dict], budget_usd: float | None = None, log
     return evals
 
 
-def build_record(system, split: str, records: list[dict], evals: list, seed: int = 0, split_sha: str = "", limit: int | None = None) -> dict:
-    return {
+def subset_label(limit: int | None, ids: list[str] | None) -> str | None:
+    if ids:
+        return "ids-" + hashlib.sha256(",".join(ids).encode()).hexdigest()[:8]
+    return f"first{limit}" if limit else None
+
+
+def build_record(system, split: str, records: list[dict], evals: list, seed: int = 0, split_sha: str = "", limit: int | None = None,
+                 ids: list[str] | None = None) -> dict:
+    rec = {
         "git_sha": git("rev-parse", "HEAD"),
         "git_dirty": bool(git("status", "--porcelain", "--untracked-files=no")),
         "date": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -50,18 +60,23 @@ def build_record(system, split: str, records: list[dict], evals: list, seed: int
         "split": split,
         "n_records": len(evals),
         "limit": limit,
+        "ids": ids,
+        "subset": subset_label(limit, ids),
         "aborted_by_budget": len(evals) < len(records),
         "split_sha256": split_sha,
         "seed": seed,
         "config": system.config(),
         "metrics": compute(evals),
     }
+    if split in PER_RECORD_SPLITS:
+        rec["records"] = [record_details(e) for e in evals]
+    return rec
 
 
 def write_record(record: dict, out_dir: Path = RESULTS_DIR) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     stamp = record["date"].replace(":", "").replace("-", "")
-    tag = f"_first{record['limit']}" if record.get("limit") else ""
+    tag = f"_{record['subset']}" if record.get("subset") else ""
     path = out_dir / f"{stamp}_{record['system']}_{record['split']}{tag}_{record['git_sha'][:7]}.json"
     path.write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return path
@@ -73,7 +88,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--split", required=True)
     ap.add_argument("--final", action="store_true", help="required for the test split (refused in this session)")
     ap.add_argument("--no-gazetteer", action="store_true", help="rules_only without the GeoNames file (what CI can run)")
-    ap.add_argument("--limit", type=int, help="run only the first N records of the split (mandatory for the agent)")
+    ap.add_argument("--limit", type=int, help="run only the first N records of the split (the agent needs --limit or --ids)")
+    ap.add_argument("--ids", help="run only these record ids (comma-separated), e.g. to re-run a few failures; the agent needs --limit or --ids")
     ap.add_argument("--yes", action="store_true", help="required for the agent on more than 50 records, after reading the estimate")
     ap.add_argument("--approved-over-30", action="store_true", help="the project owner approved a real API run of more than 30 records")
     ap.add_argument("--out-dir", type=Path, default=RESULTS_DIR)
@@ -85,6 +101,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
     if decision.warning:
         sys.stderr.write(decision.warning)
+    ids = [i.strip() for i in args.ids.split(",") if i.strip()] if args.ids else None
     kwargs = {"use_gazetteer": not args.no_gazetteer} if args.system in ("rules_only", "agent") else {}
     system = SYSTEMS[args.system](**kwargs)
     if not system.available:
@@ -98,24 +115,35 @@ def main(argv: list[str] | None = None) -> int:
         if args.split not in worker.ALLOWED_SPLITS:
             sys.stderr.write(f"REFUSED: the agent runs on {', '.join(worker.ALLOWED_SPLITS)} only today (calibration, hard and test are Day 5)\n")
             return 2
-        if not args.limit or args.limit < 1:
-            sys.stderr.write("REFUSED: --limit N is mandatory for the agent\n")
+        if args.ids and args.limit:
+            sys.stderr.write("REFUSED: use --limit or --ids, not both\n")
             return 2
-        if args.limit > worker.UNAPPROVED_REAL_API_RECORDS and not args.approved_over_30:
+        n_run = len(ids) if ids else args.limit
+        if not n_run or n_run < 1:
+            sys.stderr.write("REFUSED: --limit N or --ids is mandatory for the agent\n")
+            return 2
+        if n_run > worker.UNAPPROVED_REAL_API_RECORDS and not args.approved_over_30:
             sys.stderr.write(f"REFUSED: more than {worker.UNAPPROVED_REAL_API_RECORDS} records against the real API needs the owner's approval (--approved-over-30)\n")
             return 2
-        est = worker.estimate(args.limit, system.model, Prices.load(), load_routing())
+        est = worker.estimate(n_run, system.model, Prices.load(), load_routing())
         print(f"model {system.model}; estimate: {json.dumps(est)}")
-        if args.limit > worker.CONFIRM_ABOVE and not args.yes:
+        if n_run > worker.CONFIRM_ABOVE and not args.yes:
             sys.stderr.write(f"REFUSED: more than {worker.CONFIRM_ABOVE} records need --yes after you have read the estimate\n")
             return 2
         budget = run_budget_usd()
     records = guards.load_records(decision)
-    if args.limit:
+    if ids:
+        by_id = {r["id"]: r for r in records}
+        missing = [i for i in ids if i not in by_id]
+        if missing:
+            sys.stderr.write(f"unknown record ids for split {args.split}: {missing}\n")
+            return 2
+        records = [by_id[i] for i in ids]
+    elif args.limit:
         records = records[: args.limit]
     evals = run_system(system, records, budget)
     split_sha = hashlib.sha256(decision.path.read_bytes()).hexdigest()
-    path = write_record(build_record(system, args.split, records, evals, split_sha=split_sha, limit=args.limit), args.out_dir)
+    path = write_record(build_record(system, args.split, records, evals, split_sha=split_sha, limit=args.limit, ids=ids), args.out_dir)
     m = json.loads(path.read_text())["metrics"]
     fr = m["false_repair"]
     print(f"{system.name} on {args.split}: n={m['n']}  exact_all={m['exact_all']['k']}/{m['exact_all']['n']}  "

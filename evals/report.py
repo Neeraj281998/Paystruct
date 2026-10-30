@@ -25,12 +25,13 @@ SPLIT_NOTE = {
 }
 
 
-def load_runs(results_dir: Path = RESULTS_DIR) -> dict[tuple[str, str, int | None], dict]:
-    """Latest run record per (system, split, limit). limit is None for a run over the whole split."""
-    latest: dict[tuple[str, str, int | None], dict] = {}
+def load_runs(results_dir: Path = RESULTS_DIR) -> dict[tuple[str, str, str | None], dict]:
+    """Latest run record per (system, split, subset). subset is None for a run over the whole split, 'firstN' for the first N records,
+    'ids-xxxxxxxx' for a chosen set of ids."""
+    latest: dict[tuple[str, str, str | None], dict] = {}
     for path in sorted(results_dir.glob("*.json")):
         rec = json.loads(path.read_text(encoding="utf-8"))
-        key = (rec["system"], rec["split"], rec.get("limit"))
+        key = (rec["system"], rec["split"], rec.get("subset") or (f"first{rec['limit']}" if rec.get("limit") else None))
         if key not in latest or rec["date"] >= latest[key]["date"]:
             rec["_file"] = path.name
             latest[key] = rec
@@ -77,7 +78,9 @@ def subset_tables(split: str, runs: dict) -> list[str]:
     out: list[str] = []
     for lim in sorted({k[2] for k in runs if k[1] == split and k[2]}):
         here = {s: runs.get((s, split, lim)) for s in SYSTEM_ORDER}
-        out += [f"**First {lim} records of {split}** (the same records for every system)", "",
+        n_sub = next(r["n_records"] for r in here.values() if r)
+        title = f"First {n_sub} records of {split}" if lim.startswith("first") else f"{n_sub} selected records of {split} ({lim})"
+        out += [f"**{title}** (the same records for every system)", "",
                 "| system | n | exact_all [95% CI] | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | latency p50 / p95 (ms) | cost per 1,000 (USD) |",
                 "|---|---|---|---|---|---|---|---|---|---|---|"]
         out += [head_row(s, here[s]) for s in SYSTEM_ORDER]

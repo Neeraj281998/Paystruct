@@ -126,8 +126,10 @@ class Agent(System):
         latency = time.perf_counter() - t0
         self.total_cost += out.cost_usd
         route = "ACCEPT" if out.status == "repaired" else "REVIEW"
+        from dataclasses import asdict
         return SystemOutput(dict(out.fields), route, latency, out.cost_usd,
-                            {"status": out.status, "source": out.source, "attempts": out.attempts, "reasons": list(out.reasons), "adr_lines": list(out.adr_lines)})
+                            {"status": out.status, "source": out.source, "attempts": out.attempts, "reasons": list(out.reasons), "adr_lines": list(out.adr_lines),
+                             "confidence": out.confidence, "rules": out.rules, "attempt_log": out.attempt_log, "steps": [asdict(st) for st in out.steps]})
 
 
 SYSTEMS = {"rules_only": RulesOnly, "llm_only": LlmOnly, "agent": Agent}

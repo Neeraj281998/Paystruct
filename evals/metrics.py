@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 import unicodedata
 from collections import Counter, defaultdict
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from agent.rules import allowlist
 from agent.rules.scoring import RecordScore, score_record
@@ -24,6 +24,7 @@ class RecordEval:
     cost_usd: float
     score: RecordScore
     hallucinated: list[str]  # element names whose value is not built from the input
+    extra: dict = field(default_factory=dict)  # what the system reported besides the fields (status, reasons, steps, ...)
 
     @property
     def accepted(self) -> bool:
@@ -61,7 +62,8 @@ def hallucinated_fields(fields: dict[str, str], raw_lines: list[str], country: s
 def evaluate_record(rec: dict, out) -> RecordEval:
     fields = {k: v for k, v in out.fields.items() if k in V1_FIELDS and v}
     sc = score_record(fields, rec["gold"], rec["country"])
-    return RecordEval(rec, fields, out.route, out.latency_s, out.cost_usd, sc, hallucinated_fields(fields, rec["raw_lines"], rec["country"]))
+    return RecordEval(rec, fields, out.route, out.latency_s, out.cost_usd, sc, hallucinated_fields(fields, rec["raw_lines"], rec["country"]),
+                      dict(getattr(out, "extra", {}) or {}))
 
 
 def _element_prf(evals: list[RecordEval]) -> dict:
@@ -109,6 +111,15 @@ def breakdown(evals: list[RecordEval], keys) -> dict:
         for k in keys(e):
             groups[k].append(e)
     return {k: headline(v) for k, v in sorted(groups.items())}
+
+
+def record_details(e: RecordEval) -> dict:
+    """Everything needed to diagnose one record. Only written for dev and calibration (see evals/run.py)."""
+    r, s = e.rec, e.score
+    return {"id": r["id"], "country": r["country"], "difficulty": r.get("difficulty"), "tags": r.get("tags", []), "country_hint": r.get("country_hint"),
+            "raw_lines": r["raw_lines"], "gold": r["gold"], "output": e.fields, "route": e.route, "exact": s.exact,
+            "matched": s.matched, "wrong": s.wrong, "missing": s.missing, "extra_fields": s.extra, "hallucinated": e.hallucinated,
+            "latency_ms": round(e.latency_s * 1000, 3), "cost_usd": e.cost_usd, "system_extra": e.extra}
 
 
 def compute(evals: list[RecordEval]) -> dict:

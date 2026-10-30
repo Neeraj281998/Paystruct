@@ -87,3 +87,42 @@ def test_evals_cli_guards_for_the_agent():
     p = go("--split", "dev", "--limit", "60", "--approved-over-30")
     assert p.returncode == 2 and "--yes" in p.stderr
     assert "sk-ant-not-a-real-key" not in p.stdout + p.stderr
+
+
+def test_run_records_keep_per_record_details_for_dev_and_calibration_only():
+    system = Agent(client=ScriptedClient([submit(GOOD)]), engine=ENGINE)
+    evals = run.run_system(system, records())
+    dev = run.build_record(system, "dev", records(), evals)
+    assert len(dev["records"]) == 3
+    r = dev["records"][1]            # the record that reached the model
+    for key in ("id", "raw_lines", "gold", "output", "route", "exact", "wrong", "missing", "latency_ms", "cost_usd", "system_extra"):
+        assert key in r
+    extra = r["system_extra"]
+    assert extra["rules"]["fields"] and extra["rules"]["route"] == "NEEDS_LLM" and extra["rules"]["how_set"]
+    assert extra["attempt_log"][0]["proposal"] == GOOD and extra["attempt_log"][0]["confidence"] > 0.85 and extra["attempt_log"][0]["unsupported"] == []
+    assert [s["tool"] for s in extra["steps"]] == ["llm_call", "submit_repair"] and extra["confidence"] == extra["attempt_log"][0]["confidence"]
+    assert "records" in run.build_record(system, "calibration", records(), evals)
+    for split in ("hard", "test"):          # counts only: nobody reads individual failures there
+        assert "records" not in run.build_record(system, split, records(), evals)
+
+
+def test_rerun_chosen_ids_with_rules_only(tmp_path):
+    p = subprocess.run([sys.executable, "-m", "evals.run", "--system", "rules_only", "--split", "dev", "--ids", "ca-00000,de-00000", "--out-dir", str(tmp_path)],
+                       capture_output=True, text=True, cwd=guards.REPO_ROOT)
+    assert p.returncode == 0, p.stderr
+    rec = json.loads(next(tmp_path.iterdir()).read_text())
+    assert rec["n_records"] == 2 and [r["id"] for r in rec["records"]] == ["ca-00000", "de-00000"] and rec["subset"].startswith("ids-") and rec["ids"]
+    bad = subprocess.run([sys.executable, "-m", "evals.run", "--system", "rules_only", "--split", "dev", "--ids", "nope-1", "--out-dir", str(tmp_path)],
+                         capture_output=True, text=True, cwd=guards.REPO_ROOT)
+    assert bad.returncode == 2 and "unknown record ids" in bad.stderr
+    text_ = report.render(report.load_runs(tmp_path))
+    assert "2 selected records of dev (ids-" in text_
+
+
+def test_the_agent_accepts_ids_in_place_of_limit_under_the_same_guards():
+    env = {**os.environ, "ANTHROPIC_API_KEY": "sk-ant-not-a-real-key"}
+    base = [sys.executable, "-m", "evals.run", "--system", "agent", "--split", "dev"]
+    both = subprocess.run([*base, "--ids", "ca-00000", "--limit", "3"], capture_output=True, text=True, cwd=guards.REPO_ROOT, env=env)
+    assert both.returncode == 2 and "not both" in both.stderr
+    many = subprocess.run([*base, "--ids", ",".join(f"ca-{i:05d}" for i in range(31))], capture_output=True, text=True, cwd=guards.REPO_ROOT, env=env)
+    assert many.returncode == 2 and "approval" in many.stderr
