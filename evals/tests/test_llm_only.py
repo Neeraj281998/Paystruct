@@ -157,3 +157,16 @@ def test_tuning_runs_default_to_a_fifty_cent_budget(monkeypatch, tmp_path):
     monkeypatch.setenv("PAYSTRUCT_RUN_BUDGET_USD", "0.10")
     run.main(["--system", "rules_only", "--split", "dev", "--limit", "2", "--out-dir", str(tmp_path)])
     assert os.environ["PAYSTRUCT_RUN_BUDGET_USD"] == "0.10"        # the owner's value wins
+
+
+def test_a_limit_that_covers_the_whole_split_is_a_full_run(tmp_path):
+    n = len(guards.load_records(guards.check_split("calibration")))
+    assert run.main(["--system", "rules_only", "--split", "calibration", "--limit", str(n), "--out-dir", str(tmp_path)]) == 0
+    rec = json.loads(next(tmp_path.iterdir()).read_text())
+    assert rec["limit"] is None and rec["subset"] is None and rec["n_records"] == n and "first" not in next(tmp_path.iterdir()).name
+    assert calibrate_name_ok(rec)
+
+
+def calibrate_name_ok(rec):
+    from evals import calibrate
+    return rec["split"] == "calibration" and not rec.get("subset")

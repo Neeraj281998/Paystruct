@@ -179,7 +179,10 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         records = [by_id[i] for i in ids]
     elif args.limit:
-        records = records[: args.limit]
+        if args.limit >= len(records):
+            args.limit = None          # --limit asked for the whole split (a model run needs one): that is a full run, not a subset
+        else:
+            records = records[: args.limit]
     if args.system in MODEL_SYSTEMS:
         from agent.repair import worker
         if len(records) > worker.UNAPPROVED_REAL_API_RECORDS and not args.approved_over_30:
