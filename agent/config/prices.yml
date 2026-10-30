@@ -1,0 +1,18 @@
+# Price per million tokens in USD. Cost is computed from the API's token usage, never estimated from text.
+# Source: https://platform.claude.com/docs/en/about-claude/models/overview ("From $0.10 / input MTok, From $0.50 / output MTok"),
+# model id claude-haiku-5-5, checked 2026-10-30. The low rate holds for prompts of 100K tokens or fewer; a PayStruct prompt is a few thousand.
+# Update this file, with the source and date, when the price or the model changes.
+checked: "2026-10-30"
+models:
+  claude-haiku-5-5:
+    input_per_mtok: 0.10
+    output_per_mtok: 0.50
+    long_prompt_tokens: 100000      # above this the long-prompt rate applies
+    long_input_per_mtok: 0.50
+    long_output_per_mtok: 2.50
+  claude-sonnet-5-5:
+    input_per_mtok: 2.00
+    output_per_mtok: 10.00
+  claude-opus-5-5:
+    input_per_mtok: 4.00
+    output_per_mtok: 20.00

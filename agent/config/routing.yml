@@ -1,0 +1,20 @@
+# Routing and confidence. PLACEHOLDERS: the threshold is set on the calibration split on Day 5, never on dev or test.
+threshold: 0.85            # valid + grounded + confidence at or above this -> REPAIRED, otherwise REVIEW
+max_attempts: 3            # attempts per payment
+max_tool_calls: 8          # tool calls per attempt
+max_cost_usd_per_payment: 0.05   # env MAX_COST_USD_PER_PAYMENT overrides
+request_timeout_s: 30
+api_retries: 3             # tries per API call on a transient error
+api_backoff_s: 1.0         # first backoff; doubles each try
+max_payment_tries: 3       # a payment that hits retry_later this many times goes to REVIEW
+lease_seconds: 600         # an in_progress claim older than this may be re-claimed
+max_tokens: 1024           # per API response
+effort: low                # Haiku 5.5: the model thinks less; sampling parameters are not sent (they 400 on this model)
+confidence:                # signals (placeholders, not tuned)
+  base: 0.80
+  agree_rules_weight: 0.10      # share of output fields that equal a rules field with explicit evidence
+  gazetteer_agree: 0.04
+  gazetteer_unchecked: -0.10
+  attempt_penalty: 0.04         # per attempt after the first
+  model_confidence_weight: 0.06 # the model's own number is one weak signal, centred on 0.5
+  unsupported_cap: 0.60         # any output field with no pattern, word-list or gazetteer support caps the score here
