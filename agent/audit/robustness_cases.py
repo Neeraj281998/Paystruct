@@ -1,0 +1,36 @@
+"""30 addresses written for the audit, in styles the labelling guide does not describe. Expected values are my own reading
+(real-world meaning, text kept as written) fixed BEFORE the engine was run on them. Not dev, not calibration, not hard set."""
+
+CASES = [
+ # (id, lines, expected fields, note)
+ ("IE-1", ["The Old Creamery", "Kilmallock", "Co. Limerick", "V35 PX40"], {"BldgNm": "The Old Creamery", "TwnNm": "Kilmallock", "CtrySubDvsn": "Co. Limerick", "PstCd": "V35 PX40", "Ctry": "IE"}, "house name with no building word"),
+ ("IE-2", ["12/13 Strand St.;  Tralee , Co Kerry", "V92 H7D3"], {"BldgNb": "12/13", "StrtNm": "Strand St.", "TwnNm": "Tralee", "CtrySubDvsn": "Co Kerry", "PstCd": "V92 H7D3", "Ctry": "IE"}, "semicolon, space before comma, 'Co' without dot"),
+ ("IE-3", ["Apt. 4, Mulberry Hall", "Carrigaline, Co. Cork", "Éire"], {"Room": "Apt. 4", "BldgNm": "Mulberry Hall", "TwnNm": "Carrigaline", "CtrySubDvsn": "Co. Cork", "Ctry": "IE"}, "no postcode; unfamiliar building word"),
+ ("IE-4", ["Unit 2, Rosemount Business Park, Ballycoolin", "Dublin 15", "D15 YX90"], {"Room": "Unit 2", "BldgNm": "Rosemount Business Park", "TwnLctnNm": "Ballycoolin", "TwnNm": "Dublin 15", "PstCd": "D15 YX90", "Ctry": "IE"}, "locality on the building line"),
+ ("GB-1", ["Rm 12, Brunel Bldg", "Gt. Western Rd", "Swindon  SN1 1AA"], {"Room": "Rm 12", "BldgNm": "Brunel Bldg", "StrtNm": "Gt. Western Rd", "TwnNm": "Swindon", "PstCd": "SN1 1AA", "Ctry": "GB"}, "'Rm' and 'Bldg' are not in the lists"),
+ ("GB-2", ["Carrick Wynd", "Oldmeldrum", "AB51 0DZ", "Scotland"], {"StrtNm": "Carrick Wynd", "TwnNm": "Oldmeldrum", "PstCd": "AB51 0DZ", "CtrySubDvsn": "Scotland", "Ctry": "GB"}, "unfamiliar street word 'Wynd'"),
+ ("GB-3", ["7a st. mary's gate, nottingham ng1 1qa, uk"], {"BldgNb": "7a", "StrtNm": "st. mary's gate", "TwnNm": "nottingham", "PstCd": "ng1 1qa", "Ctry": "GB"}, "all lower case, unfamiliar street word 'Gate'"),
+ ("GB-4", ["Flat 1/2, 40 Dumbarton Road", "Glasgow"], {"Room": "Flat 1/2", "BldgNb": "40", "StrtNm": "Dumbarton Road", "TwnNm": "Glasgow", "Ctry": "GB"}, "no postcode, no country, flat '1/2'"),
+ ("FR-1", ["14, bd des Capucines — 75009 PARIS"], {"BldgNb": "14", "StrtNm": "bd des Capucines", "PstCd": "75009", "TwnNm": "PARIS", "Ctry": "FR"}, "em dash separator, 'bd'"),
+ ("FR-2", ["Mme Dupont", "Chez M. Martin", "8 chemin du Mas", "06130 Grasse"], {"BldgNb": "8", "StrtNm": "chemin du Mas", "PstCd": "06130", "TwnNm": "Grasse", "Ctry": "FR"}, "name lines before the address (should stay unlabelled)"),
+ ("FR-3", ["3 rue Sainte-Catherine", "Bordeaux", "France"], {"BldgNb": "3", "StrtNm": "rue Sainte-Catherine", "TwnNm": "Bordeaux", "Ctry": "FR"}, "no postcode"),
+ ("FR-4", ["Appt 23 - Bât. B", "12 av. Foch", "69006 Lyon 6ème"], {"Room": "Appt 23", "BldgNm": "Bât. B", "BldgNb": "12", "StrtNm": "av. Foch", "PstCd": "69006", "TwnNm": "Lyon 6ème", "Ctry": "FR"}, "building on the unit line"),
+ ("DE-1", ["Dr.-Külz-Ring 15", "01067 Dresden"], {"StrtNm": "Dr.-Külz-Ring", "BldgNb": "15", "PstCd": "01067", "TwnNm": "Dresden", "Ctry": "DE"}, "hyphenated street with a title"),
+ ("DE-2", ["Müller & Söhne GmbH", "Industriestr. 4 b", "D-70565 Stuttgart"], {"StrtNm": "Industriestr.", "BldgNb": "4 b", "TwnNm": "Stuttgart", "Ctry": "DE"}, "company line, 'D-' postcode prefix, number with a spaced letter"),
+ ("DE-3", ["Am Markt 3", "37073 Göttingen", "Niedersachsen"], {"StrtNm": "Am Markt", "BldgNb": "3", "PstCd": "37073", "TwnNm": "Göttingen", "Ctry": "DE"}, "street with no suffix; a Land written"),
+ ("DE-4", ["Bahnhofstraße 1", "Freiburg im Breisgau", "Deutschland"], {"StrtNm": "Bahnhofstraße", "BldgNb": "1", "TwnNm": "Freiburg im Breisgau", "Ctry": "DE"}, "no postcode, multiword town"),
+ ("NL-1", ["t.a.v. Administratie", "Postbus 90", "1000 AB Amsterdam"], {"PstBx": "Postbus 90", "PstCd": "1000 AB", "TwnNm": "Amsterdam", "Ctry": "NL"}, "attention line"),
+ ("NL-2", ["Prinsengracht 263-II", "1016 GV  Amsterdam"], {"StrtNm": "Prinsengracht", "BldgNb": "263-II", "PstCd": "1016 GV", "TwnNm": "Amsterdam", "Ctry": "NL"}, "Roman-numeral addition"),
+ ("NL-3", ["Van Baerlestraat 54", "Amsterdam", "1071 AR"], {"StrtNm": "Van Baerlestraat", "BldgNb": "54", "TwnNm": "Amsterdam", "PstCd": "1071 AR", "Ctry": "NL"}, "town before postcode"),
+ ("CA-1", ["Unit 3 - 4500 Rue Sherbrooke O.", "Montreal, Quebec  H3Z 1E9", "CANADA"], {"Room": "Unit 3", "BldgNb": "4500", "StrtNm": "Rue Sherbrooke O.", "TwnNm": "Montreal", "CtrySubDvsn": "Quebec", "PstCd": "H3Z 1E9", "Ctry": "CA"}, "unaccented French names, dash after the unit"),
+ ("CA-2", ["P.O. Box 77", "Stn Main", "Winnipeg MB R3C 2G1"], {"PstBx": "P.O. Box 77", "TwnNm": "Winnipeg", "CtrySubDvsn": "MB", "PstCd": "R3C 2G1", "Ctry": "CA"}, "postal station line"),
+ ("CA-3", ["102-27 King Street East", "Toronto ON"], {"Room": "102", "BldgNb": "27", "StrtNm": "King Street East", "TwnNm": "Toronto", "CtrySubDvsn": "ON", "Ctry": "CA"}, "unit prefix, no postcode, no country"),
+ ("US-1", ["1600 Pennsylvania Ave NW", "Washington DC 20500"], {"BldgNb": "1600", "StrtNm": "Pennsylvania Ave NW", "TwnNm": "Washington", "CtrySubDvsn": "DC", "PstCd": "20500", "Ctry": "US"}, "state name used as a street; no comma"),
+ ("US-2", ["Mailstop 4B, 77 Massachusetts Avenue", "Cambridge, Mass. 02139"], {"BldgNb": "77", "StrtNm": "Massachusetts Avenue", "TwnNm": "Cambridge", "CtrySubDvsn": "Mass.", "PstCd": "02139", "Ctry": "US"}, "old-style state abbreviation, unlabelled mailstop"),
+ ("US-3", ["210 w. 5th street, #4", "austin tx 78701"], {"BldgNb": "210", "StrtNm": "w. 5th street", "Room": "#4", "TwnNm": "austin", "CtrySubDvsn": "tx", "PstCd": "78701", "Ctry": "US"}, "lower case, ordinal street"),
+ ("US-4", ["88 Elm St.", "Springfield, Illinois"], {"BldgNb": "88", "StrtNm": "Elm St.", "TwnNm": "Springfield", "CtrySubDvsn": "Illinois", "Ctry": "US"}, "no zip, no country"),
+ ("IN-1", ["C-14, Defence Colony", "New Delhi 110024"], {"BldgNb": "C-14", "TwnLctnNm": "Defence Colony", "TwnNm": "New Delhi", "PstCd": "110024", "Ctry": "IN"}, "plot number with a letter and no keyword"),
+ ("IN-2", ["Shop No. 5, Ground Floor, Kapadia Chambers", "Ballard Estate, Mumbai - 400 001"], {"Flr": "Ground Floor", "BldgNm": "Kapadia Chambers", "TwnLctnNm": "Ballard Estate", "TwnNm": "Mumbai", "PstCd": "400 001", "Ctry": "IN"}, "shop number has no field; unfamiliar building word"),
+ ("IN-3", ["Near Gandhi Chowk, Main Bazaar Road", "Haridwar - 249401", "Uttarakhand"], {"StrtNm": "Main Bazaar Road", "TwnNm": "Haridwar", "PstCd": "249401", "CtrySubDvsn": "Uttarakhand", "Ctry": "IN"}, "landmark first line"),
+ ("IN-4", ["Plot 9, Kaveri Nagar", "Bengaluru", "Karnataka"], {"BldgNb": "Plot 9", "TwnLctnNm": "Kaveri Nagar", "TwnNm": "Bengaluru", "CtrySubDvsn": "Karnataka", "Ctry": "IN"}, "no PIN, no country"),
+]

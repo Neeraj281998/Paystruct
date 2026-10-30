@@ -41,3 +41,31 @@ Dev accuracy is optimistic. The generator and the gazetteer both use GeoNames, s
 ## Not done on purpose
 
 No LLM, agent, MCP, Kafka, calibration of thresholds, or use of the test and hard splits.
+
+## Why dev is at 100 percent (audit, 2026-10-30)
+
+**Dev accuracy is not evidence of real-world accuracy.** Read the dev result as "the engine follows the labelling guide on generator-shaped text, and was tuned until dev stopped showing failures". Nothing more. Numbers are not repeated here (they belong in `eval_runs` records); the audit is reproducible with `python -m agent.audit.audit_dev` and `python -m agent.audit.robustness`.
+
+### What was checked, and what was found
+
+1. **Leakage: none found.** A grep of `agent/` (outside tests) for gold labels, record ids, `addrgen`, `postcode_ties.json` and the splits folder finds only the scorer and the CLI. The engine's `parse` takes `raw_lines` and `country_hint` only; the CLI passes the record's `country_hint` and never `gold`. The hint is an input the generator supplies for `no_country` records (it equals the true country). Running dev without any hint gives the same exact match, with fewer addresses accepted, so the result does not depend on it.
+2. **Memorisation: none found.** No rule contains a town, street, name, id or postcode taken from a dev record. The only literals outside the country profiles, the gazetteer and the allowlist are a handful of keywords in `rule_postcode.py` (flat, unit, plot, house, ...). **Two kinds of contamination are disclosed:**
+   - Profile entries added after dev failures: the `No.` keyword for Indian house numbers, Delhi, Chandigarh and Puducherry as regions, the Dutch and German particle lists, and the building-then-street splitting logic.
+   - Profile entries that came from my own knowledge of the AI-drafted hard set (read while reviewing it on Day 1), not from dev: the `new no.` keyword and the `ke paas` landmark ending (India), and the `rés` / `résid` building words (France). They weaken the hard set's independence for those few cases. Remove them or report them before the Day 3 hard-set run.
+3. **The scorer is not trivially satisfied.** Scoring each prediction against another record's gold (the next record, and the next in the same country) gives essentially zero exact matches.
+4. **The rules do the work.** Disabling the postcode rule, the street/number split, country detection or the town rule each drops dev to near zero. With an empty gazetteer dev falls clearly (towns are then found only by position), so the gazetteer matters, and that is the GeoNames circularity.
+5. **Generalisation (calibration, one run, report only, nothing tuned):** slightly below dev, within three points, with a few wrongly accepted addresses. Failure patterns seen there: an Indian "Sector 12" read as a house number plus a locality "Sector" (the locality pattern loses to the number rule); a US "New York NY" read as region "New York" and town "NY"; a building name absorbing a locality when there are no separators; and, in Canada, a town written right after an English street type that is also a French type-first word ("Williams Boulevard Winnipeg") was skipped as part of the street, which left the address with no town. No change was made.
+6. **Robustness on 30 addresses written for the audit** (`agent/audit/robustness_cases.py`; expected values fixed before the run; styles the guide does not describe): about a third were wrong, and several of the wrong ones were ACCEPT. Causes: the locality rule is greedy and takes any clean leftover segment, so an unfamiliar building word ("Mulberry Hall", "The Old Creamery") or street word ("Wynd", "Gate") becomes a locality with full confidence; keywords not in the profile ("Rm", "Bldg", Roman-numeral addition "263-II", "4 b", "Flat 1/2", "C-14", "Shop No."); a Land or other region the profile does not hold; and a mailstop read as a house number. Almost all are out-of-vocabulary words, which is exactly what the generator never produces.
+
+### Why it is 100 percent, then
+
+- The generator and the profiles are two views of one source: the labelling guide's word lists are the generator's word lists ("the guide's word lists are generator heuristics", section 21). An engine written from those lists is close to the generator's inverse.
+- The generator is a small set of templates plus a fixed list of corruptions, and the engine was iterated on dev until none of its failures was left.
+- Both sides use GeoNames (`geonames-circularity.md`).
+- The scorer forgives case, punctuation and allowlisted abbreviations, which are the generator's own corruptions.
+
+### What to do about it (not done in this audit; no engine changes were made)
+
+- Report the hard-set result beside dev every time, and say what dev is.
+- Make fields found only by elimination (locality, an unverified street name) lower the address confidence, so they cannot be ACCEPT; this is the largest source of confident wrong answers and a Day 5 calibration input.
+- Fix the Indian sector-versus-number rule, the region-versus-town order for "New York", and decide whether `new no.`, `ke paas` and `rés` stay.
