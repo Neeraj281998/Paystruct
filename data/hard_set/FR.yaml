@@ -1,6 +1,6 @@
-# Drafted by AI, to be reviewed by the project owner. Remove this line only when the project owner says the file is reviewed.
-# Hand-written hard set, FR. Format: data/hard_set/README.md
-# The two entries marked EXAMPLE only show the format. Delete them when you add your own.
+# AI-drafted and AI-reviewed against public sources; not manually reviewed by the project owner.
+# Hard set, FR. Format: data/hard_set/README.md. Decisions: docs/decisions/hard-set.md. Postcode checks: docs/hard-set-verification.md.
+# The two entries marked EXAMPLE only show the format. They are left out of hard.jsonl.
 country: FR
 entries:
   # ---- EXAMPLE (not part of the hard set) ----
@@ -35,46 +35,19 @@ entries:
       TwnNm: "Aix-en-Provence Cedex 1"
       Ctry: "FR"
 
-  # ---- your entries go below this line ----
-  - id: fr-h001
-    tags: ["abbreviated", "country_name", "flat", "floor", "postal_district"]
-    raw_lines:
-      - "Appt 14, 3ème étage"
-      - "27 rue Léonce Barral"
-      - "75011 Paris 11e"
-      - "France"
-    gold:
-      Room: "Appt 14"
-      Flr: "3ème étage"
-      BldgNb: "27"
-      StrtNm: "rue Léonce Barral"
-      PstCd: "75011"
-      TwnNm: "Paris 11e"
-      Ctry: "FR"
-  # VERIFY: Is 69256 the Cedex code of Lyon Cedex 09? (believed so)
+  # ---- entries ----
   - id: fr-h002
     tags: ["cedex", "no_country", "po_box"]
     raw_lines:
       - "BP 4021"
-      - "69256 LYON CEDEX 09"
+      - "69264 LYON CEDEX 09"
     gold:
       PstBx: "BP 4021"
-      PstCd: "69256"
+      PstCd: "69264"
       TwnNm: "LYON CEDEX 09"
       Ctry: "FR"
     country_hint: FR
-  - id: fr-h003
-    tags: ["abbreviated", "building_name", "no_country", "one_line"]
-    raw_lines:
-      - "Résidence Les Orchidées Bât. C, 5 impasse du Verger, 74000 Annecy"
-    gold:
-      BldgNm: "Résidence Les Orchidées Bât. C"
-      BldgNb: "5"
-      StrtNm: "impasse du Verger"
-      PstCd: "74000"
-      TwnNm: "Annecy"
-      Ctry: "FR"
-    country_hint: FR
+    note: "Cedex code 69264 pairs with Lyon Cedex 9 (checked); BP number and Cedex are otherwise synthetic. Postcode and town pairing checked against public sources: see docs/hard-set-verification.md."
   # NOTE: 69003 is Lyon 3e; the town is deliberately absent.
   - id: fr-h004
     tags: ["country_name", "no_town"]
@@ -87,34 +60,6 @@ entries:
       StrtNm: "rue des Acacias-Fleuris"
       PstCd: "69003"
       Ctry: "FR"
-  - id: fr-h005
-    tags: ["country_name"]
-    raw_lines:
-      - "8 bis avenue Aimé Collot"
-      - "33000 Bordeaux"
-      - "FRANCE"
-    gold:
-      BldgNb: "8 bis"
-      StrtNm: "avenue Aimé Collot"
-      PstCd: "33000"
-      TwnNm: "Bordeaux"
-      Ctry: "FR"
-  - id: fr-h006
-    tags: ["country_name", "flat", "floor"]
-    raw_lines:
-      - "Bureau 12 - 4th floor"
-      - "31 quai Aristide Vernay"
-      - "69002 Lyon"
-      - "France"
-    gold:
-      Room: "Bureau 12"
-      Flr: "4th floor"
-      BldgNb: "31"
-      StrtNm: "quai Aristide Vernay"
-      PstCd: "69002"
-      TwnNm: "Lyon"
-      Ctry: "FR"
-  # GUIDE?: The typo is in the street word itself ('boulavard'). Gold keeps it as written inside StrtNm.
   - id: fr-h007
     tags: ["no_country", "typo"]
     raw_lines:
@@ -127,46 +72,7 @@ entries:
       TwnNm: "Marseille"
       Ctry: "FR"
     country_hint: FR
-  # GUIDE?: Rural 'lieu-dit' with no street or number: gold labels it TwnLctnNm with the keyword kept ('Lieu-dit Kerhoat').
-  - id: fr-h008
-    tags: ["locality", "no_country"]
-    raw_lines:
-      - "Lieu-dit Kerhoat"
-      - "56390 Grand-Champ"
-    gold:
-      TwnLctnNm: "Lieu-dit Kerhoat"
-      PstCd: "56390"
-      TwnNm: "Grand-Champ"
-      Ctry: "FR"
-    country_hint: FR
-  - id: fr-h009
-    tags: ["country_name", "reordered"]
-    raw_lines:
-      - "6 rue Alphonse Brisset"
-      - "Toulouse (31000)"
-      - "France"
-    gold:
-      BldgNb: "6"
-      StrtNm: "rue Alphonse Brisset"
-      TwnNm: "Toulouse"
-      PstCd: "31000"
-      Ctry: "FR"
-  - id: fr-h010
-    tags: ["building_name", "floor", "no_country"]
-    raw_lines:
-      - "Tour Horizon - 14e étage"
-      - "42 avenue du Docteur Valmy"
-      - "92800 Puteaux"
-    gold:
-      BldgNm: "Tour Horizon"
-      Flr: "14e étage"
-      BldgNb: "42"
-      StrtNm: "avenue du Docteur Valmy"
-      PstCd: "92800"
-      TwnNm: "Puteaux"
-      Ctry: "FR"
-    country_hint: FR
-  # ---- odd or ambiguous ----
+    note: "The typo is inside the street word; gold keeps it as written in StrtNm (guide 21.6)."
   - id: fr-h011
     tags: ["no_country", "postal_district"]
     raw_lines:
@@ -178,7 +84,6 @@ entries:
       TwnNm: "Paris 8e"
       Ctry: "FR"
     country_hint: FR
-  # GUIDE?: 'Rés.' (Résidence) is not on the guide's FR abbreviation list, and the building name contains a street word (Rue).
   - id: fr-h012
     tags: ["abbreviated", "building_name", "no_country"]
     raw_lines:
@@ -192,3 +97,4 @@ entries:
       TwnNm: "Nantes"
       Ctry: "FR"
     country_hint: FR
+    note: "'Rés.' (résidence) opens a building name although 'Rue' follows (guide 21.3); the hyphen is a separator (21.2). 'Rés.' is not on the scorer's abbreviation allowlist."

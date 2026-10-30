@@ -1,6 +1,6 @@
-# Drafted by AI, to be reviewed by the project owner. Remove this line only when the project owner says the file is reviewed.
-# Hand-written hard set, CA. Format: data/hard_set/README.md
-# The two entries marked EXAMPLE only show the format. Delete them when you add your own.
+# AI-drafted and AI-reviewed against public sources; not manually reviewed by the project owner.
+# Hard set, CA. Format: data/hard_set/README.md. Decisions: docs/decisions/hard-set.md. Postcode checks: docs/hard-set-verification.md.
+# The two entries marked EXAMPLE only show the format. They are left out of hard.jsonl.
 country: CA
 entries:
   # ---- EXAMPLE (not part of the hard set) ----
@@ -37,22 +37,7 @@ entries:
       Ctry: "CA"
     country_hint: CA
 
-  # ---- your entries go below this line ----
-  - id: ca-h001
-    tags: ["abbreviated", "country_name", "county", "flat"]
-    raw_lines:
-      - "Bureau 305"
-      - "1450 boul. Aimé-Dufresne"
-      - "Montréal QC H3B 2K4"
-      - "Canada"
-    gold:
-      Room: "Bureau 305"
-      BldgNb: "1450"
-      StrtNm: "boul. Aimé-Dufresne"
-      TwnNm: "Montréal"
-      CtrySubDvsn: "QC"
-      PstCd: "H3B 2K4"
-      Ctry: "CA"
+  # ---- entries ----
   - id: ca-h002
     tags: ["county"]
     raw_lines:
@@ -65,23 +50,8 @@ entries:
       CtrySubDvsn: "NS"
       PstCd: "B3H 2R6"
       Ctry: "CA"
-  - id: ca-h003
-    tags: ["county", "flat", "no_country"]
-    raw_lines:
-      - "5-123 Kestrel Drive"
-      - "Kingston ON K7L 4V1"
-    gold:
-      Room: "5"
-      BldgNb: "123"
-      StrtNm: "Kestrel Drive"
-      TwnNm: "Kingston"
-      CtrySubDvsn: "ON"
-      PstCd: "K7L 4V1"
-      Ctry: "CA"
-    country_hint: CA
-  # GUIDE?: 'succursale Centre-ville' (postal station) is part of a PO box address; no field for it, left unlabelled.
   - id: ca-h004
-    tags: ["county", "no_country", "po_box"]
+    tags: ["county", "no_country", "po_box", "unlabelled_text"]
     raw_lines:
       - "C.P. 4417, succursale Centre-ville"
       - "Sherbrooke (Québec)  J1H 5K9"
@@ -92,23 +62,7 @@ entries:
       PstCd: "J1H 5K9"
       Ctry: "CA"
     country_hint: CA
-  - id: ca-h005
-    tags: ["county", "flat", "floor", "no_country"]
-    raw_lines:
-      - "Suite 410, 12th Floor"
-      - "9930 Cormorant Avenue NW"
-      - "Edmonton, AB T5J 3N7"
-    gold:
-      Room: "Suite 410"
-      Flr: "12th Floor"
-      BldgNb: "9930"
-      StrtNm: "Cormorant Avenue NW"
-      TwnNm: "Edmonton"
-      CtrySubDvsn: "AB"
-      PstCd: "T5J 3N7"
-      Ctry: "CA"
-    country_hint: CA
-  # GUIDE?: '#204' as a unit marker: the guide lists '#5' for the US only, not for CA.
+    note: "'succursale Centre-ville' (postal station) has no XSD field: left unlabelled (guide 21.11)."
   - id: ca-h006
     tags: ["abbreviated", "all_caps", "county", "flat", "no_country"]
     raw_lines:
@@ -122,6 +76,7 @@ entries:
       CtrySubDvsn: "BC"
       Ctry: "CA"
     country_hint: CA
+    note: "'#204' before a hyphen and a street number is a unit: Room, with the '#' kept (guide 21.12)."
   # NOTE: H2L is central Montréal; the town is deliberately absent, the province QC is written.
   - id: ca-h007
     tags: ["country_name", "county", "no_town"]
@@ -135,51 +90,8 @@ entries:
       CtrySubDvsn: "QC"
       PstCd: "H2L 4G5"
       Ctry: "CA"
-  - id: ca-h008
-    tags: ["abbreviated", "county", "no_country", "postcode_no_space", "typo"]
-    raw_lines:
-      - "402 Conestgoa Rd"
-      - "Waterloo, ON N2L3G1"
-    gold:
-      BldgNb: "402"
-      StrtNm: "Conestgoa Rd"
-      TwnNm: "Waterloo"
-      CtrySubDvsn: "ON"
-      PstCd: "N2L3G1"
-      Ctry: "CA"
-    country_hint: CA
-  - id: ca-h009
-    tags: ["building_name", "country_name", "county"]
-    raw_lines:
-      - "Édifice Rivière-Nord"
-      - "75 rue de l'Aqueduc"
-      - "Gatineau QC J8X 3P2"
-      - "CANADA"
-    gold:
-      BldgNm: "Édifice Rivière-Nord"
-      BldgNb: "75"
-      StrtNm: "rue de l'Aqueduc"
-      TwnNm: "Gatineau"
-      CtrySubDvsn: "QC"
-      PstCd: "J8X 3P2"
-      Ctry: "CA"
-  - id: ca-h010
-    tags: ["country_name", "county"]
-    raw_lines:
-      - "12 côte de la Falaise"
-      - "Québec QC G1K 2H8"
-      - "Canada"
-    gold:
-      BldgNb: "12"
-      StrtNm: "côte de la Falaise"
-      TwnNm: "Québec"
-      CtrySubDvsn: "QC"
-      PstCd: "G1K 2H8"
-      Ctry: "CA"
-  # ---- odd or ambiguous ----
-  # GUIDE?: Rural route address ('RR 3, Site 4, Box 12'): not covered by the guide. First line left unlabelled.
   - id: ca-h011
-    tags: ["county", "no_country"]
+    tags: ["county", "no_country", "unlabelled_text"]
     raw_lines:
       - "RR 3, Site 4, Box 12"
       - "Okotoks, AB T1S 2A3"
@@ -189,29 +101,4 @@ entries:
       PstCd: "T1S 2A3"
       Ctry: "CA"
     country_hint: CA
-  - id: ca-h012
-    tags: ["abbreviated", "county", "no_country"]
-    raw_lines:
-      - "6 Pinegrove Cres."
-      - "Toronto, Ont. M4Y 1B6"
-    gold:
-      BldgNb: "6"
-      StrtNm: "Pinegrove Cres."
-      TwnNm: "Toronto"
-      CtrySubDvsn: "Ont."
-      PstCd: "M4Y 1B6"
-      Ctry: "CA"
-    country_hint: CA
-  - id: ca-h013
-    tags: ["county", "no_country"]
-    raw_lines:
-      - "18 Wharf Lane"
-      - "St. John's, NL A1C 5T2"
-    gold:
-      BldgNb: "18"
-      StrtNm: "Wharf Lane"
-      TwnNm: "St. John's"
-      CtrySubDvsn: "NL"
-      PstCd: "A1C 5T2"
-      Ctry: "CA"
-    country_hint: CA
+    note: "Rural-route line ('RR 3, Site 4, Box 12') has no XSD field: left unlabelled (guide 21.13)."

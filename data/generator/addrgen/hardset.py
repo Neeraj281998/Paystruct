@@ -1,6 +1,6 @@
-"""The hand-written hard set: one YAML file per country in data/hard_set/, a validator, and a converter to hard.jsonl.
+"""The AI-drafted, AI-verified hard set: one YAML file per country in data/hard_set/, a validator, and a converter to hard.jsonl.
 
-The addresses are written by the project owner; nothing here invents them. Entries marked `example: true` show the
+The addresses are AI-drafted and AI-verified, not manually reviewed by the project owner. Entries marked `example: true` show the
 format and are left out of hard.jsonl unless asked for.
 """
 from __future__ import annotations
@@ -16,9 +16,10 @@ from addrgen import countries
 from addrgen.difficulty import CORRUPTION_TAGS, difficulty_of
 from addrgen.limits import GOLD_FIELDS, LIMITS, MAX_LINE_LENGTH, MAX_LINES
 
-TARGET_SIZE = 100
+DEFAULT_MINIMUM = 40  # fewest real entries build_records accepts; the real N is whatever the files hold
 STRUCTURE_TAGS = frozenset({"no_street_number", "postal_district", "flat", "building_name", "floor", "po_box", "county",
-                            "locality", "landmark", "cedex", "partial_postcode", "not_in_geonames", "no_town"})
+                            "locality", "landmark", "cedex", "partial_postcode", "not_in_geonames", "no_town",
+                            "unlabelled_text"})
 KNOWN_TAGS = CORRUPTION_TAGS | STRUCTURE_TAGS
 REQUIRED_GOLD = ("TwnNm", "Ctry")  # CBPR+ makes town and country mandatory; everything else is optional
 # TwnNm may be missing only in a record tagged no_town (guide section 20), and must then be absent.
@@ -162,14 +163,14 @@ def to_record(entry: dict) -> dict:
     return record
 
 
-def build_records(directory: Path, include_examples: bool = False, allow_partial: bool = False) -> list[dict]:
-    """Validated records for hard.jsonl. Raises ValueError listing every problem, or if there are not TARGET_SIZE."""
+def build_records(directory: Path, include_examples: bool = False, minimum: int = DEFAULT_MINIMUM) -> list[dict]:
+    """Validated records for hard.jsonl. Raises ValueError listing every problem, or if there are fewer than `minimum`."""
     problems, entries = validate_dir(directory)
     if problems:
         raise ValueError("\n".join(problems))
     chosen = [e for _, e in entries if include_examples or not e.get("example")]
-    if len(chosen) != TARGET_SIZE and not allow_partial:
-        raise ValueError(f"{len(chosen)} entries, but the hard set has {TARGET_SIZE} (use --allow-partial while writing)")
+    if len(chosen) < minimum:
+        raise ValueError(f"{len(chosen)} entries, but the minimum is {minimum} (use --min-entries to change it)")
     return [to_record(e) for e in sorted(chosen, key=lambda e: e["id"])]
 
 

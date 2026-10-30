@@ -54,7 +54,7 @@ def check_splits(splits_dir, parse_test: bool = False) -> list[str]:
             problems.append(f"{filename} does not match the manifest hash")
         keys[name] = [key_hash(r) for r in records]
         for r in records:
-            if name != "hard":  # the hand-written set is checked by its own validator
+            if name != "hard":  # the hard set is checked by its own validator
                 problems += [f"{r.get('id')}: {p}" for p in check_record(r)]
             if r["id"] in ids:
                 problems.append(f"id {r['id']} is in both {ids[r['id']]} and {name}")

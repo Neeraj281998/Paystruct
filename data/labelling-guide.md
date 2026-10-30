@@ -1,6 +1,6 @@
 # Labelling guide
 
-Status: approved, sections 0 to 19. Section 20 (records with no town) awaits approval. Settles every ambiguous case once, so gold labels never contradict each other. The generator, the hand-written hard set and the scorer all follow this file. If a case is not covered, add a rule here before labelling it.
+Status: approved, sections 0 to 20. Section 21 (hard-set rules) was written by the AI during the delegated hard-set review (2026-10-30) and has not been read by the project owner. Settles every ambiguous case once, so gold labels never contradict each other. The generator, the AI-drafted, AI-verified hard set and the scorer all follow this file. If a case is not covered, add a rule here before labelling it.
 
 Element names and maximum lengths come from the XSD (`docs/decisions/xsd-versions.md`), not from the spec table. Fields used in v1: `StrtNm`, `BldgNb`, `BldgNm`, `Flr`, `Room`, `PstBx`, `PstCd`, `TwnNm`, `TwnLctnNm`, `CtrySubDvsn`, `Ctry`. Not used in v1: `Dept`, `SubDept`, `UnitNb`, `DstrctNm`, `CareOf`.
 
@@ -59,7 +59,7 @@ A named suburb on its own line before the town is `TwnLctnNm`: `"Ranelagh" / "Du
 
 ## 5. Eircode routing key
 
-**Decision:** `PstCd` holds the whole Eircode as written: routing key plus unique identifier ("D01 K2X7"; "D01K2X7" if written without the space). The routing key is never a separate field. A lone routing key or a UK outward code with no second half is kept as `PstCd` as written, tagged `partial_postcode` (hand-written set only, the generator does not make these). A routing key is not a town: "D01" never becomes `TwnNm`.
+**Decision:** `PstCd` holds the whole Eircode as written: routing key plus unique identifier ("D01 K2X7"; "D01K2X7" if written without the space). The routing key is never a separate field. A lone routing key or a UK outward code with no second half is kept as `PstCd` as written, tagged `partial_postcode` (hard set only, the generator does not make these). A routing key is not a town: "D01" never becomes `TwnNm`.
 
 ## 6. UK building names and flats
 
@@ -104,7 +104,7 @@ Difficulty is computed from the tags, so it cannot drift from them.
 - **medium:** otherwise, two or three corruption tags, or any of `no_street_number`, `flat`, `building_name`, `floor`.
 - **easy:** everything else.
 
-Structure tags: `no_street_number`, `postal_district`, `flat`, `building_name`, `floor`, `po_box`, `county` (any `CtrySubDvsn`: a county, state or province), `locality`, `landmark` (India, section 18), `cedex` (France, section 13), `partial_postcode` (a lone routing key or outward code, section 5; hand-written set only), `not_in_geonames` (section 19; hand-written set only, optional), `no_town` (section 20; hand-written set only). `no_town` makes a record hard; `partial_postcode` and `not_in_geonames` do not change the tier. The generator never writes any of the three.
+Structure tags: `no_street_number`, `postal_district`, `flat`, `building_name`, `floor`, `po_box`, `county` (any `CtrySubDvsn`: a county, state or province), `locality`, `landmark` (India, section 18), `cedex` (France, section 13), `partial_postcode` (a lone routing key or outward code, section 5; hard set only), `not_in_geonames` (section 19; hard set only, optional), `no_town` (section 20; hard set only), `unlabelled_text` (section 21; hard set only: the raw text holds something no field fits, so it is left out of gold). `no_town` makes a record hard; `partial_postcode`, `not_in_geonames` and `unlabelled_text` do not change the tier. The generator never writes any of the four.
 
 ## 12. Rules common to the six new countries
 
@@ -130,7 +130,7 @@ Natural: `12 Rue des Tilleuls` / `69003 Lyon` / `France`.
 Natural: `Hauptstraße 12` / `20095 Hamburg` / `Deutschland`.
 
 - Number after the street: `StrtNm` "Hauptstraße", `BldgNb` "12". Letters stay as written ("12a"); ranges stay whole ("12-14").
-- Street endings: -straße, -strasse, -str., -weg, -allee, -platz, -gasse, -ring, -damm, -ufer. Names with no such ending ("Am Markt", "An der Mühle") are hand-written set only.
+- Street endings: -straße, -strasse, -str., -weg, -allee, -platz, -gasse, -ring, -damm, -ufer. Names with no such ending ("Am Markt", "An der Mühle") are hard set only.
 - Building words: Haus, Gebäude, Turm, Center. "Wohnung 5", "Whg. 5", "Zimmer 3", "Büro 12" are `Room`. "3. OG", "EG", "Erdgeschoss", "2. Etage" are `Flr` as written. "Postfach 1234" is `PstBx`. "c/o" is not generated.
 - Country written: "Deutschland", "Germany". Abbreviations: Str./Straße and Str./Strasse, also as an ending ("Hauptstr." = "Hauptstraße").
 
@@ -138,7 +138,7 @@ Natural: `Hauptstraße 12` / `20095 Hamburg` / `Deutschland`.
 
 Natural: `Keizersgracht 99` / `1015 CJ Amsterdam` / `Nederland`.
 
-- Number after the street, as in Germany. Number additions stay in `BldgNb` in the forms "99A" and "99-2". Other forms ("99 2hg", "99 bis") are hand-written set only.
+- Number after the street, as in Germany. Number additions stay in `BldgNb` in the forms "99A" and "99-2". Other forms ("99 2hg", "99 bis") are hard set only.
 - Street endings: -straat, -laan, -weg, -gracht, -plein, -kade, -singel, -dijk, -steeg, -hof, -pad.
 - `PstCd` is four digits, a space, two letters: "1015 CJ". "1015CJ" is `postcode_no_space`.
 - Building words: Gebouw, Toren. "Unit 4", "Kamer 5" are `Room`. "2e etage", "Begane grond" are `Flr`. "Postbus 123" is `PstBx`.
@@ -153,7 +153,7 @@ Natural: `123 Main Street` / `Toronto ON M5V 2T6` / `Canada`.
 - English street words: Street, Avenue, Road, Drive, Crescent, Boulevard, Court, Way, Lane, Trail, Place. French: rue, avenue, boulevard, chemin, rang, place, côte, montée. In CA "Court" is a street word.
 - Building words: Building, Tower, Centre, Plaza, Complex; French: Édifice, Tour, Complexe.
 - "Unit 5", "Suite 200", "App. 5", "Bureau 200" are `Room`. "3rd Floor", "3e étage" are `Flr`. "PO Box 123", "C.P. 123" are `PstBx`.
-- **Unit-number prefix** ("5-123 Main St" = unit 5, number 123): `Room` "5", `BldgNb` "123". Hand-written set only; the generator never writes hyphenated numbers for CA.
+- **Unit-number prefix** ("5-123 Main St" = unit 5, number 123): `Room` "5", `BldgNb` "123". Hard set only; the generator never writes hyphenated numbers for CA.
 - Country written: "Canada". "CA" in the text of a US address is California, a state, never the country. Abbreviations: Blvd/Boulevard, Ct/Court, Pl/Place, Ave/Avenue, St/Street, Rd/Road, Dr/Drive, Ln/Lane, Cres/Crescent, Ste/Suite, N/North, S/South, E/East, W/West.
 
 ## 17. United States (US)
@@ -180,7 +180,7 @@ Natural: `Flat 301, Sunrise Residency` / `Plot 12, MG Road` / `Koregaon Park` / 
 
 ## 19. Postcode-to-town ties (generator and gold)
 
-Added with the GeoNames tie fix (`docs/decisions/postcode-ties.md`). Generated gold never contradicts GeoNames at the granularity in the table below, because the generator only writes a postcode GeoNames lists for the town. This section says how tightly each country's pairing is tied, and what is left random. The hand-written hard set is not bound by it: its entries are checked against real-world knowledge, not against this table.
+Added with the GeoNames tie fix (`docs/decisions/postcode-ties.md`). Generated gold never contradicts GeoNames at the granularity in the table below, because the generator only writes a postcode GeoNames lists for the town. This section says how tightly each country's pairing is tied, and what is left random. The AI-drafted, AI-verified hard set is not bound by it: its entries are checked against real-world knowledge, not against this table.
 
 | Country | Town and postcode are tied at | Source check | Left random (never tied) |
 |---|---|---|---|
@@ -194,17 +194,38 @@ Added with the GeoNames tie fix (`docs/decisions/postcode-ties.md`). Generated g
 | CA | the first three characters (city and area code; province always checked) | 44 of 47 confirmed, 3 not | the last three characters |
 
 Rules for labelling:
-- A hand-written entry is never dropped or altered because GeoNames lacks its postcode. If its town and postcode pairing is not listed in GeoNames (at the granularity in the table), it may carry the optional tag `not_in_geonames`, so Phase 4 can report those entries separately.
+- A hard-set entry is never dropped or altered because GeoNames lacks its postcode. If its town and postcode pairing is not listed in GeoNames (at the granularity in the table), it may carry the optional tag `not_in_geonames`, so Phase 4 can report those entries separately.
 - Gold still keeps the text as written (section 0); the tie says nothing about accents or case.
 - The pairings not confirmed by GeoNames are listed in `docs/decisions/postcode-ties.md`: IE (Ennis V95, Navan C15, Killarney V93, all county and all locality-to-key ties), GB (18 post-town codes, 30 localities), CA (Montréal H2X and H4A, Québec G1V), IN (20 localities).
 - Because the generator and the rules engine both use GeoNames, town and postcode accuracy on the synthetic splits is optimistic. See `docs/decisions/geonames-circularity.md`; report the hard-set result beside it.
 
 ## 20. Records with no town (`no_town`)
 
-Some real addresses arrive with a postcode (or nothing) but no town. Hand-written set only; the generator never writes one. Tag `no_town`.
+Some real addresses arrive with a postcode (or nothing) but no town. Hard set only; the generator never writes one. Tag `no_town`.
 
 - **Gold has no `TwnNm`.** Gold may only hold text that is in the raw lines (section 0), and there is no town text. Every other field is labelled as usual, and a postcode that is present stays in `PstCd`.
 - **`Ctry` is still the true country.** If the country is not in the text, the record also carries `country_hint` and the tag `no_country` (section 8).
 - **Expected system behaviour: output no town and route the record to review.** A system must not derive a town from the postcode, a gazetteer or the country; that would invent a value that is not in the input. Phase 4 reports these records separately, because the right answer is an empty `TwnNm`, not a guess.
 - **Difficulty: hard** (section 11), whatever else the record carries.
 - `no_town` is the only case where `TwnNm` may be missing from gold. The hard-set validator requires `TwnNm` in every other record.
+
+## 21. Hard-set rules (written during the AI review of the hard set)
+
+Principles: gold follows the real-world meaning of the address, kept exactly as written (section 0); text that no XSD field fits is left unlabelled and the record is tagged `unlabelled_text`, never forced into the nearest field; a value that cannot be verified is not kept; the word lists in sections 3 and 13-18 are generator heuristics, and a clear real-world reading wins (the entry then carries a `note`). Each rule is applied by the hard-set entry named in `docs/decisions/hard-set.md`.
+
+- **21.1 Unlisted street words.** A name directly after a house number, or where a street goes, is `StrtNm` even if it has no street word from the lists ("Cnoc na Rí", "Gali No. 5" where Gali is Hindi for lane).
+- **21.2 Separators.** A dash, a slash or a bracket between segments is a separator and is not part of any value ("Cnoc na Rí - Ballinteer", "München-Haidhausen" when split by 21.9).
+- **21.3 Building name on its own line.** A line that stands alone before a numbered street line is `BldgNm`, even if it contains a street word ("Marlow Court" before "910 Wicklow Avenue"; "Rés. Rue Haute"). An abbreviation not on the scorer allowlist (such as "Rés.") stays in gold and is not expanded.
+- **21.4 County and nation.** If a county and "England", "Scotland", "Wales" or "Northern Ireland" are both written, `CtrySubDvsn` takes the more specific one (the county); the nation is unlabelled.
+- **21.5 Bare flat identifier.** A unit identifier with no keyword at the start of the street line ("3F2, 22 Holm Street", a Scottish tenement flat) is `Room` as written.
+- **21.6 Typo in the street word.** A typo inside the street word stays inside `StrtNm` as written ("boulavard Henri Carpentier"). Section 9 still holds: gold is never corrected.
+- **21.7 Building-part words.** "Hinterhaus", "Vorderhaus", "Seitenflügel" and "Haus 3" name a building within the premises: `BldgNm`.
+- **21.8 Care-of.** "c/o ..." has no field in v1 (`CareOf` is unused): unlabelled.
+- **21.9 District joined to a town.** When a district is written joined to the town by a hyphen and the district is a known part of that town, `TwnNm` is the town and `TwnLctnNm` the district ("München-Haidhausen"). A hyphenated name that is itself a town ("Garmisch-Partenkirchen") stays whole.
+- **21.10 Dutch floor addition.** In "22 2hg" (2 hoog), 22 is `BldgNb` and "2hg" is `Flr` as written.
+- **21.11 Postal station.** "succursale ...", "Station ..." and similar lines in a PO box address have no field: unlabelled.
+- **21.12 `#` unit marker.** In CA and US, "#204" before a hyphen and a street number is `Room`, with the "#" kept. (In IN, "#42" is a house number and goes to `BldgNb`.)
+- **21.13 Rural routes.** "RR 3, Site 4, Box 12" and "RR 2 Box 14" are delivery lines, not PO boxes: no field, unlabelled. `PstBx` is only for PO boxes (section 7).
+- **21.14 Several sub-areas.** When several sub-area names precede the town, `TwnLctnNm` takes the last phrase as written, including its sector ("Sector 12, Dwarka"); earlier ones ("Pocket 3") are unlabelled. "H.No." is the keyword form of "House No." (section 18).
+- **21.15 Renumbered doors.** With "NEW NO. 12, OLD NO. 7", `BldgNb` is the current number with its keyword ("NEW NO. 12"); the old number is unlabelled.
+- **21.16 Sub-districts.** A taluka, tehsil or district written beside the village or town ("Bardez" beside "Candolim") has no field (`DstrctNm` is unused): unlabelled. The place that matches the PIN's post office is `TwnNm`.

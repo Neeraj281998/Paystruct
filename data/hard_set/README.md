@@ -1,6 +1,6 @@
-# Hand-written hard set
+# Hard set
 
-The 100 addresses in this set are written by hand, outside the generator's patterns, so a system tuned on generator output cannot look better than it is. Aim for about 12 per country (100 in total).
+The addresses in this set were drafted with AI assistance outside the generator's patterns and then reviewed by the AI against public sources; they were not manually reviewed by the project owner. Each file starts with that statement. The set is the independent check on generator and GeoNames circularity. It holds 40 entries, 5 per country. Provenance: `docs/decisions/hard-set.md`; postcode checks: `docs/hard-set-verification.md`.
 
 One file per country, `IE.yaml`, `GB.yaml`, ... Every entry:
 
@@ -20,12 +20,12 @@ One file per country, `IE.yaml`, `GB.yaml`, ... Every entry:
   note: ""                 # optional
 ```
 
-Rules the validator enforces: `TwnNm` and `Ctry` are required (`TwnNm` is absent, and must be, in entries tagged `no_town`, guide section 20); `Ctry` equals the file's country; every other gold value appears in the raw lines exactly as written (guide section 0); lengths and patterns come from the XSD; tags are known tags (including the optional `partial_postcode` and `not_in_geonames`, which do not change the difficulty tier, and `no_town`, which makes the entry hard); ids are unique. The difficulty tier is computed from the tags (guide section 11), so you do not write it. Landmarks and any text with no field stay out of gold (guide section 18).
+Rules the validator enforces: `TwnNm` and `Ctry` are required (`TwnNm` is absent, and must be, in entries tagged `no_town`, guide section 20); `Ctry` equals the file's country; every other gold value appears in the raw lines exactly as written (guide section 0); lengths and patterns come from the XSD; tags are known tags (including the optional `partial_postcode` and `not_in_geonames`, which do not change the difficulty tier, and `no_town`, which makes the entry hard); ids are unique. The difficulty tier is computed from the tags (guide section 11), so you do not write it. Landmarks and any text with no field stay out of gold (guide sections 18 and 21); the entry is then tagged `landmark` or `unlabelled_text`.
 
 Entries with `example: true` only show the format. They are left out of `hard.jsonl` and you delete them when you write your own.
 
 ```bash
 data/generator/.venv/bin/python scripts/validate_hard_set.py             # check the files
-data/generator/.venv/bin/python scripts/build_hard_set.py                # write data/splits/hard.jsonl (exactly 100 real entries)
-data/generator/.venv/bin/python scripts/build_hard_set.py --allow-partial   # while you are still writing
+data/generator/.venv/bin/python scripts/build_hard_set.py                # write data/splits/hard.jsonl (at least 40 real entries)
+data/generator/.venv/bin/python scripts/build_hard_set.py --min-entries 0   # lower the minimum (default 40)
 ```

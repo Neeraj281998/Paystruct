@@ -11,7 +11,7 @@ import pytest
 import yaml
 
 from addrgen import countries
-from addrgen.hardset import TARGET_SIZE, build_records, to_record, validate_dir, validate_entry
+from addrgen.hardset import DEFAULT_MINIMUM, build_records, to_record, validate_dir, validate_entry
 from addrgen.limits import GOLD_FIELDS
 
 REPO = Path(__file__).resolve().parents[3]
@@ -99,13 +99,19 @@ def test_committed_files_are_valid_with_two_marked_examples_each():
         assert len(examples) == 2 and all(e["note"].startswith("EXAMPLE") for e in examples), code
 
 
-def test_the_hand_written_entries_do_not_exceed_the_target():
+def test_the_committed_set_meets_the_default_minimum():
     _, entries = validate_dir(HARD_DIR)
-    assert len([e for _, e in entries if not e.get("example")]) <= TARGET_SIZE
+    assert len([e for _, e in entries if not e.get("example")]) >= DEFAULT_MINIMUM
+
+
+def test_every_file_carries_the_ai_provenance_header():
+    for f in HARD_DIR.glob("*.yaml"):
+        first = f.read_text(encoding="utf-8").splitlines()[0]
+        assert first == "# AI-drafted and AI-reviewed against public sources; not manually reviewed by the project owner.", f.name
 
 
 def examples_only(tmp_path):
-    """A copy of the hard-set files with the hand-written entries removed, so only the two examples per country remain."""
+    """A copy of the hard-set files with the real entries removed, so only the two examples per country remain."""
     for f in HARD_DIR.glob("*.yaml"):
         data = yaml.safe_load(f.read_text(encoding="utf-8"))
         data["entries"] = [e for e in data["entries"] if e.get("example")]
@@ -140,17 +146,24 @@ def test_duplicate_ids_are_reported(tmp_path):
 
 def test_converter_leaves_examples_out_by_default(tmp_path):
     only = examples_only(tmp_path)
-    assert build_records(only, allow_partial=True) == []
-    assert len(build_records(only, include_examples=True, allow_partial=True)) == 16
-    assert not any("-x" in r["id"] for r in build_records(HARD_DIR, allow_partial=True))
+    assert build_records(only, minimum=0) == []
+    assert len(build_records(only, include_examples=True, minimum=0)) == 16
+    assert not any("-x" in r["id"] for r in build_records(HARD_DIR, minimum=0))
 
 
-def test_converter_demands_exactly_100(tmp_path):
+def test_converter_demands_the_minimum(tmp_path):
     only = examples_only(tmp_path)
-    with pytest.raises(ValueError, match=f"has {TARGET_SIZE}"):
+    with pytest.raises(ValueError, match=f"minimum is {DEFAULT_MINIMUM}"):
         build_records(only)
-    with pytest.raises(ValueError, match=f"has {TARGET_SIZE}"):
+    with pytest.raises(ValueError, match=f"minimum is {DEFAULT_MINIMUM}"):
         build_records(only, include_examples=True)
+
+
+def test_the_minimum_is_configurable():
+    n = len(build_records(HARD_DIR, minimum=0))
+    assert len(build_records(HARD_DIR, minimum=n)) == n
+    with pytest.raises(ValueError, match=f"minimum is {n + 1}"):
+        build_records(HARD_DIR, minimum=n + 1)
 
 
 def test_converter_stops_on_an_invalid_entry(tmp_path):
@@ -158,7 +171,7 @@ def test_converter_stops_on_an_invalid_entry(tmp_path):
         (tmp_path / f.name).write_text(f.read_text(encoding="utf-8"), encoding="utf-8")
     (tmp_path / "IE.yaml").write_text((tmp_path / "IE.yaml").read_text(encoding="utf-8").replace("Forge House\"", "Forge Hous\"", 1))
     with pytest.raises(ValueError, match="does not appear in the raw lines"):
-        build_records(tmp_path, include_examples=True, allow_partial=True)
+        build_records(tmp_path, include_examples=True, minimum=0)
 
 
 def test_record_format_matches_the_generator():
@@ -179,7 +192,7 @@ def test_difficulty_is_computed_not_written():
 
 def test_example_records_load_as_json_lines(tmp_path):
     (tmp_path / "ex").mkdir()
-    records = build_records(examples_only(tmp_path / "ex"), include_examples=True, allow_partial=True)
+    records = build_records(examples_only(tmp_path / "ex"), include_examples=True, minimum=0)
     assert all(r["id"].split("-")[1].startswith("x") for r in records)
     assert {r["country"] for r in records} == set(countries.codes())
     from addrgen.hardset import write_jsonl
@@ -193,29 +206,42 @@ def _run(script, *args):
 
 def test_validate_script_passes_on_the_committed_files():
     result = _run("validate_hard_set.py")
-    assert result.returncode == 0 and "of 100 hand-written entries, 16 examples" in result.stdout
+    assert result.returncode == 0 and "AI-drafted, AI-verified entries" in result.stdout and "16 examples" in result.stdout
 
 
-def test_build_script_refuses_a_partial_set_and_writes_with_the_flag(tmp_path):
+def test_build_script_refuses_a_short_set_and_writes_with_a_lower_minimum(tmp_path):
     (tmp_path / "ex").mkdir()
     only = examples_only(tmp_path / "ex")
     out = tmp_path / "hard.jsonl"
     assert _run("build_hard_set.py", "--dir", str(only), "--out", str(out)).returncode == 1 and not out.exists()
-    assert _run("build_hard_set.py", "--dir", str(only), "--out", str(out), "--allow-partial", "--include-examples").returncode == 0
+    assert _run("build_hard_set.py", "--dir", str(only), "--out", str(out), "--min-entries", "0", "--include-examples").returncode == 0
     assert len(out.read_text(encoding="utf-8").splitlines()) == 16
 
 
 def test_committed_hard_jsonl_is_empty_or_matches_the_yaml():
-    """The owner builds hard.jsonl after reviewing the drafts; until then it stays empty."""
+    """hard.jsonl is built from the YAML by scripts/build_hard_set.py and must never drift from it."""
     path = REPO / "data" / "splits" / "hard.jsonl"
     records = [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines()]
-    assert records == [] or records == build_records(HARD_DIR, allow_partial=True)
+    assert records == build_records(HARD_DIR)
 
 
 def test_partial_postcode_and_not_in_geonames_are_accepted():
     entry = dict(copy.deepcopy(GOOD), tags=["county", "no_country", "partial_postcode", "not_in_geonames"])
     assert validate_entry(entry, "IE") == []
     assert validate_entry(dict(copy.deepcopy(GOOD), tags=["county", "no_country", "not_in_geonames"]), "IE") == []
+
+
+def test_unlabelled_text_is_accepted_and_does_not_change_the_tier():
+    from addrgen.difficulty import difficulty_of
+    entry = dict(copy.deepcopy(GOOD), tags=["county", "no_country", "unlabelled_text"])
+    assert validate_entry(entry, "IE") == []
+    assert difficulty_of({"flat", "unlabelled_text"}) == difficulty_of({"flat"}) == "medium"
+    assert difficulty_of({"unlabelled_text"}) == "easy"
+
+
+def test_an_unknown_tag_is_still_rejected():
+    entry = dict(copy.deepcopy(GOOD), tags=["county", "no_country", "made_up_tag"])
+    assert any("made_up_tag" in p for p in validate_entry(entry, "IE"))
 
 
 def test_the_two_tags_do_not_change_the_difficulty_tier():
@@ -227,7 +253,7 @@ def test_the_two_tags_do_not_change_the_difficulty_tier():
 
 def test_the_generator_never_writes_the_hand_written_only_tags(records):
     used = {t for r in records for t in r["tags"]}
-    assert not used & {"partial_postcode", "not_in_geonames", "no_town"}
+    assert not used & {"partial_postcode", "not_in_geonames", "no_town", "unlabelled_text"}
 
 
 def test_no_town_entry_has_no_twnnm_and_is_valid():
@@ -256,7 +282,7 @@ def test_a_missing_town_without_the_tag_is_still_an_error():
 def test_no_town_makes_a_record_hard():
     from addrgen.difficulty import difficulty_of
     assert difficulty_of({"no_town"}) == "hard" and difficulty_of({"flat", "no_town"}) == "hard"
-    assert difficulty_of({"partial_postcode", "not_in_geonames"}) == "easy"  # the other two hand-written tags do not
+    assert difficulty_of({"partial_postcode", "not_in_geonames"}) == "easy"  # the other hard-set-only tags do not
 
 
 def test_a_no_town_entry_converts_to_a_hard_record():
@@ -269,4 +295,4 @@ def test_a_no_town_entry_converts_to_a_hard_record():
 def test_every_committed_no_town_entry_converts_to_a_hard_record():
     _, entries = validate_dir(HARD_DIR)
     tagged = [e for _, e in entries if "no_town" in e.get("tags", [])]
-    assert len(tagged) >= 8 and all(to_record(e)["difficulty"] == "hard" for e in tagged)
+    assert len(tagged) >= 4 and all(to_record(e)["difficulty"] == "hard" for e in tagged)

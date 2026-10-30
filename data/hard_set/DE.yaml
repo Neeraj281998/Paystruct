@@ -1,6 +1,6 @@
-# Drafted by AI, to be reviewed by the project owner. Remove this line only when the project owner says the file is reviewed.
-# Hand-written hard set, DE. Format: data/hard_set/README.md
-# The two entries marked EXAMPLE only show the format. Delete them when you add your own.
+# AI-drafted and AI-reviewed against public sources; not manually reviewed by the project owner.
+# Hard set, DE. Format: data/hard_set/README.md. Decisions: docs/decisions/hard-set.md. Postcode checks: docs/hard-set-verification.md.
+# The two entries marked EXAMPLE only show the format. They are left out of hard.jsonl.
 country: DE
 entries:
   # ---- EXAMPLE (not part of the hard set) ----
@@ -35,8 +35,7 @@ entries:
       Ctry: "DE"
     country_hint: DE
 
-  # ---- your entries go below this line ----
-  # GUIDE?: 'Hinterhaus' (rear building) is not a guide building word ('Haus' is only a separate word); labelled BldgNm.
+  # ---- entries ----
   - id: de-h001
     tags: ["building_name", "floor", "no_country"]
     raw_lines:
@@ -52,7 +51,7 @@ entries:
       TwnNm: "Berlin"
       Ctry: "DE"
     country_hint: DE
-  # VERIFY: Is 70049 the Stuttgart Postfach postcode? PO box postcodes differ from street postcodes, and GeoNames may not list it.
+    note: "'Hinterhaus' (rear building) names a building within the premises: BldgNm (guide 21.7)."
   - id: de-h002
     tags: ["no_country", "not_in_geonames", "po_box"]
     raw_lines:
@@ -64,23 +63,9 @@ entries:
       TwnNm: "Stuttgart"
       Ctry: "DE"
     country_hint: DE
-  - id: de-h003
-    tags: ["all_caps", "country_name", "flat"]
-    raw_lines:
-      - "MAXSTRASSE 7"
-      - "WOHNUNG 12"
-      - "50667 KÖLN"
-      - "GERMANY"
-    gold:
-      StrtNm: "MAXSTRASSE"
-      BldgNb: "7"
-      Room: "WOHNUNG 12"
-      PstCd: "50667"
-      TwnNm: "KÖLN"
-      Ctry: "DE"
-  # GUIDE?: 'c/o Familie Brandt' (care of): CareOf is not used in v1 and the guide does not say how to treat the text. Left unlabelled.
+    note: "Postcode and town pairing checked against public sources: see docs/hard-set-verification.md."
   - id: de-h004
-    tags: ["abbreviated", "no_country"]
+    tags: ["abbreviated", "no_country", "unlabelled_text"]
     raw_lines:
       - "c/o Familie Brandt"
       - "Bergstr. 3"
@@ -92,71 +77,9 @@ entries:
       TwnNm: "Heidelberg"
       Ctry: "DE"
     country_hint: DE
-  - id: de-h005
-    tags: ["no_country"]
-    raw_lines:
-      - "Am Mühlgraben 9"
-      - "04109 Leipzig"
-    gold:
-      StrtNm: "Am Mühlgraben"
-      BldgNb: "9"
-      PstCd: "04109"
-      TwnNm: "Leipzig"
-      Ctry: "DE"
-    country_hint: DE
-  - id: de-h006
-    tags: ["no_country", "one_line", "reordered"]
-    raw_lines:
-      - "22765 Hamburg, Fischtreppenweg 11"
-    gold:
-      PstCd: "22765"
-      TwnNm: "Hamburg"
-      StrtNm: "Fischtreppenweg"
-      BldgNb: "11"
-      Ctry: "DE"
-    country_hint: DE
-  # NOTE: 20457 is Hamburg (HafenCity); the town is deliberately absent.
-  - id: de-h007
-    tags: ["country_name", "no_town"]
-    raw_lines:
-      - "Rabenstieg 3"
-      - "20457"
-      - "Deutschland"
-    gold:
-      StrtNm: "Rabenstieg"
-      BldgNb: "3"
-      PstCd: "20457"
-      Ctry: "DE"
-  - id: de-h008
-    tags: ["flat", "floor", "no_country"]
-    raw_lines:
-      - "Tuchplatz 12-14"
-      - "3. Etage, Zimmer 304"
-      - "90402 Nürnberg"
-    gold:
-      StrtNm: "Tuchplatz"
-      BldgNb: "12-14"
-      Flr: "3. Etage"
-      Room: "Zimmer 304"
-      PstCd: "90402"
-      TwnNm: "Nürnberg"
-      Ctry: "DE"
-    country_hint: DE
-  - id: de-h009
-    tags: ["no_country", "typo"]
-    raw_lines:
-      - "Schilerstrasse 23"
-      - "01067 Dresden"
-    gold:
-      StrtNm: "Schilerstrasse"
-      BldgNb: "23"
-      PstCd: "01067"
-      TwnNm: "Dresden"
-      Ctry: "DE"
-    country_hint: DE
-  # GUIDE?: Town written with its district joined by a hyphen. Gold keeps the whole 'München-Haidhausen' as TwnNm; the guide has no rule for a district joined to a town.
+    note: "'c/o Familie Brandt' has no XSD field (CareOf is not used in v1): left unlabelled (guide 21.8)."
   - id: de-h010
-    tags: ["no_country"]
+    tags: ["locality", "no_country"]
     raw_lines:
       - "Anton-Lenz-Allee 7"
       - "81667 München-Haidhausen"
@@ -164,25 +87,11 @@ entries:
       StrtNm: "Anton-Lenz-Allee"
       BldgNb: "7"
       PstCd: "81667"
-      TwnNm: "München-Haidhausen"
+      TwnLctnNm: "Haidhausen"
+      TwnNm: "München"
       Ctry: "DE"
     country_hint: DE
-  # ---- odd or ambiguous ----
-  - id: de-h011
-    tags: ["building_name", "flat", "no_country"]
-    raw_lines:
-      - "Haus 3, Wohnung 5"
-      - "Birkenhain 21"
-      - "28195 Bremen"
-    gold:
-      BldgNm: "Haus 3"
-      Room: "Wohnung 5"
-      StrtNm: "Birkenhain"
-      BldgNb: "21"
-      PstCd: "28195"
-      TwnNm: "Bremen"
-      Ctry: "DE"
-    country_hint: DE
+    note: "Haidhausen is a district of München; the postcode belongs to München. Town and district are labelled apart and the hyphen is a separator (guide 21.2, 21.9)."
   - id: de-h012
     tags: ["country_name", "flat", "one_line", "reordered"]
     raw_lines:

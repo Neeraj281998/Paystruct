@@ -10,7 +10,7 @@ The same applies to anything else the generator and the rules share (street word
 
 ## Decisions
 
-- **The hand-written hard set is the independent check.** Its 100 addresses are written by the project owner, outside the generator and without GeoNames, so a result there is not inflated by shared data. Results on it are always reported separately from the synthetic splits (spec: "always report its results separately").
+- **The AI-drafted, AI-verified hard set is the independent check.** Its 40 addresses were drafted with AI assistance outside the generator and without GeoNames, then checked by the AI against public sources (not by the project owner), so a result there is not inflated by shared data. Results on it are always reported separately from the synthetic splits (spec: "always report its results separately").
 - **This must be reported as a limitation.** Wherever town or postcode accuracy on the synthetic splits is reported (README results table, final write-up, talking points), the text says that the generator and the rules engine share GeoNames, that these numbers are optimistic for that reason, and points to the hard-set number as the unbiased one. Say "synthetic data" every time, as the spec already requires.
 - **Baselines are not affected in the same way.** libpostal and Swift's open-source model do not use GeoNames; their numbers on town and postcode fields are therefore a fair reference, and the gap between them and PayStruct on the synthetic splits should not be read as all due to the rules.
 - **Do not tune on the overlap.** Phase 3 should not add gazetteer entries or postcode rules by inspecting what the generator produces; the gazetteer is loaded from GeoNames as is.

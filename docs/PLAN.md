@@ -21,7 +21,7 @@ Principle: **the AI proposes, plain code decides.**
   - **Routing**: valid, grounded and confident goes to `repaired`. Everything else goes to `human_review`. If no town is written, never derive one: leave `TwnNm` unset and send to review (labelling guide section 20).
   - **Queue**: a Postgres table, not Kafka.
   - **MCP server** (Python, FastMCP): `queue_stats`, `explain_rejection`, `propose_repair` (dry run), `approve_and_replay`. The last needs an approval token that only a separate human-run CLI can create. The server re-validates before publishing.
-- **Evaluation**: rules-only vs LLM-only (no verification) vs the full agent, on the frozen test split, reported separately on the hand-written hard set. Plus about 15 prompt-injection cases and an "ambiguous, should go to human" slice.
+- **Evaluation**: rules-only vs LLM-only (no verification) vs the full agent, on the frozen test split, reported separately on the AI-drafted, AI-verified hard set. Plus about 15 prompt-injection cases and an "ambiguous, should go to human" slice.
   - Metrics: exact repair rate, field accuracy, **false-repair rate (the most important)**, human-review rate, injection resistance, cost per payment, p50 and p95 latency.
 
 ## Day plan
@@ -30,10 +30,10 @@ About 3.5 to 4 hours a day. Each day ends committed.
 
 ### Day 1: finish and build the hard set
 
-- Review `docs/hard-set-review.md` (8 VERIFY and 28 GUIDE? entries) and remove the "Drafted by AI" headers only when you say each file is reviewed.
-- Shrink the hard set to about 40 entries (about 5 per country), keeping the hard tags (`no_town`, `no_country`, reordered, typos, abbreviations) and at least 3 `no_town` entries. Run `build_hard_set.py` (the 100-entry minimum is lowered for this plan; record that in a decision note).
+- The review was delegated to the AI (2026-10-30): VERIFY items checked against public sources (`docs/hard-set-verification.md`), GUIDE? items decided by written principles (`docs/decisions/hard-set.md`). Files carry the header "AI-drafted and AI-reviewed against public sources; not manually reviewed by the project owner."
+- Shrink the hard set to about 40 entries (about 5 per country), keeping the hard tags (`no_town`, `no_country`, reordered, typos, abbreviations) and at least 4 `no_town` entries. `build_hard_set.py` takes a configurable minimum (default 40).
 - Report the real N in `data/splits/hard.jsonl`'s manifest line and in `docs/PROGRESS.md`. Do not round it up.
-- **Done when:** `data/splits/hard.jsonl` exists, every file is marked reviewed by you, the validator passes, and the real N is written down.
+- **Done when:** `data/splits/hard.jsonl` exists, every file carries the AI-provenance header, the validator passes, and the real N is written down.
 
 ### Day 2: Python rules engine, all 8 countries
 

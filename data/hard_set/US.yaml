@@ -1,6 +1,6 @@
-# Drafted by AI, to be reviewed by the project owner. Remove this line only when the project owner says the file is reviewed.
-# Hand-written hard set, US. Format: data/hard_set/README.md
-# The two entries marked EXAMPLE only show the format. Delete them when you add your own.
+# AI-drafted and AI-reviewed against public sources; not manually reviewed by the project owner.
+# Hard set, US. Format: data/hard_set/README.md. Decisions: docs/decisions/hard-set.md. Postcode checks: docs/hard-set-verification.md.
+# The two entries marked EXAMPLE only show the format. They are left out of hard.jsonl.
 country: US
 entries:
   # ---- EXAMPLE (not part of the hard set) ----
@@ -36,7 +36,7 @@ entries:
       Ctry: "US"
     country_hint: US
 
-  # ---- your entries go below this line ----
+  # ---- entries ----
   - id: us-h001
     tags: ["abbreviated", "county", "flat", "no_country"]
     raw_lines:
@@ -51,21 +51,6 @@ entries:
       PstCd: "91101"
       Ctry: "US"
     country_hint: US
-  - id: us-h002
-    tags: ["country_name", "county", "floor"]
-    raw_lines:
-      - "346 Huntley Place, 2nd Fl"
-      - "Brooklyn, NY 11215-3304"
-      - "USA"
-    gold:
-      BldgNb: "346"
-      StrtNm: "Huntley Place"
-      Flr: "2nd Fl"
-      TwnNm: "Brooklyn"
-      CtrySubDvsn: "NY"
-      PstCd: "11215-3304"
-      Ctry: "US"
-  # GUIDE?: 'Court' is a street word in the US (section 17), so 'Marlow Court' would be a StrtNm, but a second street follows. Gold reads it as a building name.
   - id: us-h003
     tags: ["building_name", "county", "no_country"]
     raw_lines:
@@ -81,34 +66,7 @@ entries:
       PstCd: "78704"
       Ctry: "US"
     country_hint: US
-  # VERIFY: Is 83707 a Boise PO box ZIP? (Boise ZIPs run 83701-83799; not sure of this one)
-  - id: us-h004
-    tags: ["county", "no_country", "po_box"]
-    raw_lines:
-      - "P.O. Box 8841"
-      - "Boise, Idaho 83707"
-    gold:
-      PstBx: "P.O. Box 8841"
-      TwnNm: "Boise"
-      CtrySubDvsn: "Idaho"
-      PstCd: "83707"
-      Ctry: "US"
-    country_hint: US
-  - id: us-h005
-    tags: ["abbreviated", "county", "flat", "no_country"]
-    raw_lines:
-      - "1400 Corbin Blvd NW, Ste 700"
-      - "Washington, DC 20009"
-    gold:
-      BldgNb: "1400"
-      StrtNm: "Corbin Blvd NW"
-      Room: "Ste 700"
-      TwnNm: "Washington"
-      CtrySubDvsn: "DC"
-      PstCd: "20009"
-      Ctry: "US"
-    country_hint: US
-  # VERIFY: Is 96797 the Waipahu ZIP (Hawaii '94-' addresses)? (believed correct)
+    note: "'Marlow Court' stands alone on a line before a numbered street, so it is a building name although 'Court' is a US street word (guide 21.3)."
   - id: us-h006
     tags: ["county", "no_country"]
     raw_lines:
@@ -122,6 +80,7 @@ entries:
       PstCd: "96797"
       Ctry: "US"
     country_hint: US
+    note: "Postcode and town pairing checked against public sources: see docs/hard-set-verification.md. The street name is synthetic."
   - id: us-h007
     tags: ["abbreviated", "all_caps", "country_name", "one_line"]
     raw_lines:
@@ -133,89 +92,15 @@ entries:
       CtrySubDvsn: "TX"
       PstCd: "78751"
       Ctry: "US"
-  # VERIFY: Is 05032 the Bethel, VT ZIP? (believed correct)
-  # GUIDE?: Rural route box ('RR 2 Box 14'): the guide only covers 'P.O. Box'. Gold uses PstBx.
   - id: us-h008
-    tags: ["county", "no_country", "po_box"]
+    tags: ["county", "no_country", "unlabelled_text"]
     raw_lines:
       - "RR 2 Box 14"
       - "Bethel, VT 05032"
     gold:
-      PstBx: "RR 2 Box 14"
       TwnNm: "Bethel"
       CtrySubDvsn: "VT"
       PstCd: "05032"
       Ctry: "US"
     country_hint: US
-  - id: us-h009
-    tags: ["abbreviated", "building_name", "county", "floor", "no_country"]
-    raw_lines:
-      - "Harborview Tower, Fl 22"
-      - "800 Tideway Dr"
-      - "Seattle, WA 98101"
-    gold:
-      BldgNm: "Harborview Tower"
-      Flr: "Fl 22"
-      BldgNb: "800"
-      StrtNm: "Tideway Dr"
-      TwnNm: "Seattle"
-      CtrySubDvsn: "WA"
-      PstCd: "98101"
-      Ctry: "US"
-    country_hint: US
-  - id: us-h010
-    tags: ["abbreviated", "county", "no_country"]
-    raw_lines:
-      - "12 Sagebrush Trl"
-      - "Santa Fe NM"
-    gold:
-      BldgNb: "12"
-      StrtNm: "Sagebrush Trl"
-      TwnNm: "Santa Fe"
-      CtrySubDvsn: "NM"
-      Ctry: "US"
-    country_hint: US
-  # ---- odd or ambiguous ----
-  - id: us-h011
-    tags: ["abbreviated", "country_name", "county"]
-    raw_lines:
-      - "207 Bluff Rd."
-      - "Charleston, South Carolina 29401"
-      - "US"
-    gold:
-      BldgNb: "207"
-      StrtNm: "Bluff Rd"
-      TwnNm: "Charleston"
-      CtrySubDvsn: "South Carolina"
-      PstCd: "29401"
-      Ctry: "US"
-  # GUIDE?: 'Bldg 2' is an abbreviated building identifier; 'Bldg' is not on the guide's abbreviation list and there is no rule for a numbered building.
-  - id: us-h012
-    tags: ["abbreviated", "building_name", "county", "flat", "no_country"]
-    raw_lines:
-      - "Bldg 2, Apt 4"
-      - "5800 Stonebridge Rd"
-      - "Charlotte, NC 28211"
-    gold:
-      BldgNm: "Bldg 2"
-      Room: "Apt 4"
-      BldgNb: "5800"
-      StrtNm: "Stonebridge Rd"
-      TwnNm: "Charlotte"
-      CtrySubDvsn: "NC"
-      PstCd: "28211"
-      Ctry: "US"
-    country_hint: US
-  # NOTE: 12203 is Albany, NY; the town is deliberately absent, the state NY is written.
-  - id: us-h013
-    tags: ["abbreviated", "county", "no_country", "no_town"]
-    raw_lines:
-      - "2290 Lindenwald Dr"
-      - "NY 12203"
-    gold:
-      BldgNb: "2290"
-      StrtNm: "Lindenwald Dr"
-      CtrySubDvsn: "NY"
-      PstCd: "12203"
-      Ctry: "US"
-    country_hint: US
+    note: "'RR 2 Box 14' is a rural-route delivery line, not a PO box: no XSD field, left unlabelled (guide 21.13). Postcode and town pairing checked against public sources: see docs/hard-set-verification.md."

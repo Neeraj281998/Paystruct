@@ -1,4 +1,6 @@
-# Hard-set review checklist
+# Hard-set review checklist (superseded)
+
+**Superseded 2026-10-30.** The review was delegated to the AI. The decisions are in `docs/decisions/hard-set.md` and the postcode checks in `docs/hard-set-verification.md`. The 100-entry draft was cut to 40, so most items below no longer exist. This file is kept as the record of the original questions and none of its checkboxes was ticked by the project owner.
 
 Every drafted entry in `data/hard_set/*.yaml` that carries a `# VERIFY` or `# GUIDE?` comment. The entries are AI drafts; each file keeps its 'Drafted by AI' header until you say it is reviewed. Write your decision on the blank line, then edit the YAML entry (and delete its comment) to match.
 
@@ -503,7 +505,7 @@ TwnNm: Rotterdam
 Ctry: NL
 country_hint: NL
 ```
-Question: '22 2hg' ('2 hoog' = second floor): the guide leaves this form to the hand-written set without saying how to label it. Gold keeps '22 2hg' as BldgNb.
+Question: '22 2hg' ('2 hoog' = second floor): the guide leaves this form to the hard set without saying how to label it. Gold keeps '22 2hg' as BldgNb.
 
 - [ ] Resolved
 - My decision: 

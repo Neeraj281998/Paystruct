@@ -8,7 +8,7 @@ Scope changed on 2026-10-30: the project is time-boxed to one week and merged wi
 2. Principle: **the AI proposes, plain code decides.** A Python rules engine runs first. A repair agent (Claude API, hand-written tool-use loop) proposes fixes for what the rules cannot resolve. Plain code accepts a fix only if the deterministic validator passes and a grounding check passes (every component appears in the original text; only the country code and an allowlisted set of abbreviation expansions may be added).
 3. Valid, grounded and confident results go to `repaired`. Everything else goes to a Postgres human-review queue. If no town is written, never derive one: leave it unset and send to review (labelling guide section 20).
 4. The agent has no tool that approves or publishes. An MCP server (FastMCP) exposes `queue_stats`, `explain_rejection`, `propose_repair` (dry run) and `approve_and_replay`, which needs an approval token that only a separate human-run CLI can create. The server re-validates before publishing.
-5. Evaluation compares rules-only, LLM-only (no verification) and the full agent on the frozen test split, reported separately on the hand-written hard set, plus about 15 prompt-injection cases and an "ambiguous, should go to human" slice. Metrics: exact repair rate, field accuracy, false-repair rate (the most important), human-review rate, injection resistance, cost per payment, p50 and p95 latency.
+5. Evaluation compares rules-only, LLM-only (no verification) and the full agent on the frozen test split, reported separately on the AI-drafted, AI-verified hard set, plus about 15 prompt-injection cases and an "ambiguous, should go to human" slice. Metrics: exact repair rate, field accuracy, false-repair rate (the most important), human-review rate, injection resistance, cost per payment, p50 and p95 latency.
 
 ## Tech stack
 
@@ -38,7 +38,7 @@ paystruct/
     generator/              Python synthetic data generator
     labelling-guide.md      how ambiguous cases are labelled
     splits/                 dev, calibration, test (frozen), hard set
-    hard_set/               hand-written hard-set YAML
+    hard_set/               AI-drafted, AI-verified hard-set YAML
   eval/                     old plan, superseded by agent/eval/
   docs/
     PLAN.md                 the one-week plan

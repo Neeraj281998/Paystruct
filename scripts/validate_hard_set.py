@@ -5,7 +5,7 @@ from collections import Counter
 from pathlib import Path
 
 import _path  # noqa: F401
-from addrgen.hardset import TARGET_SIZE, validate_dir
+from addrgen.hardset import DEFAULT_MINIMUM, validate_dir
 
 
 def main() -> int:
@@ -17,7 +17,8 @@ def main() -> int:
         print("FAIL:", line)
     real = Counter(c for c, e in entries if not e.get("example"))
     examples = sum(1 for _, e in entries if e.get("example"))
-    print(f"{sum(real.values())} of {TARGET_SIZE} hand-written entries, {examples} examples "
+    n = sum(real.values())
+    print(f"{n} AI-drafted, AI-verified entries (minimum {DEFAULT_MINIMUM}), {examples} examples "
           f"(per country: {dict(sorted(real.items())) or 'none yet'})")
     if not problems:
         print("OK: every entry is valid")

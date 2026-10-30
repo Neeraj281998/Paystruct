@@ -4,7 +4,7 @@ import argparse
 from pathlib import Path
 
 import _path  # noqa: F401
-from addrgen.hardset import build_records, write_jsonl
+from addrgen.hardset import DEFAULT_MINIMUM, build_records, write_jsonl
 
 REPO = _path.REPO_ROOT
 
@@ -14,10 +14,10 @@ def main() -> int:
     p.add_argument("--dir", type=Path, default=REPO / "data/hard_set")
     p.add_argument("--out", type=Path, default=REPO / "data/splits/hard.jsonl")
     p.add_argument("--include-examples", action="store_true", help="also write the entries marked example")
-    p.add_argument("--allow-partial", action="store_true", help="accept fewer (or more) than 100 entries")
+    p.add_argument("--min-entries", type=int, default=DEFAULT_MINIMUM, help="fewest real entries to accept (default %(default)s)")
     args = p.parse_args()
     try:
-        records = build_records(args.dir, args.include_examples, args.allow_partial)
+        records = build_records(args.dir, args.include_examples, args.min_entries)
     except ValueError as e:
         print(f"FAIL:\n{e}")
         return 1
