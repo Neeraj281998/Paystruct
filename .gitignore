@@ -13,3 +13,6 @@ data/reference/
 # GeoNames gazetteer for the rules engine (CC BY 4.0, https://www.geonames.org); download it, do not commit it
 service/src/main/resources/gazetteer/
 .hypothesis/
+
+# jqwik property-test database
+.jqwik-database
