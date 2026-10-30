@@ -212,3 +212,9 @@ def test_write_readme_replaces_only_the_block(tmp_path):
     report.write_readme(report.load_runs(tmp_path), tmp_path, p)
     out = p.read_text(encoding="utf-8")
     assert out.startswith("before\n") and out.endswith("\nafter\n") and "old" not in out and "N = 10" in out
+
+
+def test_the_resume_numbers_file_equals_the_generated_one():
+    expected = report.render_resume_numbers(report.load_runs())
+    assert report.RESUME.read_text(encoding="utf-8") == expected                         # run: python -m evals.report --resume-numbers
+    assert "synthetic" in expected and "may NOT use" in expected and "14 November" not in expected
