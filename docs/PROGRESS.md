@@ -15,7 +15,7 @@ Scope changed on 2026-10-30 to a one-week merged plan: see `docs/PLAN.md` and `d
 - [x] Day 1: finish and build the hard set (real N = 40)
 - [x] Day 2: Python rules engine for all 8 countries, tuned on dev only (`agent/rules`, `docs/decisions/rules-engine.md`; thresholds are placeholders until Day 5)
 - [x] Day 3: small eval harness and rules-only results table (`evals/`, `docs/eval-results.md`; plan said `agent/eval/`, the code is in `evals/`)
-- [ ] Day 4: agent loop, grounding check, retries, routing, property tests
+- [x] Day 4: agent loop, grounding check, retries, routing, property tests (`agent/repair`, `docs/decisions/agent.md`, `docs/threat-model.md`; built and tested offline, no real API call yet)
 - [ ] Day 5: three-way comparison, threshold on calibration, one final run on test, injection cases
 - [ ] Day 6: MCP server and approval gate
 - [ ] Day 7: README, results, resume bullets
@@ -102,3 +102,15 @@ Things to know:
 - No engine change was made after seeing hard-set results (the changelog is empty).
 - The CI smoke run uses no GeoNames file (it is not committed), so its baseline is lower than the local dev result and it only catches regressions in the non-gazetteer parts. The workflow has not run on GitHub yet.
 - Calibration has been seen twice for reporting (Day 2 audit, Day 3 baseline); Day 5 threshold setting on it is slightly optimistic.
+
+## Day 4 notes (2026-10-30)
+
+Built: `agent/repair/` (validator with reason codes, grounding, support standard, four tools with strict schemas and a citation guard, a hand-written tool-use loop with limits in code, propose-then-verify pipeline, confidence from signals, idempotent worker), `agent/db/schema.sql` (agent_repairs, agent_steps, agent_queue), `agent/config/routing.yml` and `prices.yml`, the `agent` system in `evals/` (same interface and run records), `docs/decisions/agent.md`, `docs/threat-model.md`.
+
+Not built, by design: MCP, RAG, Kafka, UI. The agent has not been run against the real API: no `ANTHROPIC_API_KEY` was available, so the dev smoke run (`--limit 30`) is still to do, and there is no spend. Tests use a scripted fake model and the real SDK objects over a mock transport.
+
+Things to know:
+- Model `claude-haiku-5-5` (checked 2026-10-30). The brief asked for temperature 0; this model rejects non-default sampling parameters and the SDK no longer takes `temperature`, so none is sent (`docs/decisions/agent.md`).
+- The routing threshold (0.85) and the confidence weights are placeholders for Day 5, to be set on calibration. The AdrLine maximum is still the placeholder from the rules config; the CBPR+ limit must be confirmed.
+- A field with no pattern, word-list or gazetteer support caps confidence below the threshold, so such a field is never auto-accepted, by the rules or by the model.
+- The agent runs on dev only until Day 5; real runs need `--limit`, a run budget, an estimate, `--yes` above 50 and the owner's approval above 30 records.
