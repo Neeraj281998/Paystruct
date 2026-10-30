@@ -48,5 +48,6 @@ def model_from_env() -> str:
     return os.environ.get("PAYSTRUCT_MODEL", DEFAULT_MODEL)
 
 
-def run_budget_usd() -> float:
-    return float(os.environ.get("PAYSTRUCT_RUN_BUDGET_USD", "2.00"))
+def run_budget_usd(default: float = 2.00) -> float:
+    """The total a run may spend before it aborts (env PAYSTRUCT_RUN_BUDGET_USD; tuning runs default to 0.50 in evals.run)."""
+    return float(os.environ.get("PAYSTRUCT_RUN_BUDGET_USD", str(default)))

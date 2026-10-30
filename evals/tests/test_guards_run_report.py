@@ -56,16 +56,13 @@ def test_the_evals_code_never_reads_the_test_file_directly():
 
 
 # -- systems ---------------------------------------------------------------------------------------------------------
-def test_llm_only_is_a_stub_and_the_agent_needs_a_key(monkeypatch):
+def test_the_model_systems_need_a_key_and_never_ask_for_one(monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
-    s = LlmOnly()
-    assert s.available is False and "not yet available" in s.unavailable_reason
-    with pytest.raises(NotAvailable):
-        s.run(["x"])
-    a = Agent()
-    assert a.available is False and "ANTHROPIC_API_KEY" in a.unavailable_reason
-    with pytest.raises(NotAvailable):
-        a.run(["x"])
+    for cls in (LlmOnly, Agent):
+        s = cls()
+        assert s.available is False and "ANTHROPIC_API_KEY" in s.unavailable_reason
+        with pytest.raises(NotAvailable):
+            s.run(["x"])
 
 
 def test_rules_only_returns_fields_route_latency_and_zero_cost():
@@ -78,8 +75,8 @@ def _env_without_key():
     return {k: v for k, v in os.environ.items() if k != "ANTHROPIC_API_KEY"}
 
 
-def test_the_stub_and_the_keyless_agent_write_no_record(tmp_path):
-    for system, expect in (("llm_only", "not yet available"), ("agent", "ANTHROPIC_API_KEY")):
+def test_the_keyless_model_systems_write_no_record(tmp_path):
+    for system, expect in (("llm_only", "ANTHROPIC_API_KEY"), ("agent", "ANTHROPIC_API_KEY")):
         p = subprocess.run([sys.executable, "-m", "evals.run", "--system", system, "--split", "dev", "--limit", "5", "--out-dir", str(tmp_path)],
                            capture_output=True, text=True, cwd=guards.REPO_ROOT, env=_env_without_key())
         assert p.returncode == 3 and expect in p.stdout and list(tmp_path.iterdir()) == []

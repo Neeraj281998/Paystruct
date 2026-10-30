@@ -36,9 +36,8 @@ def test_more_than_30_real_records_need_the_owners_approval_and_more_than_50_nee
     assert "sk-ant-not-a-real-key" not in p.stdout + p.stderr
 
 
-def test_the_agent_runs_on_dev_only_today():
-    with pytest.raises(SystemExit, match="REFUSED"):
-        worker.load_jsonl("calibration", 5)
+def test_the_worker_reads_tuning_splits_only():
+    assert len(worker.load_jsonl("dev", 3)) == 3 and len(worker.load_jsonl("calibration", 3)) == 3
     with pytest.raises(SystemExit, match="REFUSED"):
         worker.load_jsonl("hard", 5)
     with pytest.raises(SystemExit, match="REFUSED"):

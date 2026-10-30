@@ -46,6 +46,28 @@ def measured_usage(results_dir: Path = RESULTS_DIR) -> dict | None:
     return best
 
 
+def measured_llm_only_usage(results_dir: Path = RESULTS_DIR) -> dict | None:
+    """Cost per call of llm_only (one call per record), from the llm_only run record with the most calls that kept per-record details."""
+    best = None
+    for path in sorted(Path(results_dir).glob("*.json")):
+        try:
+            run = json.loads(path.read_text(encoding="utf-8"))
+        except ValueError:
+            continue
+        if run.get("system") != "llm_only" or "records" not in run:
+            continue
+        called = [r for r in run["records"] if (r["system_extra"].get("tokens_in") or 0) > 0]
+        if not called:
+            continue
+        cost = sum(r["cost_usd"] for r in called)
+        usage = {"file": path.name, "calls": len(called), "per_call_usd": cost / len(called),
+                 "tokens_in_per_call": sum(r["system_extra"]["tokens_in"] for r in called) / len(called),
+                 "tokens_out_per_call": sum(r["system_extra"]["tokens_out"] for r in called) / len(called)}
+        if best is None or usage["calls"] >= best["calls"]:
+            best = usage
+    return best
+
+
 def count_reaching_model(items, engine: RulesEngine, routing: dict) -> int:
     """How many of (msg_id, lines, hint) the model would see: rules NEEDS_LLM and not skipped by fix 5. Free."""
     pipe = RepairPipeline(engine, object(), InMemoryRepository(), routing)
@@ -76,3 +98,16 @@ def estimate_llm_only(n_records: int, usage: dict | None, prices: Prices, model:
     return {"records": n_records, "calls": n_records, "expected_usd": round(n_records * per_call, 4), "per_call_usd": round(per_call, 6),
             "prompt_size_ratio": ratio, "measured_per_call_usd": round(usage["per_call_usd"], 6), "measured_from": usage["file"],
             "note": f"an estimate: the measured average call, with the prompt assumed {ratio:.0%} of the agent's"}
+
+
+def estimate_llm_only_run(n_records: int, prices: Prices, model: str, results_dir: Path = RESULTS_DIR) -> dict:
+    """The estimate printed before an llm_only run: measured from an earlier llm_only run record when one exists, otherwise the stated
+    assumption (the agent's measured call with the prompt scaled by LLM_ONLY_PROMPT_RATIO), labelled as such."""
+    own = measured_llm_only_usage(results_dir)
+    if own is not None:
+        per = own["per_call_usd"]
+        return {"records": n_records, "calls": n_records, "expected_usd": round(n_records * per, 4), "worst_case_usd": round(n_records * per * 1.0, 4),
+                "per_call_usd": round(per, 6), "basis": "measured", "measured_from": own["file"], "run_budget_usd": run_budget_usd()}
+    est = estimate_llm_only(n_records, measured_usage(results_dir), prices, model)
+    est.update(basis="stated assumption (no llm_only run record yet)", worst_case_usd=est.get("expected_usd"), run_budget_usd=run_budget_usd())
+    return est

@@ -23,8 +23,8 @@ from agent.repair.store import InMemoryRepository
 from agent.rules.engine import RulesEngine
 from agent.rules.xsd import REPO_ROOT
 
-# Day 4 may run the agent on dev only. The calibration split, the hard set and the test split are Day 5.
-ALLOWED_SPLITS = ("dev",)
+# The worker reads tuning splits only. The hard set and the test split are run by evals.run (scripts/final_run.py), once.
+ALLOWED_SPLITS = ("dev", "calibration")
 UNAPPROVED_REAL_API_RECORDS = 30
 CONFIRM_ABOVE = 50
 

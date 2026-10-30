@@ -93,6 +93,7 @@ def test_without_a_measurement_only_the_cap_bounds_the_run(tmp_path):
     assert est["worst_case_usd"] == pytest.approx(3 * ROUTING["max_cost_usd_per_payment"])
 
 
+@pytest.mark.skipif(not (REPO_ROOT / "service/src/main/resources/gazetteer/cities500.txt").exists(), reason="needs the GeoNames file (not committed)")
 def test_the_first_30_dev_records_would_not_reach_the_model():
     from agent.rules.cli import load_split
     items = [(r["id"], r["raw_lines"], r.get("country_hint")) for r in load_split("dev")[:30]]

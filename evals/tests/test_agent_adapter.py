@@ -69,24 +69,30 @@ def test_the_report_shows_the_first_n_table_with_every_system(tmp_path):
     assert "model claude-haiku-5-5" in text_
 
 
-def test_evals_cli_guards_for_the_agent():
+def test_evals_cli_guards_for_the_model_systems():
     env = {**os.environ, "ANTHROPIC_API_KEY": "sk-ant-not-a-real-key"}
-    base = [sys.executable, "-m", "evals.run", "--system", "agent"]
 
-    def go(*args):
-        return subprocess.run([*base, *args], capture_output=True, text=True, cwd=guards.REPO_ROOT, env=env)
+    def go(system, *args):
+        return subprocess.run([sys.executable, "-m", "evals.run", "--system", system, *args], capture_output=True, text=True, cwd=guards.REPO_ROOT, env=env)
 
-    p = go("--split", "calibration", "--limit", "5")
-    assert p.returncode == 2 and "runs on dev only" in p.stderr
-    for split in ("hard", "test"):
-        assert go("--split", split, "--limit", "5").returncode == 2
-    p = go("--split", "dev")
-    assert p.returncode == 2 and "--limit" in p.stderr
-    p = go("--split", "dev", "--limit", "31")
-    assert p.returncode == 2 and "approval" in p.stderr
-    p = go("--split", "dev", "--limit", "60", "--approved-over-30")
-    assert p.returncode == 2 and "--yes" in p.stderr
-    assert "sk-ant-not-a-real-key" not in p.stdout + p.stderr
+    for system in ("agent", "llm_only"):
+        # every one of these is refused before any API call can be made
+        p = go(system, "--split", "dev")
+        assert p.returncode == 2 and "--limit N or --ids is mandatory" in p.stderr
+        p = go(system, "--split", "calibration")
+        assert p.returncode == 2 and "mandatory" in p.stderr
+        p = go(system, "--split", "dev", "--limit", "31")
+        assert p.returncode == 2 and "approval" in p.stderr
+        p = go(system, "--split", "dev", "--limit", "60", "--approved-over-30")
+        assert p.returncode == 2 and "--yes" in p.stderr and "estimate" in p.stdout
+        assert go(system, "--split", "hard").returncode == 2                       # 40 records: needs the owner's approval
+        assert "approval" in go(system, "--split", "hard").stderr
+        assert go(system, "--split", "test").returncode == 2                       # no --final
+        t = go(system, "--split", "test", "--final", "--approved-over-30", "--yes")
+        assert t.returncode == 2 and "not enabled" in t.stderr                     # the guard is not enabled
+        both = go(system, "--split", "dev", "--ids", "ca-00000", "--limit", "3")
+        assert both.returncode == 2 and "not both" in both.stderr
+        assert "sk-ant-not-a-real-key" not in p.stdout + p.stderr
 
 
 def test_run_records_keep_per_record_details_for_dev_and_calibration_only():
@@ -150,8 +156,7 @@ def test_the_agent_robustness_run_is_guarded_like_every_real_run():
     def go(*args):
         return subprocess.run([*base, *args], capture_output=True, text=True, cwd=guards.REPO_ROOT, env=env)
 
-    assert go().returncode == 2 and "mandatory" in go().stderr
-    assert "approval" in go("--limit", "31").stderr
+    assert go().returncode == 2 and "mandatory" in go().stderr          # no --limit: refused before anything runs
     both = subprocess.run([*base, "--split", "dev", "--limit", "3"], capture_output=True, text=True, cwd=guards.REPO_ROOT, env=env)
     assert both.returncode == 2 and "not both" in both.stderr
 
