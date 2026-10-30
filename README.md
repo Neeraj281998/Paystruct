@@ -72,12 +72,14 @@ python -m agent.db            # applies the agent tables (idempotent)
 Run each system on dev (the tuning split; the frozen test split is not for tuning and the harness refuses it without `--final`):
 
 ```bash
-python -m evals.run --system rules_only --split dev          # free, needs the GeoNames file
+python -m evals.run --system rules_only --split dev          # free; install the GeoNames file first (step 3)
 export ANTHROPIC_API_KEY=...                                  # set it in your shell; never write it to a file
 python -m evals.run --system llm_only --split dev --limit 30  # costs money: prints an estimate first
 python -m evals.run --system agent    --split dev --limit 30  # costs money: prints an estimate first
 python -m evals.report                                        # regenerates docs/eval-results.md from the run records
 ```
+
+Without the GeoNames file the rules engine still runs but has no town list, so its numbers are much lower and are not comparable; install the file before running anything you intend to compare.
 
 Model runs need `--limit N` or `--ids`, stop at a run budget (`PAYSTRUCT_RUN_BUDGET_USD`, default $0.50), and need `--approved-over-30` above 30 records. The hard set and the test split were run once, by `scripts/final_run.py`, after the `final-config` tag (`docs/decisions/final-run-protocol.md`).
 
