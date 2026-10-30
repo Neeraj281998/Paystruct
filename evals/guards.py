@@ -10,8 +10,9 @@ FREE = ("dev", "calibration")
 EXPLICIT = ("hard",)          # runs only when asked for with --split hard
 TEST = "test"
 
-# The owner flips this on Day 5, for the one final run. Until then the test split is refused even with --final.
-TEST_RUN_ENABLED = False
+# Flipped by the owner for the one final run (docs/decisions/final-run-protocol.md). The test split still needs --final, and
+# scripts/verify_frozen.py must pass first.
+TEST_RUN_ENABLED = True
 
 WARNING = (
     "\n" + "!" * 78 + "\n"

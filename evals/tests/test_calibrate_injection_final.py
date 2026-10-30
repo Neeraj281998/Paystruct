@@ -332,8 +332,7 @@ def test_final_run_runs_in_order_and_stops_at_the_first_failure():
     assert rc2 == 2 and len(calls) == 4 and "STOPPED" in out2 and "TEST_RUN_ENABLED" in out2
 
 
-def test_final_run_does_not_enable_the_test_guard():
-    assert guards.TEST_RUN_ENABLED is False
+def test_final_run_does_not_touch_the_test_guard_flag():
     src = (guards.REPO_ROOT / "scripts" / "final_run.py").read_text()
     assert "TEST_RUN_ENABLED =" not in src and "test_enabled=True" not in src
 

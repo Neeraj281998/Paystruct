@@ -15,24 +15,41 @@ def test_free_and_explicit_splits_are_allowed(split):
     assert guards.check_split(split).split == split
 
 
-def test_test_without_final_is_refused():
+def test_test_without_final_is_refused_even_when_the_guard_is_enabled(monkeypatch):
+    monkeypatch.setattr(guards, "TEST_RUN_ENABLED", True)
     with pytest.raises(guards.Refused, match="--final"):
         guards.check_split("test")
     with pytest.raises(guards.Refused, match="--final"):
-        guards.check_split("test", final=False, test_enabled=True)
+        guards.check_split("test", final=False, verify=lambda: None)
 
 
-def test_test_with_final_is_still_refused_in_this_session():
-    assert guards.TEST_RUN_ENABLED is False
+def test_test_with_final_is_refused_while_the_flag_is_off(monkeypatch):
+    monkeypatch.setattr(guards, "TEST_RUN_ENABLED", False)
     with pytest.raises(guards.Refused, match="not enabled"):
-        guards.check_split("test", final=True)
+        guards.check_split("test", final=True, verify=lambda: None)
 
 
-def test_when_enabled_the_frozen_hash_is_checked_first():
+def test_test_is_refused_when_verify_frozen_fails(monkeypatch):
+    monkeypatch.setattr(guards, "TEST_RUN_ENABLED", True)
     with pytest.raises(guards.Refused, match="not intact"):
-        guards.check_split("test", final=True, test_enabled=True, verify=lambda: "test.jsonl has changed")
-    d = guards.check_split("test", final=True, test_enabled=True, verify=lambda: None)
-    assert d.split == "test" and "ONCE" in d.warning
+        guards.check_split("test", final=True, verify=lambda: "test.jsonl has changed")
+    with pytest.raises(guards.Refused, match="not intact"):
+        guards.check_split("test", final=True)          # the default check is replaced by the safety net: it reports a problem, never hashes the real file
+
+
+def test_the_test_split_runs_only_with_the_flag_and_final_and_an_intact_hash(monkeypatch):
+    monkeypatch.setattr(guards, "TEST_RUN_ENABLED", True)
+    d = guards.check_split("test", final=True, verify=lambda: None)
+    assert d.split == "test" and "ONCE" in d.warning and d.path.name == "test.jsonl"
+    for flag, final, ok in ((False, True, True), (True, False, True), (True, True, False), (False, False, False)):
+        monkeypatch.setattr(guards, "TEST_RUN_ENABLED", flag)
+        with pytest.raises(guards.Refused):
+            guards.check_split("test", final=final, verify=(lambda: None) if ok else (lambda: "changed"))
+
+
+def test_the_flag_is_on_in_the_committed_source_for_the_final_run():
+    src = (guards.REPO_ROOT / "evals" / "guards.py").read_text()
+    assert "TEST_RUN_ENABLED = True" in src          # flipped in its own commit, before the final-config tag
 
 
 def test_unknown_splits_are_refused():
@@ -40,12 +57,22 @@ def test_unknown_splits_are_refused():
         guards.check_split("whatever")
 
 
-def test_the_cli_refuses_test_and_writes_nothing(tmp_path):
-    for extra in ([], ["--final"]):
-        p = subprocess.run([sys.executable, "-m", "evals.run", "--system", "rules_only", "--split", "test", "--out-dir", str(tmp_path), *extra],
-                           capture_output=True, text=True, cwd=guards.REPO_ROOT)
-        assert p.returncode == 2 and "refused" in (p.stderr + p.stdout).lower()
-        assert list(tmp_path.iterdir()) == []
+def test_the_cli_refuses_test_without_final_and_writes_nothing(tmp_path):
+    # a separate process cannot use the safety net, so only the refusal that never reaches the file is run this way
+    p = subprocess.run([sys.executable, "-m", "evals.run", "--system", "rules_only", "--split", "test", "--out-dir", str(tmp_path)],
+                       capture_output=True, text=True, cwd=guards.REPO_ROOT)
+    assert p.returncode == 2 and "refused" in (p.stderr + p.stdout).lower() and "--final" in p.stderr
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_the_cli_with_final_is_refused_in_process_when_the_hash_check_fails_or_the_flag_is_off(tmp_path, monkeypatch):
+    # in this process the real hash check is replaced by the safety net, so nothing reads the real test split
+    for system in ("rules_only", "llm_only", "agent"):
+        assert run.main(["--system", system, "--split", "test", "--final", "--out-dir", str(tmp_path)]) == 2
+    monkeypatch.setattr(guards, "TEST_RUN_ENABLED", False)
+    monkeypatch.setattr(guards, "_verify_frozen", lambda: None)
+    assert run.main(["--system", "rules_only", "--split", "test", "--final", "--out-dir", str(tmp_path)]) == 2
+    assert list(tmp_path.iterdir()) == []
 
 
 def test_the_evals_code_never_reads_the_test_file_directly():

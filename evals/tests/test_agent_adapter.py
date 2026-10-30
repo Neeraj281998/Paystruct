@@ -88,8 +88,6 @@ def test_evals_cli_guards_for_the_model_systems():
         assert go(system, "--split", "hard").returncode == 2                       # 40 records: needs the owner's approval
         assert "approval" in go(system, "--split", "hard").stderr
         assert go(system, "--split", "test").returncode == 2                       # no --final
-        t = go(system, "--split", "test", "--final", "--approved-over-30", "--yes")
-        assert t.returncode == 2 and "not enabled" in t.stderr                     # the guard is not enabled
         both = go(system, "--split", "dev", "--ids", "ca-00000", "--limit", "3")
         assert both.returncode == 2 and "not both" in both.stderr
         assert "sk-ant-not-a-real-key" not in p.stdout + p.stderr
@@ -219,3 +217,11 @@ def test_for_hard_and_test_only_the_count_is_shown_and_no_details_are_stored():
         rec["_file"] = "x.json"
         shown = report.review_correct(rec)
         assert "/" in shown and "%" not in shown                                    # a count, never a rate
+
+
+def test_a_model_run_on_test_with_final_is_refused_in_process_when_the_frozen_hash_fails(tmp_path):
+    # in a separate process this would reach the real test split now that the guard is enabled, so it is tested in this one,
+    # where the hash check is replaced by the safety net in evals/tests/conftest.py
+    for system in ("agent", "llm_only"):
+        assert run.main(["--system", system, "--split", "test", "--final", "--approved-over-30", "--yes", "--out-dir", str(tmp_path)]) == 2
+    assert list(tmp_path.iterdir()) == []
