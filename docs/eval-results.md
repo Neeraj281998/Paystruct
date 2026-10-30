@@ -38,6 +38,16 @@ Rules-only field accuracy: 100.0% (3549/3549) [99.9-100.0] of gold values.
 | CtrySubDvsn | 271 | 271 | 0 | 0 | 100.0 | 100.0 | 100.0 |
 | Ctry | 600 | 600 | 0 | 0 | 100.0 | 100.0 | 100.0 |
 
+**First 30 records of dev** (the same records for every system)
+
+| system | n | exact_all [95% CI] | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | latency p50 / p95 (ms) | cost per 1,000 (USD) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| rules_only | 30 | 100.0% (30/30) [88.6-100.0] | 86.7% (26/30) [70.3-94.7] | 0.0% (0/26) [0.0-12.9] | 0.0% (0/30) (0 values) | 86.7% (26/30) | 13.3% (4/30) | 0.0% (0/30) | 1.30 / 1.92 | 0.0000 |
+| llm_only | not run yet | | | | | | | | | |
+| agent | not run yet | | | | | | | | | |
+
+- rules_only: run 2026-10-30T13:44:58Z, git `f18122dd25`, model none, total cost $0.0000, file `20261030T134458Z_rules_only_dev_first30_f18122d.json`
+
 **By country**
 
 | bucket | n | exact_all | auto-correct | false repair (k/n ACCEPT) | hallucinated records | ACCEPT | NEEDS_LLM | REVIEW |
