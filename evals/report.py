@@ -79,7 +79,7 @@ def bucket_table(title: str, buckets: dict) -> list[str]:
 
 
 def element_table(per_element: dict) -> list[str]:
-    lines = ["**Per element** (precision, recall, F1 in percent; n_gold is the number of gold values)", "",
+    lines = ["**Per element, rules-only run** (precision, recall, F1 in percent; n_gold is the number of gold values)", "",
              "| element | n_gold | tp | fp | fn | precision | recall | F1 |", "|---|---|---|---|---|---|---|---|"]
     for name, e in per_element.items():
         small = e["n_gold"] < MIN_BUCKET
@@ -115,6 +115,10 @@ DEFINITION = {
     "llm_only": "the model's single answer is the output of every record it could parse; an answer that does not parse is no output",
     "agent": "a record routed to REVIEW publishes no fields, so it counts as not exact here",
 }
+
+
+RULES_ONLY_NOTE = ("The per-element, by-country, by-tier, by-tag and failure-pattern tables below are the rules-only run. "
+                   "The agent accepts the rules' own ACCEPT records (plus any it repairs), so its accepted records are the rules-only run's.")
 
 
 def system_definitions(here: dict) -> list[str]:
@@ -157,15 +161,17 @@ def split_section(split: str, runs: dict) -> list[str]:
             out.append(f"Records whose gold has no town: {nt['n']}; the system output a town for {nt['output_a_town']}, "
                        f"accepted one for {nt['accepted_with_a_town']}, and the output town was not in the input for {nt['hallucinated_town']}.")
         out.append("")
+        out.append(RULES_ONLY_NOTE)
+        out.append("")
         out += element_table(m["per_element"])
         out += subset_tables(split, runs)
-        out += bucket_table("By country", m["by_country"])
-        out += bucket_table("By tier", m["by_tier"])
+        out += bucket_table("By country, rules-only run", m["by_country"])
+        out += bucket_table("By tier, rules-only run", m["by_tier"])
         if split == "hard":
-            out += bucket_table("By tag (a record counts in every one of its tags)", m["by_tag"])
+            out += bucket_table("By tag, rules-only run (a record counts in every one of its tags)", m["by_tag"])
         fp = list(m["failure_patterns"].items())[:10]
         if fp:
-            out += ["**Failure patterns** (count of records; no record ids)", "", "| pattern | records |", "|---|---|"]
+            out += ["**Failure patterns, rules-only run** (count of records; no record ids)", "", "| pattern | records |", "|---|---|"]
             out += [f"| {p} | {c} |" for p, c in fp] + [""]
     return out
 

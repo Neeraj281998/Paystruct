@@ -19,7 +19,7 @@ A record holds: the git sha (and whether tracked files were modified), the split
 ## Guards
 
 - `dev` and `calibration` run freely. `hard` runs only with `--split hard`, for reporting; the engine is never changed because of it without an entry in `docs/results-changelog.md`.
-- `test` is refused without `--final`. With `--final` it is still refused until `TEST_RUN_ENABLED` in `evals/guards.py` is set to True on Day 5; when it is, `scripts/verify_frozen.py` is run first and a warning is printed. The harness never reads the test file today, not even to hash it.
+- `test` is refused without `--final`. With `--final` it runs only if `TEST_RUN_ENABLED` in `evals/guards.py` is True (it was set in its own commit, e7d2f7f, before the `final-config` tag) and the frozen hash is intact (`verify_frozen`), and a warning is printed. The test split was run once, for the final numbers; tests never read the real file.
 - The plan's `agent/eval/` is `evals/` in practice.
 
 ## Not yet

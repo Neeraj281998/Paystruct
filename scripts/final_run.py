@@ -4,8 +4,8 @@
 Checks (all must pass): the working tree is clean, the git tag final-config exists on HEAD, scripts/verify_frozen.py passes, and
 PAYSTRUCT_RUN_BUDGET_USD is set. Then it prints the estimate for every run, requires you to type FINAL, and runs in order:
 all three systems on the hard set, all three on the test split with --final, and the injection slice for any system that has not run it.
-It then regenerates the report. It does not enable the test guard (evals/guards.py): flip TEST_RUN_ENABLED in a separate commit,
-then tag final-config on that commit, then run this.
+It then regenerates the report. It does not change the test guard (evals/guards.py): TEST_RUN_ENABLED was flipped in its own commit, and final-config tagged on that
+commit, before this script was run.
 """
 from __future__ import annotations
 
@@ -135,7 +135,7 @@ def main(argv=None, env=None, runner=None, input_fn=input, git_fn=git, verify_fn
         out(f"\n=== {label}")
         rc = runner(cmd)
         if rc != 0:
-            out(f"STOPPED: '{label}' exited with {rc}. Nothing after it was run. (If the test guard refused, enable TEST_RUN_ENABLED in a separate commit and re-tag.)")
+            out(f"STOPPED: '{label}' exited with {rc}. Nothing after it was run. (If the test guard refused, check TEST_RUN_ENABLED in evals/guards.py and the frozen hash.)")
             return rc
     out("\nThe final runs are done. Review docs/eval-results.md; any change from here must be logged in docs/results-changelog.md.")
     return 0

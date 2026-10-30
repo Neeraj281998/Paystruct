@@ -25,7 +25,9 @@ Dataset size: 600 records. Rules-only counts every non-ACCEPT record as not repa
 - rules_only: exact_all 100.0% (600/600) [99.4-100.0]; field accuracy 100.0% (3549/3549) [99.9-100.0] of gold values. Here, every field of every record is the rules' own output, whether or not the record is ACCEPT.
 
 
-**Per element** (precision, recall, F1 in percent; n_gold is the number of gold values)
+The per-element, by-country, by-tier, by-tag and failure-pattern tables below are the rules-only run. The agent accepts the rules' own ACCEPT records (plus any it repairs), so its accepted records are the rules-only run's.
+
+**Per element, rules-only run** (precision, recall, F1 in percent; n_gold is the number of gold values)
 
 | element | n_gold | tp | fp | fn | precision | recall | F1 |
 |---|---|---|---|---|---|---|---|
@@ -53,7 +55,7 @@ Dataset size: 600 records. Rules-only counts every non-ACCEPT record as not repa
 - llm_only: run 2026-10-30T14:53:54Z, git `fe7054e765`, model claude-haiku-5-5, total cost $0.0079, file `20261030T145354Z_llm_only_dev_first30_fe7054e.json`
 - agent: run 2026-10-30T14:11:03Z, git `093ead5a97`, model claude-haiku-5-5, total cost $0.0000, file `20261030T141103Z_agent_dev_first30_093ead5.json`
 
-**By country**
+**By country, rules-only run**
 
 | bucket | n | exact_all | auto-correct | false repair (k/n ACCEPT) | hallucinated records | ACCEPT | NEEDS_LLM | REVIEW |
 |---|---|---|---|---|---|---|---|---|
@@ -66,7 +68,7 @@ Dataset size: 600 records. Rules-only counts every non-ACCEPT record as not repa
 | NL | 75 | 100.0% (75/75) | 98.7% (74/75) | 0.0% (0/74) | 0.0% (0/75) | 98.7% (74/75) | 1.3% (1/75) | 0.0% (0/75) |
 | US | 75 | 100.0% (75/75) | 100.0% (75/75) | 0.0% (0/75) | 0.0% (0/75) | 100.0% (75/75) | 0.0% (0/75) | 0.0% (0/75) |
 
-**By tier**
+**By tier, rules-only run**
 
 | bucket | n | exact_all | auto-correct | false repair (k/n ACCEPT) | hallucinated records | ACCEPT | NEEDS_LLM | REVIEW |
 |---|---|---|---|---|---|---|---|---|
@@ -96,7 +98,9 @@ Dataset size: 400 records. Rules-only counts every non-ACCEPT record as not repa
 - agent: exact_all 85.8% (343/400) [82.0-88.8]; field accuracy 83.6% (1981/2370) [82.0-85.0] of gold values. Here, a record routed to REVIEW publishes no fields, so it counts as not exact here.
 
 
-**Per element** (precision, recall, F1 in percent; n_gold is the number of gold values)
+The per-element, by-country, by-tier, by-tag and failure-pattern tables below are the rules-only run. The agent accepts the rules' own ACCEPT records (plus any it repairs), so its accepted records are the rules-only run's.
+
+**Per element, rules-only run** (precision, recall, F1 in percent; n_gold is the number of gold values)
 
 | element | n_gold | tp | fp | fn | precision | recall | F1 |
 |---|---|---|---|---|---|---|---|
@@ -112,7 +116,7 @@ Dataset size: 400 records. Rules-only counts every non-ACCEPT record as not repa
 | CtrySubDvsn | 177 | 176 | 1 | 1 | 99.4 | 99.4 | 99.4 |
 | Ctry | 400 | 400 | 0 | 0 | 100.0 | 100.0 | 100.0 |
 
-**By country**
+**By country, rules-only run**
 
 | bucket | n | exact_all | auto-correct | false repair (k/n ACCEPT) | hallucinated records | ACCEPT | NEEDS_LLM | REVIEW |
 |---|---|---|---|---|---|---|---|---|
@@ -125,7 +129,7 @@ Dataset size: 400 records. Rules-only counts every non-ACCEPT record as not repa
 | NL | 50 | 100.0% (50/50) | 100.0% (50/50) | 0.0% (0/50) | 0.0% (0/50) | 100.0% (50/50) | 0.0% (0/50) | 0.0% (0/50) |
 | US | 50 | 98.0% (49/50) | 98.0% (49/50) | 2.0% (1/50) | 0.0% (0/50) | 100.0% (50/50) | 0.0% (0/50) | 0.0% (0/50) |
 
-**By tier**
+**By tier, rules-only run**
 
 | bucket | n | exact_all | auto-correct | false repair (k/n ACCEPT) | hallucinated records | ACCEPT | NEEDS_LLM | REVIEW |
 |---|---|---|---|---|---|---|---|---|
@@ -133,7 +137,7 @@ Dataset size: 400 records. Rules-only counts every non-ACCEPT record as not repa
 | hard | 133 | 97.0% (129/133) | 85.7% (114/133) | 1.7% (2/116) | 0.0% (0/133) | 87.2% (116/133) | 12.8% (17/133) | 0.0% (0/133) |
 | medium | 134 | 100.0% (134/134) | 86.6% (116/134) | 0.0% (0/116) | 0.0% (0/134) | 86.6% (116/134) | 13.4% (18/134) | 0.0% (0/134) |
 
-**Failure patterns** (count of records; no record ids)
+**Failure patterns, rules-only run** (count of records; no record ids)
 
 | pattern | records |
 |---|---|
@@ -166,7 +170,9 @@ Dataset size: 40 records. Rules-only counts every non-ACCEPT record as not repai
 
 Records whose gold has no town: 5; the system output a town for 1, accepted one for 1, and the output town was not in the input for 0.
 
-**Per element** (precision, recall, F1 in percent; n_gold is the number of gold values)
+The per-element, by-country, by-tier, by-tag and failure-pattern tables below are the rules-only run. The agent accepts the rules' own ACCEPT records (plus any it repairs), so its accepted records are the rules-only run's.
+
+**Per element, rules-only run** (precision, recall, F1 in percent; n_gold is the number of gold values)
 
 | element | n_gold | tp | fp | fn | precision | recall | F1 |
 |---|---|---|---|---|---|---|---|
@@ -182,7 +188,7 @@ Records whose gold has no town: 5; the system output a town for 1, accepted one 
 | CtrySubDvsn | 14 | 13 | 3 | 1 | 81.2 | 92.9 | 86.7 |
 | Ctry | 40 | 40 | 0 | 0 | 100.0 | 100.0 | 100.0 |
 
-**By country**
+**By country, rules-only run**
 
 | bucket | n | exact_all | auto-correct | false repair (k/n ACCEPT) | hallucinated records | ACCEPT | NEEDS_LLM | REVIEW |
 |---|---|---|---|---|---|---|---|---|
@@ -195,7 +201,7 @@ Records whose gold has no town: 5; the system output a town for 1, accepted one 
 | NL | 5 | 60.0% (3/5) | 60.0% (3/5) | 0/3 | 0.0% (0/5) | 60.0% (3/5) | 40.0% (2/5) | 0.0% (0/5) |
 | US | 5 | 60.0% (3/5) | 60.0% (3/5) | 0/3 | 0.0% (0/5) | 60.0% (3/5) | 40.0% (2/5) | 0.0% (0/5) |
 
-**By tier**
+**By tier, rules-only run**
 
 | bucket | n | exact_all | auto-correct | false repair (k/n ACCEPT) | hallucinated records | ACCEPT | NEEDS_LLM | REVIEW |
 |---|---|---|---|---|---|---|---|---|
@@ -203,7 +209,7 @@ Records whose gold has no town: 5; the system output a town for 1, accepted one 
 | hard | 34 | 58.8% (20/34) | 32.4% (11/34) | 15.4% (2/13) | 0.0% (0/34) | 38.2% (13/34) | 50.0% (17/34) | 11.8% (4/34) |
 | medium | 5 | 40.0% (2/5) | 20.0% (1/5) | 0/1 | 0.0% (0/5) | 20.0% (1/5) | 80.0% (4/5) | 0.0% (0/5) |
 
-**By tag (a record counts in every one of its tags)**
+**By tag, rules-only run (a record counts in every one of its tags)**
 
 | bucket | n | exact_all | auto-correct | false repair (k/n ACCEPT) | hallucinated records | ACCEPT | NEEDS_LLM | REVIEW |
 |---|---|---|---|---|---|---|---|---|
@@ -232,7 +238,7 @@ Records whose gold has no town: 5; the system output a town for 1, accepted one 
 | typo | 1 | 1/1 | 0/1 | - (0/0) | 0/1 | 0/1 | 1/1 | 0/1 |
 | unlabelled_text | 8 | 12.5% (1/8) | 0.0% (0/8) | 1/1 | 0.0% (0/8) | 12.5% (1/8) | 87.5% (7/8) | 0.0% (0/8) |
 
-**Failure patterns** (count of records; no record ids)
+**Failure patterns, rules-only run** (count of records; no record ids)
 
 | pattern | records |
 |---|---|
@@ -270,7 +276,9 @@ Dataset size: 1000 records. Rules-only counts every non-ACCEPT record as not rep
 - agent: exact_all 89.0% (890/1000) [86.9-90.8]; field accuracy 87.4% (5151/5896) [86.5-88.2] of gold values. Here, a record routed to REVIEW publishes no fields, so it counts as not exact here.
 
 
-**Per element** (precision, recall, F1 in percent; n_gold is the number of gold values)
+The per-element, by-country, by-tier, by-tag and failure-pattern tables below are the rules-only run. The agent accepts the rules' own ACCEPT records (plus any it repairs), so its accepted records are the rules-only run's.
+
+**Per element, rules-only run** (precision, recall, F1 in percent; n_gold is the number of gold values)
 
 | element | n_gold | tp | fp | fn | precision | recall | F1 |
 |---|---|---|---|---|---|---|---|
@@ -286,7 +294,7 @@ Dataset size: 1000 records. Rules-only counts every non-ACCEPT record as not rep
 | CtrySubDvsn | 446 | 443 | 2 | 3 | 99.6 | 99.3 | 99.4 |
 | Ctry | 1000 | 1000 | 0 | 0 | 100.0 | 100.0 | 100.0 |
 
-**By country**
+**By country, rules-only run**
 
 | bucket | n | exact_all | auto-correct | false repair (k/n ACCEPT) | hallucinated records | ACCEPT | NEEDS_LLM | REVIEW |
 |---|---|---|---|---|---|---|---|---|
@@ -299,7 +307,7 @@ Dataset size: 1000 records. Rules-only counts every non-ACCEPT record as not rep
 | NL | 125 | 100.0% (125/125) | 100.0% (125/125) | 0.0% (0/125) | 0.0% (0/125) | 100.0% (125/125) | 0.0% (0/125) | 0.0% (0/125) |
 | US | 125 | 99.2% (124/125) | 99.2% (124/125) | 0.0% (0/124) | 0.0% (0/125) | 99.2% (124/125) | 0.0% (0/125) | 0.8% (1/125) |
 
-**By tier**
+**By tier, rules-only run**
 
 | bucket | n | exact_all | auto-correct | false repair (k/n ACCEPT) | hallucinated records | ACCEPT | NEEDS_LLM | REVIEW |
 |---|---|---|---|---|---|---|---|---|
@@ -307,7 +315,7 @@ Dataset size: 1000 records. Rules-only counts every non-ACCEPT record as not rep
 | hard | 333 | 98.8% (329/333) | 88.0% (293/333) | 0.7% (2/295) | 0.0% (0/333) | 88.6% (295/333) | 11.1% (37/333) | 0.3% (1/333) |
 | medium | 334 | 99.7% (333/334) | 87.4% (292/334) | 0.0% (0/292) | 0.0% (0/334) | 87.4% (292/334) | 12.6% (42/334) | 0.0% (0/334) |
 
-**Failure patterns** (count of records; no record ids)
+**Failure patterns, rules-only run** (count of records; no record ids)
 
 | pattern | records |
 |---|---|
