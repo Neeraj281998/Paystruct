@@ -40,3 +40,7 @@ It may not claim: CBPR+ certification (say "implements a documented subset of CB
 ## Swift timing
 
 Swift has deferred Standards Release 2026 and expects to set new timing for structured addresses by December 2026. No cutover date is stated in this project; check Swift's announcement and date the check before publishing.
+
+## Archived Java rules engine
+
+The Java rules engine (abandoned Phase 3A) was archived on branch `archive/java-rules-3a` and not merged. The Python engine in `agent/rules/` replaces it.
