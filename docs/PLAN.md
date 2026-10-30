@@ -43,9 +43,9 @@ About 3.5 to 4 hours a day. Each day ends committed.
 
 ### Day 3: small eval harness and rules-only table
 
-- `agent/eval/`: a scorer (exact repair, field accuracy, false repair, review rate; the allowlisted expansions fold per guide sections 9 and 10) and an `eval_runs` record for each run.
+- `evals/`: a scorer (exact repair, field accuracy, false repair, review rate; the allowlisted expansions fold per guide sections 9 and 10) and an run record in `evals/results/` for each run.
 - Run rules-only on dev and calibration. No run on test.
-- **Done when:** one command prints the rules-only results table from `eval_runs` records.
+- **Done when:** one command prints the rules-only results table from run record in `evals/results/`s.
 
 ### Day 4: agent loop, verifier, retries, routing
 
@@ -57,8 +57,8 @@ About 3.5 to 4 hours a day. Each day ends committed.
 
 - Run rules-only, LLM-only (no verification) and the full agent on dev and calibration. Set the confidence threshold on **calibration only**.
 - Write the ~15 injection cases and the ambiguous slice (neither is taken from test).
-- One final run on the frozen test split, **once**, then the hard set (first time it is read for scoring, with your say-so). Record everything in `eval_runs`.
-- **Done when:** the three-way table exists with test and hard-set columns reported separately, with injection resistance and cost and latency, and every number traces to an `eval_runs` record.
+- One final run on the frozen test split, **once**, then the hard set (first time it is read for scoring, with your say-so). Record everything in run records in `evals/results/`.
+- **Done when:** the three-way table exists with test and hard-set columns reported separately, with injection resistance and cost and latency, and every number traces to an run record in `evals/results/`.
 
 ### Day 6: MCP server and approval gate
 
@@ -68,7 +68,7 @@ About 3.5 to 4 hours a day. Each day ends committed.
 
 ### Day 7: README, results, resume bullets
 
-- README: results table (from `eval_runs` only), architecture, how to run, what was cut and why, honest limits (synthetic data, GeoNames circularity).
+- README: results table (from run records in `evals/results/` only), architecture, how to run, what was cut and why, honest limits (synthetic data, GeoNames circularity).
 - Resume bullets with measured numbers only.
 - **Done when:** a stranger can clone, run the tests and reproduce the rules-only table from the README alone.
 
@@ -86,7 +86,7 @@ Kafka, RAG and repair memory, the review screen, the Phase 3B message rebuild an
 
 ## Rules that still hold
 
-See `CLAUDE.md`. In particular: synthetic data only; the frozen test split is run once; the hard set is not read or tuned on until the owner says so; no number without an `eval_runs` record; no secrets in the repo; no CBPR+ certification claim.
+See `CLAUDE.md`. In particular: synthetic data only; the frozen test split is run once; the hard set is not read or tuned on until the owner says so; no number without an run record in `evals/results/`; no secrets in the repo; no CBPR+ certification claim.
 
 ## Swift timing
 

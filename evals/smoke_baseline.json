@@ -1,0 +1,8 @@
+{
+  "n": 100,
+  "exact_all_k": 82,
+  "exact_all_pct": 82.0,
+  "false_repair_k": 0,
+  "false_repair_n": 0,
+  "gazetteer": "none"
+}

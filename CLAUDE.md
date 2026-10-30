@@ -39,7 +39,7 @@ paystruct/
     labelling-guide.md      how ambiguous cases are labelled
     splits/                 dev, calibration, test (frozen), hard set
     hard_set/               AI-drafted, AI-verified hard-set YAML
-  eval/                     old plan, superseded by agent/eval/
+  evals/                    evaluation harness: systems, metrics, guards, run records (results/), report
   docs/
     PLAN.md                 the one-week plan
     PROGRESS.md
@@ -53,8 +53,9 @@ paystruct/
 - All new application code (rules, agent, verifier, queue, MCP, evaluation) is Python in `agent/`. Do not extend the Java service.
 - All data is synthetic. Never add real customer, bank or employer data.
 - The frozen test split (`data/splits/test.jsonl`) is never read while tuning rules, prompts or thresholds. Thresholds are set on the calibration split only. **The test split may only be run once, for the final numbers.**
-- **Hard-set independence:** do not tune on or read the hard set (`data/hard_set/`, `data/splits/hard.jsonl`) until I say so. It is the independent check on GeoNames circularity.
-- No number appears in the README or docs unless it comes from an `eval_runs` record.
+- **Hard-set independence:** do not tune on the hard set (`data/hard_set/`, `data/splits/hard.jsonl`). Since Day 3 it may be read only through the evaluation harness, for reporting. It is the independent check on GeoNames circularity.
+- No number appears in the README or docs unless it comes from a run record in `evals/results/` (`docs/decisions/eval-records.md`). `docs/eval-results.md` is generated from those records by `python -m evals.report`, never typed by hand.
+- The hard set (`data/splits/hard.jsonl`) is read only through the evaluation harness, for reporting. Never change `agent/rules/` because of what a hard-set run shows without logging it in `docs/results-changelog.md` with the reason. The frozen test split is refused by the harness without `--final`, and `--final` is refused until I enable it on Day 5.
 - Secrets live in environment variables only. Never write them to files or commit them.
 - Ask me before downloading any file or adding a large dependency.
 - Never claim CBPR+ certification. Say: implements a documented subset of CBPR+ address rules.
