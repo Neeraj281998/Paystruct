@@ -10,13 +10,13 @@ Dev and calibration are synthetic and share GeoNames with the engine, so they ar
 
 Dataset size: 600 records. Rules-only counts every non-ACCEPT record as not repaired.
 
-| system | n | exact_all [95% CI] | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | latency p50 / p95 (ms) | cost per 1,000 (USD) |
-|---|---|---|---|---|---|---|---|---|---|---|
-| rules_only | 600 | 100.0% (600/600) [99.4-100.0] | 87.7% (526/600) [84.8-90.1] | 0.0% (0/526) [0.0-0.7] | 0.0% (0/600) (0 values) | 87.7% (526/600) | 12.3% (74/600) | 0.0% (0/600) | 1.34 / 1.83 | 0.0000 |
-| llm_only | not run yet | | | | | | | | | |
-| agent | not run yet | | | | | | | | | |
+| system | n | exact_all [95% CI] | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | REVIEW cases with a correct proposal | latency p50 / p95 (ms) | cost per 1,000 (USD) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| rules_only | 600 | 100.0% (600/600) [99.4-100.0] | 87.7% (526/600) [84.8-90.1] | 0.0% (0/526) [0.0-0.7] | 0.0% (0/600) (0 values) | 87.7% (526/600) | 12.3% (74/600) | 0.0% (0/600) | - (0/0) | 1.36 / 1.85 | 0.0000 |
+| llm_only | not run yet | | | | | | | | | | |
+| agent | not run yet | | | | | | | | | | |
 
-- rules_only: run 2026-10-30T13:04:46Z, git `082822bead`, 600 records, seed 0, file `20261030T130446Z_rules_only_dev_082822b.json`
+- rules_only: run 2026-10-30T14:28:05Z, git `2fcc5fdd04` (uncommitted changes), 600 records, seed 0, file `20261030T142805Z_rules_only_dev_2fcc5fd.json`
 - llm_only: not run yet
 - agent: not run yet
 
@@ -40,13 +40,13 @@ Rules-only field accuracy: 100.0% (3549/3549) [99.9-100.0] of gold values.
 
 **First 30 records of dev** (the same records for every system)
 
-| system | n | exact_all [95% CI] | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | latency p50 / p95 (ms) | cost per 1,000 (USD) |
-|---|---|---|---|---|---|---|---|---|---|---|
-| rules_only | 30 | 100.0% (30/30) [88.6-100.0] | 86.7% (26/30) [70.3-94.7] | 0.0% (0/26) [0.0-12.9] | 0.0% (0/30) (0 values) | 86.7% (26/30) | 13.3% (4/30) | 0.0% (0/30) | 1.30 / 1.92 | 0.0000 |
-| llm_only | not run yet | | | | | | | | | |
-| agent | 30 | 86.7% (26/30) [70.3-94.7] | 86.7% (26/30) [70.3-94.7] | 0.0% (0/26) [0.0-12.9] | 0.0% (0/30) (0 values) | 86.7% (26/30) | 0.0% (0/30) | 13.3% (4/30) | 2.15 / 2.86 | 0.0000 |
+| system | n | exact_all [95% CI] | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | REVIEW cases with a correct proposal | latency p50 / p95 (ms) | cost per 1,000 (USD) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| rules_only | 30 | 100.0% (30/30) [88.6-100.0] | 86.7% (26/30) [70.3-94.7] | 0.0% (0/26) [0.0-12.9] | 0.0% (0/30) (0 values) | 86.7% (26/30) | 13.3% (4/30) | 0.0% (0/30) | - (0/0) | 1.31 / 1.97 | 0.0000 |
+| llm_only | not run yet | | | | | | | | | | |
+| agent | 30 | 86.7% (26/30) [70.3-94.7] | 86.7% (26/30) [70.3-94.7] | 0.0% (0/26) [0.0-12.9] | 0.0% (0/30) (0 values) | 86.7% (26/30) | 0.0% (0/30) | 13.3% (4/30) | 4/4 | 2.15 / 2.86 | 0.0000 |
 
-- rules_only: run 2026-10-30T13:44:58Z, git `f18122dd25`, model none, total cost $0.0000, file `20261030T134458Z_rules_only_dev_first30_f18122d.json`
+- rules_only: run 2026-10-30T14:28:08Z, git `2fcc5fdd04`, model none, total cost $0.0000, file `20261030T142808Z_rules_only_dev_first30_2fcc5fd.json`
 - agent: run 2026-10-30T14:11:03Z, git `093ead5a97`, model claude-haiku-5-5, total cost $0.0000, file `20261030T141103Z_agent_dev_first30_093ead5.json`
 
 **By country**
@@ -76,13 +76,13 @@ Rules-only field accuracy: 100.0% (3549/3549) [99.9-100.0] of gold values.
 
 Dataset size: 400 records. Rules-only counts every non-ACCEPT record as not repaired.
 
-| system | n | exact_all [95% CI] | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | latency p50 / p95 (ms) | cost per 1,000 (USD) |
-|---|---|---|---|---|---|---|---|---|---|---|
-| rules_only | 400 | 99.0% (396/400) [97.5-99.6] | 85.5% (342/400) [81.7-88.6] | 0.6% (2/344) [0.2-2.1] | 0.0% (0/400) (0 values) | 86.0% (344/400) | 14.0% (56/400) | 0.0% (0/400) | 1.36 / 1.82 | 0.0000 |
-| llm_only | not run yet | | | | | | | | | |
-| agent | not run yet | | | | | | | | | |
+| system | n | exact_all [95% CI] | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | REVIEW cases with a correct proposal | latency p50 / p95 (ms) | cost per 1,000 (USD) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| rules_only | 400 | 99.0% (396/400) [97.5-99.6] | 85.5% (342/400) [81.7-88.6] | 0.6% (2/344) [0.2-2.1] | 0.0% (0/400) (0 values) | 86.0% (344/400) | 14.0% (56/400) | 0.0% (0/400) | - (0/0) | 1.37 / 1.87 | 0.0000 |
+| llm_only | not run yet | | | | | | | | | | |
+| agent | not run yet | | | | | | | | | | |
 
-- rules_only: run 2026-10-30T13:04:47Z, git `082822bead`, 400 records, seed 0, file `20261030T130447Z_rules_only_calibration_082822b.json`
+- rules_only: run 2026-10-30T14:28:06Z, git `2fcc5fdd04` (uncommitted changes), 400 records, seed 0, file `20261030T142806Z_rules_only_calibration_2fcc5fd.json`
 - llm_only: not run yet
 - agent: not run yet
 
@@ -140,13 +140,13 @@ Rules-only field accuracy: 99.6% (2361/2370) [99.3-99.8] of gold values.
 
 Dataset size: 40 records. Rules-only counts every non-ACCEPT record as not repaired.
 
-| system | n | exact_all [95% CI] | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | latency p50 / p95 (ms) | cost per 1,000 (USD) |
-|---|---|---|---|---|---|---|---|---|---|---|
-| rules_only | 40 | 57.5% (23/40) [42.2-71.5] | 32.5% (13/40) [20.1-48.0] | 13.3% (2/15) [3.7-37.9] | 0.0% (0/40) (0 values) | 37.5% (15/40) | 52.5% (21/40) | 10.0% (4/40) | 1.29 / 1.78 | 0.0000 |
-| llm_only | not run yet | | | | | | | | | |
-| agent | not run yet | | | | | | | | | |
+| system | n | exact_all [95% CI] | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | REVIEW cases with a correct proposal | latency p50 / p95 (ms) | cost per 1,000 (USD) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| rules_only | 40 | 57.5% (23/40) [42.2-71.5] | 32.5% (13/40) [20.1-48.0] | 13.3% (2/15) [3.7-37.9] | 0.0% (0/40) (0 values) | 37.5% (15/40) | 52.5% (21/40) | 10.0% (4/40) | 4/4 | 1.29 / 1.78 | 0.0000 |
+| llm_only | not run yet | | | | | | | | | | |
+| agent | not run yet | | | | | | | | | | |
 
-- rules_only: run 2026-10-30T13:04:48Z, git `082822bead`, 40 records, seed 0, file `20261030T130448Z_rules_only_hard_082822b.json`
+- rules_only: run 2026-10-30T14:28:07Z, git `2fcc5fdd04` (uncommitted changes), 40 records, seed 0, file `20261030T142807Z_rules_only_hard_2fcc5fd.json`
 - llm_only: not run yet
 - agent: not run yet
 

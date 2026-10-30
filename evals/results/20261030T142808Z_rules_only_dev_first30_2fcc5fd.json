@@ -1,0 +1,3846 @@
+{
+  "git_sha": "2fcc5fdd04d3f12404fd3f2af52bbe1fdb73d93b",
+  "git_dirty": true,
+  "date": "2026-10-30T14:28:08Z",
+  "system": "rules_only",
+  "split": "dev",
+  "n_records": 30,
+  "limit": 30,
+  "ids": null,
+  "subset": "first30",
+  "aborted_by_budget": false,
+  "split_sha256": "4f6b164a498af90993df6e210b0178334af35ab245123aea2b116bead7be320e",
+  "development_only": false,
+  "seed": 0,
+  "config": {
+    "model": null,
+    "prompt_version": null,
+    "thresholds": {
+      "accept": 0.8,
+      "review": 0.35
+    },
+    "order": [
+      "normalise",
+      "country",
+      "postcode",
+      "region",
+      "pobox",
+      "floor",
+      "unit",
+      "town",
+      "landmark",
+      "locality_pattern",
+      "street",
+      "locality",
+      "length",
+      "confidence",
+      "routing",
+      "hybrid"
+    ],
+    "elimination_cap": 0.6,
+    "max_adr_lines": 2,
+    "gazetteer": "cities500"
+  },
+  "metrics": {
+    "n": 30,
+    "exact_all": {
+      "k": 30,
+      "n": 30,
+      "rate": 1.0,
+      "ci": [
+        0.8864866068260312,
+        1.0
+      ]
+    },
+    "auto_correct": {
+      "k": 26,
+      "n": 30,
+      "rate": 0.8666666666666667,
+      "ci": [
+        0.703186733179637,
+        0.9469034451594526
+      ]
+    },
+    "false_repair": {
+      "k": 0,
+      "n": 26,
+      "rate": 0.0,
+      "ci": [
+        0.0,
+        0.1287289218592153
+      ]
+    },
+    "hallucinated_records": {
+      "k": 0,
+      "n": 30,
+      "rate": 0.0,
+      "ci": [
+        0.0,
+        0.11351339317396876
+      ]
+    },
+    "routes": {
+      "ACCEPT": {
+        "k": 26,
+        "n": 30,
+        "rate": 0.8666666666666667,
+        "ci": [
+          0.703186733179637,
+          0.9469034451594526
+        ]
+      },
+      "NEEDS_LLM": {
+        "k": 4,
+        "n": 30,
+        "rate": 0.13333333333333333,
+        "ci": [
+          0.053096554840547455,
+          0.296813266820363
+        ]
+      },
+      "REVIEW": {
+        "k": 0,
+        "n": 30,
+        "rate": 0.0,
+        "ci": [
+          0.0,
+          0.11351339317396876
+        ]
+      }
+    },
+    "field_accuracy": {
+      "k": 178,
+      "n": 178,
+      "rate": 1.0,
+      "ci": [
+        0.978874681023748,
+        1.0
+      ]
+    },
+    "per_element": {
+      "StrtNm": {
+        "tp": 29,
+        "fp": 0,
+        "fn": 0,
+        "n_gold": 29,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "BldgNb": {
+        "tp": 29,
+        "fp": 0,
+        "fn": 0,
+        "n_gold": 29,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "BldgNm": {
+        "tp": 2,
+        "fp": 0,
+        "fn": 0,
+        "n_gold": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "Flr": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "n_gold": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "Room": {
+        "tp": 8,
+        "fp": 0,
+        "fn": 0,
+        "n_gold": 8,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "PstBx": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 0,
+        "n_gold": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "PstCd": {
+        "tp": 30,
+        "fp": 0,
+        "fn": 0,
+        "n_gold": 30,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "TwnNm": {
+        "tp": 30,
+        "fp": 0,
+        "fn": 0,
+        "n_gold": 30,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "TwnLctnNm": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 0,
+        "n_gold": 5,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "CtrySubDvsn": {
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "n_gold": 13,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "Ctry": {
+        "tp": 30,
+        "fp": 0,
+        "fn": 0,
+        "n_gold": 30,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "not_repaired": {
+      "k": 4,
+      "n": 30,
+      "rate": 0.13333333333333333,
+      "ci": [
+        0.053096554840547455,
+        0.296813266820363
+      ]
+    },
+    "review_correct_proposal": {
+      "k": 0,
+      "n": 0
+    },
+    "hallucinated_values": 0,
+    "hallucinated_by_element": {},
+    "no_town": {
+      "n": 0,
+      "output_a_town": 0,
+      "hallucinated_town": 0,
+      "accepted_with_a_town": 0
+    },
+    "latency_ms": {
+      "p50": 1.315,
+      "p95": 1.972
+    },
+    "cost_usd_total": 0.0,
+    "cost_per_1000_usd": 0.0,
+    "failure_patterns": {},
+    "by_country": {
+      "CA": {
+        "n": 4,
+        "exact_all": {
+          "k": 4,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 4,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 4,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "DE": {
+        "n": 4,
+        "exact_all": {
+          "k": 4,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 4,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 4,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "FR": {
+        "n": 4,
+        "exact_all": {
+          "k": 4,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 4,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 4,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "GB": {
+        "n": 4,
+        "exact_all": {
+          "k": 4,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 4,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 4,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "IE": {
+        "n": 4,
+        "exact_all": {
+          "k": 4,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 3,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 3,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 3,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 1,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "IN": {
+        "n": 4,
+        "exact_all": {
+          "k": 4,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 1,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 1,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 3,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "NL": {
+        "n": 3,
+        "exact_all": {
+          "k": 3,
+          "n": 3,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 3,
+          "n": 3,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 3,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 3,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 3,
+            "n": 3,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 3,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 3,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "US": {
+        "n": 3,
+        "exact_all": {
+          "k": 3,
+          "n": 3,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 3,
+          "n": 3,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 3,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 3,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 3,
+            "n": 3,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 3,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 3,
+            "rate": null,
+            "ci": null
+          }
+        }
+      }
+    },
+    "by_tier": {
+      "easy": {
+        "n": 10,
+        "exact_all": {
+          "k": 10,
+          "n": 10,
+          "rate": 1.0,
+          "ci": [
+            0.7224672001371107,
+            1.0
+          ]
+        },
+        "auto_correct": {
+          "k": 9,
+          "n": 10,
+          "rate": 0.9,
+          "ci": [
+            0.5958499732047615,
+            0.9821237869049271
+          ]
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 9,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.2991450484195441
+          ]
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 10,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.2775327998628892
+          ]
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 9,
+            "n": 10,
+            "rate": 0.9,
+            "ci": [
+              0.5958499732047615,
+              0.9821237869049271
+            ]
+          },
+          "NEEDS_LLM": {
+            "k": 1,
+            "n": 10,
+            "rate": 0.1,
+            "ci": [
+              0.017876213095072896,
+              0.4041500267952385
+            ]
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 10,
+            "rate": 0.0,
+            "ci": [
+              0.0,
+              0.2775327998628892
+            ]
+          }
+        }
+      },
+      "hard": {
+        "n": 10,
+        "exact_all": {
+          "k": 10,
+          "n": 10,
+          "rate": 1.0,
+          "ci": [
+            0.7224672001371107,
+            1.0
+          ]
+        },
+        "auto_correct": {
+          "k": 9,
+          "n": 10,
+          "rate": 0.9,
+          "ci": [
+            0.5958499732047615,
+            0.9821237869049271
+          ]
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 9,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.2991450484195441
+          ]
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 10,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.2775327998628892
+          ]
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 9,
+            "n": 10,
+            "rate": 0.9,
+            "ci": [
+              0.5958499732047615,
+              0.9821237869049271
+            ]
+          },
+          "NEEDS_LLM": {
+            "k": 1,
+            "n": 10,
+            "rate": 0.1,
+            "ci": [
+              0.017876213095072896,
+              0.4041500267952385
+            ]
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 10,
+            "rate": 0.0,
+            "ci": [
+              0.0,
+              0.2775327998628892
+            ]
+          }
+        }
+      },
+      "medium": {
+        "n": 10,
+        "exact_all": {
+          "k": 10,
+          "n": 10,
+          "rate": 1.0,
+          "ci": [
+            0.7224672001371107,
+            1.0
+          ]
+        },
+        "auto_correct": {
+          "k": 8,
+          "n": 10,
+          "rate": 0.8,
+          "ci": [
+            0.49016247153664183,
+            0.9433178485456247
+          ]
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 8,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.32440756488388023
+          ]
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 10,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.2775327998628892
+          ]
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 8,
+            "n": 10,
+            "rate": 0.8,
+            "ci": [
+              0.49016247153664183,
+              0.9433178485456247
+            ]
+          },
+          "NEEDS_LLM": {
+            "k": 2,
+            "n": 10,
+            "rate": 0.2,
+            "ci": [
+              0.05668215145437519,
+              0.5098375284633583
+            ]
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 10,
+            "rate": 0.0,
+            "ci": [
+              0.0,
+              0.2775327998628892
+            ]
+          }
+        }
+      }
+    },
+    "by_tag": {
+      "abbreviated": {
+        "n": 2,
+        "exact_all": {
+          "k": 2,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 2,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 2,
+            "n": 2,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 2,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 2,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "all_caps": {
+        "n": 8,
+        "exact_all": {
+          "k": 8,
+          "n": 8,
+          "rate": 1.0,
+          "ci": [
+            0.6755924351161198,
+            1.0
+          ]
+        },
+        "auto_correct": {
+          "k": 7,
+          "n": 8,
+          "rate": 0.875,
+          "ci": [
+            0.5291118177871464,
+            0.9775825085499433
+          ]
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 7,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.35433043506668743
+          ]
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 8,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.32440756488388023
+          ]
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 7,
+            "n": 8,
+            "rate": 0.875,
+            "ci": [
+              0.5291118177871464,
+              0.9775825085499433
+            ]
+          },
+          "NEEDS_LLM": {
+            "k": 1,
+            "n": 8,
+            "rate": 0.125,
+            "ci": [
+              0.02241749145005667,
+              0.4708881822128535
+            ]
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 8,
+            "rate": 0.0,
+            "ci": [
+              0.0,
+              0.32440756488388023
+            ]
+          }
+        }
+      },
+      "building_name": {
+        "n": 2,
+        "exact_all": {
+          "k": 2,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 1,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 1,
+            "n": 2,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 1,
+            "n": 2,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 2,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "cedex": {
+        "n": 1,
+        "exact_all": {
+          "k": 1,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 1,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 1,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "country_name": {
+        "n": 5,
+        "exact_all": {
+          "k": 5,
+          "n": 5,
+          "rate": 1.0,
+          "ci": [
+            0.5655175352168251,
+            1.0
+          ]
+        },
+        "auto_correct": {
+          "k": 4,
+          "n": 5,
+          "rate": 0.8,
+          "ci": [
+            0.37553462976252533,
+            0.9637758913675698
+          ]
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 5,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.43448246478317476
+          ]
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 4,
+            "n": 5,
+            "rate": 0.8,
+            "ci": [
+              0.37553462976252533,
+              0.9637758913675698
+            ]
+          },
+          "NEEDS_LLM": {
+            "k": 1,
+            "n": 5,
+            "rate": 0.2,
+            "ci": [
+              0.03622410863243014,
+              0.6244653702374747
+            ]
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 5,
+            "rate": 0.0,
+            "ci": [
+              0.0,
+              0.43448246478317476
+            ]
+          }
+        }
+      },
+      "county": {
+        "n": 13,
+        "exact_all": {
+          "k": 13,
+          "n": 13,
+          "rate": 1.0,
+          "ci": [
+            0.7719046276458016,
+            1.0
+          ]
+        },
+        "auto_correct": {
+          "k": 10,
+          "n": 13,
+          "rate": 0.7692307692307693,
+          "ci": [
+            0.49743624053272495,
+            0.9182047128150143
+          ]
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 10,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.2775327998628892
+          ]
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 13,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.22809537235419838
+          ]
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 10,
+            "n": 13,
+            "rate": 0.7692307692307693,
+            "ci": [
+              0.49743624053272495,
+              0.9182047128150143
+            ]
+          },
+          "NEEDS_LLM": {
+            "k": 3,
+            "n": 13,
+            "rate": 0.23076923076923078,
+            "ci": [
+              0.08179528718498569,
+              0.5025637594672749
+            ]
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 13,
+            "rate": 0.0,
+            "ci": [
+              0.0,
+              0.22809537235419838
+            ]
+          }
+        }
+      },
+      "extra_spaces": {
+        "n": 11,
+        "exact_all": {
+          "k": 11,
+          "n": 11,
+          "rate": 1.0,
+          "ci": [
+            0.7411670330319684,
+            1.0
+          ]
+        },
+        "auto_correct": {
+          "k": 8,
+          "n": 11,
+          "rate": 0.7272727272727273,
+          "ci": [
+            0.43435469882387084,
+            0.902539407099751
+          ]
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 8,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.32440756488388023
+          ]
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 11,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.2588329669680317
+          ]
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 8,
+            "n": 11,
+            "rate": 0.7272727272727273,
+            "ci": [
+              0.43435469882387084,
+              0.902539407099751
+            ]
+          },
+          "NEEDS_LLM": {
+            "k": 3,
+            "n": 11,
+            "rate": 0.2727272727272727,
+            "ci": [
+              0.09746059290024889,
+              0.5656453011761291
+            ]
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 11,
+            "rate": 0.0,
+            "ci": [
+              0.0,
+              0.2588329669680317
+            ]
+          }
+        }
+      },
+      "flat": {
+        "n": 8,
+        "exact_all": {
+          "k": 8,
+          "n": 8,
+          "rate": 1.0,
+          "ci": [
+            0.6755924351161198,
+            1.0
+          ]
+        },
+        "auto_correct": {
+          "k": 7,
+          "n": 8,
+          "rate": 0.875,
+          "ci": [
+            0.5291118177871464,
+            0.9775825085499433
+          ]
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 7,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.35433043506668743
+          ]
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 8,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.32440756488388023
+          ]
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 7,
+            "n": 8,
+            "rate": 0.875,
+            "ci": [
+              0.5291118177871464,
+              0.9775825085499433
+            ]
+          },
+          "NEEDS_LLM": {
+            "k": 1,
+            "n": 8,
+            "rate": 0.125,
+            "ci": [
+              0.02241749145005667,
+              0.4708881822128535
+            ]
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 8,
+            "rate": 0.0,
+            "ci": [
+              0.0,
+              0.32440756488388023
+            ]
+          }
+        }
+      },
+      "floor": {
+        "n": 1,
+        "exact_all": {
+          "k": 1,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 1,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 1,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "landmark": {
+        "n": 1,
+        "exact_all": {
+          "k": 1,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 1,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 1,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "locality": {
+        "n": 5,
+        "exact_all": {
+          "k": 5,
+          "n": 5,
+          "rate": 1.0,
+          "ci": [
+            0.5655175352168251,
+            1.0
+          ]
+        },
+        "auto_correct": {
+          "k": 1,
+          "n": 5,
+          "rate": 0.2,
+          "ci": [
+            0.03622410863243014,
+            0.6244653702374747
+          ]
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 5,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.43448246478317476
+          ]
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 1,
+            "n": 5,
+            "rate": 0.2,
+            "ci": [
+              0.03622410863243014,
+              0.6244653702374747
+            ]
+          },
+          "NEEDS_LLM": {
+            "k": 4,
+            "n": 5,
+            "rate": 0.8,
+            "ci": [
+              0.37553462976252533,
+              0.9637758913675698
+            ]
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 5,
+            "rate": 0.0,
+            "ci": [
+              0.0,
+              0.43448246478317476
+            ]
+          }
+        }
+      },
+      "long_line_split": {
+        "n": 1,
+        "exact_all": {
+          "k": 1,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 1,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 1,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "missing_commas": {
+        "n": 8,
+        "exact_all": {
+          "k": 8,
+          "n": 8,
+          "rate": 1.0,
+          "ci": [
+            0.6755924351161198,
+            1.0
+          ]
+        },
+        "auto_correct": {
+          "k": 6,
+          "n": 8,
+          "rate": 0.75,
+          "ci": [
+            0.40927543031016883,
+            0.9285207872478909
+          ]
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 6,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.3903342879021653
+          ]
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 8,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.32440756488388023
+          ]
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 6,
+            "n": 8,
+            "rate": 0.75,
+            "ci": [
+              0.40927543031016883,
+              0.9285207872478909
+            ]
+          },
+          "NEEDS_LLM": {
+            "k": 2,
+            "n": 8,
+            "rate": 0.25,
+            "ci": [
+              0.071479212752109,
+              0.5907245696898311
+            ]
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 8,
+            "rate": 0.0,
+            "ci": [
+              0.0,
+              0.32440756488388023
+            ]
+          }
+        }
+      },
+      "no_country": {
+        "n": 6,
+        "exact_all": {
+          "k": 6,
+          "n": 6,
+          "rate": 1.0,
+          "ci": [
+            0.6096657120978346,
+            1.0
+          ]
+        },
+        "auto_correct": {
+          "k": 5,
+          "n": 6,
+          "rate": 0.8333333333333334,
+          "ci": [
+            0.43649717781352987,
+            0.9699466302516935
+          ]
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 5,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.43448246478317476
+          ]
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 6,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.3903342879021653
+          ]
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 5,
+            "n": 6,
+            "rate": 0.8333333333333334,
+            "ci": [
+              0.43649717781352987,
+              0.9699466302516935
+            ]
+          },
+          "NEEDS_LLM": {
+            "k": 1,
+            "n": 6,
+            "rate": 0.16666666666666666,
+            "ci": [
+              0.030053369748306635,
+              0.5635028221864702
+            ]
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 6,
+            "rate": 0.0,
+            "ci": [
+              0.0,
+              0.3903342879021653
+            ]
+          }
+        }
+      },
+      "one_line": {
+        "n": 8,
+        "exact_all": {
+          "k": 8,
+          "n": 8,
+          "rate": 1.0,
+          "ci": [
+            0.6755924351161198,
+            1.0
+          ]
+        },
+        "auto_correct": {
+          "k": 7,
+          "n": 8,
+          "rate": 0.875,
+          "ci": [
+            0.5291118177871464,
+            0.9775825085499433
+          ]
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 7,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.35433043506668743
+          ]
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 8,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.32440756488388023
+          ]
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 7,
+            "n": 8,
+            "rate": 0.875,
+            "ci": [
+              0.5291118177871464,
+              0.9775825085499433
+            ]
+          },
+          "NEEDS_LLM": {
+            "k": 1,
+            "n": 8,
+            "rate": 0.125,
+            "ci": [
+              0.02241749145005667,
+              0.4708881822128535
+            ]
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 8,
+            "rate": 0.0,
+            "ci": [
+              0.0,
+              0.32440756488388023
+            ]
+          }
+        }
+      },
+      "po_box": {
+        "n": 1,
+        "exact_all": {
+          "k": 1,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 1,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 1,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "postal_district": {
+        "n": 2,
+        "exact_all": {
+          "k": 2,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 2,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 2,
+            "n": 2,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 2,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 2,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "postcode_split": {
+        "n": 1,
+        "exact_all": {
+          "k": 1,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 1,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 1,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 1,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 1,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "postcode_wrong_line": {
+        "n": 2,
+        "exact_all": {
+          "k": 2,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 2,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 2,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 2,
+            "n": 2,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 2,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 2,
+            "rate": null,
+            "ci": null
+          }
+        }
+      },
+      "reordered": {
+        "n": 6,
+        "exact_all": {
+          "k": 6,
+          "n": 6,
+          "rate": 1.0,
+          "ci": [
+            0.6096657120978346,
+            1.0
+          ]
+        },
+        "auto_correct": {
+          "k": 5,
+          "n": 6,
+          "rate": 0.8333333333333334,
+          "ci": [
+            0.43649717781352987,
+            0.9699466302516935
+          ]
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 5,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.43448246478317476
+          ]
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 6,
+          "rate": 0.0,
+          "ci": [
+            0.0,
+            0.3903342879021653
+          ]
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 5,
+            "n": 6,
+            "rate": 0.8333333333333334,
+            "ci": [
+              0.43649717781352987,
+              0.9699466302516935
+            ]
+          },
+          "NEEDS_LLM": {
+            "k": 1,
+            "n": 6,
+            "rate": 0.16666666666666666,
+            "ci": [
+              0.030053369748306635,
+              0.5635028221864702
+            ]
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 6,
+            "rate": 0.0,
+            "ci": [
+              0.0,
+              0.3903342879021653
+            ]
+          }
+        }
+      },
+      "untagged": {
+        "n": 4,
+        "exact_all": {
+          "k": 4,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "auto_correct": {
+          "k": 4,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "false_repair": {
+          "k": 0,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "hallucinated_records": {
+          "k": 0,
+          "n": 4,
+          "rate": null,
+          "ci": null
+        },
+        "routes": {
+          "ACCEPT": {
+            "k": 4,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          },
+          "NEEDS_LLM": {
+            "k": 0,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          },
+          "REVIEW": {
+            "k": 0,
+            "n": 4,
+            "rate": null,
+            "ci": null
+          }
+        }
+      }
+    }
+  },
+  "records": [
+    {
+      "id": "ca-00000",
+      "country": "CA",
+      "difficulty": "easy",
+      "tags": [
+        "county"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "318 Albert Avenue,",
+        "Saskatoon Saskatchewan S7N 1B0, CA"
+      ],
+      "gold": {
+        "StrtNm": "Albert Avenue",
+        "BldgNb": "318",
+        "PstCd": "S7N 1B0",
+        "TwnNm": "Saskatoon",
+        "CtrySubDvsn": "Saskatchewan",
+        "Ctry": "CA"
+      },
+      "output": {
+        "Ctry": "CA",
+        "PstCd": "S7N 1B0",
+        "CtrySubDvsn": "Saskatchewan",
+        "TwnNm": "Saskatoon",
+        "BldgNb": "318",
+        "StrtNm": "Albert Avenue"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "CtrySubDvsn",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "CA",
+        "PstCd": "S7N 1B0",
+        "CtrySubDvsn": "Saskatchewan",
+        "TwnNm": "Saskatoon",
+        "BldgNb": "318",
+        "StrtNm": "Albert Avenue"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.605,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "de-00000",
+      "country": "DE",
+      "difficulty": "medium",
+      "tags": [
+        "extra_spaces",
+        "flat",
+        "missing_commas"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "Hübelstraße  159-161",
+        "Whg. 59",
+        "51143 Köln DE"
+      ],
+      "gold": {
+        "StrtNm": "Hübelstraße",
+        "BldgNb": "159-161",
+        "Room": "Whg. 59",
+        "PstCd": "51143",
+        "TwnNm": "Köln",
+        "Ctry": "DE"
+      },
+      "output": {
+        "Ctry": "DE",
+        "PstCd": "51143",
+        "Room": "Whg. 59",
+        "TwnNm": "Köln",
+        "StrtNm": "Hübelstraße",
+        "BldgNb": "159-161"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "Room",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "DE",
+        "PstCd": "51143",
+        "Room": "Whg. 59",
+        "TwnNm": "Köln",
+        "StrtNm": "Hübelstraße",
+        "BldgNb": "159-161"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.289,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "fr-00000",
+      "country": "FR",
+      "difficulty": "hard",
+      "tags": [
+        "all_caps",
+        "postal_district"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "32 BIS RUE DU CHÂTEAU",
+        "13016 MARSEILLE 16E, FR"
+      ],
+      "gold": {
+        "StrtNm": "RUE DU CHÂTEAU",
+        "BldgNb": "32 BIS",
+        "PstCd": "13016",
+        "TwnNm": "MARSEILLE 16E",
+        "Ctry": "FR"
+      },
+      "output": {
+        "Ctry": "FR",
+        "PstCd": "13016",
+        "TwnNm": "MARSEILLE 16E",
+        "BldgNb": "32 BIS",
+        "StrtNm": "RUE DU CHÂTEAU"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "FR",
+        "PstCd": "13016",
+        "TwnNm": "MARSEILLE 16E",
+        "BldgNb": "32 BIS",
+        "StrtNm": "RUE DU CHÂTEAU"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.517,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "gb-00000",
+      "country": "GB",
+      "difficulty": "easy",
+      "tags": [],
+      "country_hint": null,
+      "raw_lines": [
+        "165 Clarke Road",
+        "BELFAST BT7 2ZT",
+        "GB"
+      ],
+      "gold": {
+        "StrtNm": "Clarke Road",
+        "BldgNb": "165",
+        "PstCd": "BT7 2ZT",
+        "TwnNm": "BELFAST",
+        "Ctry": "GB"
+      },
+      "output": {
+        "Ctry": "GB",
+        "PstCd": "BT7 2ZT",
+        "TwnNm": "BELFAST",
+        "BldgNb": "165",
+        "StrtNm": "Clarke Road"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "GB",
+        "PstCd": "BT7 2ZT",
+        "TwnNm": "BELFAST",
+        "BldgNb": "165",
+        "StrtNm": "Clarke Road"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.231,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "ie-00000",
+      "country": "IE",
+      "difficulty": "medium",
+      "tags": [
+        "all_caps",
+        "country_name",
+        "county"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "64B MARKET SQUARE",
+        "KILKENNY R95 NRE2",
+        "CO. KILKENNY, IRELAND"
+      ],
+      "gold": {
+        "StrtNm": "MARKET SQUARE",
+        "BldgNb": "64B",
+        "PstCd": "R95 NRE2",
+        "TwnNm": "KILKENNY",
+        "CtrySubDvsn": "CO. KILKENNY",
+        "Ctry": "IE"
+      },
+      "output": {
+        "Ctry": "IE",
+        "PstCd": "R95 NRE2",
+        "CtrySubDvsn": "CO. KILKENNY",
+        "TwnNm": "KILKENNY",
+        "BldgNb": "64B",
+        "StrtNm": "MARKET SQUARE"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "CtrySubDvsn",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "IE",
+        "PstCd": "R95 NRE2",
+        "CtrySubDvsn": "CO. KILKENNY",
+        "TwnNm": "KILKENNY",
+        "BldgNb": "64B",
+        "StrtNm": "MARKET SQUARE"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.423,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "in-00000",
+      "country": "IN",
+      "difficulty": "hard",
+      "tags": [
+        "county",
+        "extra_spaces",
+        "landmark",
+        "locality",
+        "long_line_split",
+        "one_line",
+        "reordered"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "Noida, Uttar Pradesh 201303,  Plot 115, Station Road,  opp. Railway",
+        "Station, Sector 41, IN"
+      ],
+      "gold": {
+        "StrtNm": "Station Road",
+        "BldgNb": "Plot 115",
+        "PstCd": "201303",
+        "TwnNm": "Noida",
+        "TwnLctnNm": "Sector 41",
+        "CtrySubDvsn": "Uttar Pradesh",
+        "Ctry": "IN"
+      },
+      "output": {
+        "Ctry": "IN",
+        "PstCd": "201303",
+        "CtrySubDvsn": "Uttar Pradesh",
+        "TwnNm": "Noida",
+        "TwnLctnNm": "Sector 41",
+        "BldgNb": "Plot 115",
+        "StrtNm": "Station Road"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "TwnLctnNm",
+        "CtrySubDvsn",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "IN",
+        "PstCd": "201303",
+        "CtrySubDvsn": "Uttar Pradesh",
+        "TwnNm": "Noida",
+        "TwnLctnNm": "Sector 41",
+        "BldgNb": "Plot 115",
+        "StrtNm": "Station Road"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.955,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "nl-00000",
+      "country": "NL",
+      "difficulty": "easy",
+      "tags": [],
+      "country_hint": null,
+      "raw_lines": [
+        "Van Wolzaklaan 116,",
+        "9732 LN Groningen,",
+        "NL"
+      ],
+      "gold": {
+        "StrtNm": "Van Wolzaklaan",
+        "BldgNb": "116",
+        "PstCd": "9732 LN",
+        "TwnNm": "Groningen",
+        "Ctry": "NL"
+      },
+      "output": {
+        "Ctry": "NL",
+        "PstCd": "9732 LN",
+        "TwnNm": "Groningen",
+        "StrtNm": "Van Wolzaklaan",
+        "BldgNb": "116"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "NL",
+        "PstCd": "9732 LN",
+        "TwnNm": "Groningen",
+        "StrtNm": "Van Wolzaklaan",
+        "BldgNb": "116"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.231,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "us-00000",
+      "country": "US",
+      "difficulty": "medium",
+      "tags": [
+        "county",
+        "flat",
+        "one_line"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "331 Washington Street, Suite 320, Atlanta, GA 30317-2153, US"
+      ],
+      "gold": {
+        "StrtNm": "Washington Street",
+        "BldgNb": "331",
+        "Room": "Suite 320",
+        "PstCd": "30317-2153",
+        "TwnNm": "Atlanta",
+        "CtrySubDvsn": "GA",
+        "Ctry": "US"
+      },
+      "output": {
+        "Ctry": "US",
+        "PstCd": "30317-2153",
+        "CtrySubDvsn": "GA",
+        "Room": "Suite 320",
+        "TwnNm": "Atlanta",
+        "BldgNb": "331",
+        "StrtNm": "Washington Street"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "Room",
+        "PstCd",
+        "TwnNm",
+        "CtrySubDvsn",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "US",
+        "PstCd": "30317-2153",
+        "CtrySubDvsn": "GA",
+        "Room": "Suite 320",
+        "TwnNm": "Atlanta",
+        "BldgNb": "331",
+        "StrtNm": "Washington Street"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.516,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "ca-00001",
+      "country": "CA",
+      "difficulty": "medium",
+      "tags": [
+        "all_caps",
+        "county",
+        "flat",
+        "missing_commas",
+        "one_line"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "237 RUE DE LA MONTAGNE O SUITE 185 MONTRÉAL QC H3B 5R1 CA"
+      ],
+      "gold": {
+        "StrtNm": "RUE DE LA MONTAGNE O",
+        "BldgNb": "237",
+        "Room": "SUITE 185",
+        "PstCd": "H3B 5R1",
+        "TwnNm": "MONTRÉAL",
+        "CtrySubDvsn": "QC",
+        "Ctry": "CA"
+      },
+      "output": {
+        "Ctry": "CA",
+        "PstCd": "H3B 5R1",
+        "CtrySubDvsn": "QC",
+        "Room": "SUITE 185",
+        "TwnNm": "MONTRÉAL",
+        "BldgNb": "237",
+        "StrtNm": "RUE DE LA MONTAGNE O"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "Room",
+        "PstCd",
+        "TwnNm",
+        "CtrySubDvsn",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "CA",
+        "PstCd": "H3B 5R1",
+        "CtrySubDvsn": "QC",
+        "Room": "SUITE 185",
+        "TwnNm": "MONTRÉAL",
+        "BldgNb": "237",
+        "StrtNm": "RUE DE LA MONTAGNE O"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 2.29,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "de-00001",
+      "country": "DE",
+      "difficulty": "hard",
+      "tags": [
+        "abbreviated",
+        "extra_spaces",
+        "no_country",
+        "reordered"
+      ],
+      "country_hint": "DE",
+      "raw_lines": [
+        "Gartestr. 95",
+        "Münster 48079 "
+      ],
+      "gold": {
+        "StrtNm": "Gartestr.",
+        "BldgNb": "95",
+        "PstCd": "48079",
+        "TwnNm": "Münster",
+        "Ctry": "DE"
+      },
+      "output": {
+        "Ctry": "DE",
+        "PstCd": "48079",
+        "TwnNm": "Münster",
+        "StrtNm": "Gartestr.",
+        "BldgNb": "95"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "DE",
+        "PstCd": "48079",
+        "TwnNm": "Münster",
+        "StrtNm": "Gartestr.",
+        "BldgNb": "95"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 0.985,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "fr-00001",
+      "country": "FR",
+      "difficulty": "easy",
+      "tags": [],
+      "country_hint": null,
+      "raw_lines": [
+        "124 Quai des Fleurs",
+        "44300 Nantes, FR"
+      ],
+      "gold": {
+        "StrtNm": "Quai des Fleurs",
+        "BldgNb": "124",
+        "PstCd": "44300",
+        "TwnNm": "Nantes",
+        "Ctry": "FR"
+      },
+      "output": {
+        "Ctry": "FR",
+        "PstCd": "44300",
+        "TwnNm": "Nantes",
+        "BldgNb": "124",
+        "StrtNm": "Quai des Fleurs"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "FR",
+        "PstCd": "44300",
+        "TwnNm": "Nantes",
+        "BldgNb": "124",
+        "StrtNm": "Quai des Fleurs"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.249,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "gb-00001",
+      "country": "GB",
+      "difficulty": "medium",
+      "tags": [
+        "missing_commas",
+        "one_line",
+        "reordered"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "EXETER EX4 2LE 47 Station Grove GB"
+      ],
+      "gold": {
+        "StrtNm": "Station Grove",
+        "BldgNb": "47",
+        "PstCd": "EX4 2LE",
+        "TwnNm": "EXETER",
+        "Ctry": "GB"
+      },
+      "output": {
+        "Ctry": "GB",
+        "PstCd": "EX4 2LE",
+        "TwnNm": "EXETER",
+        "BldgNb": "47",
+        "StrtNm": "Station Grove"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "GB",
+        "PstCd": "EX4 2LE",
+        "TwnNm": "EXETER",
+        "BldgNb": "47",
+        "StrtNm": "Station Grove"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.403,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "ie-00001",
+      "country": "IE",
+      "difficulty": "hard",
+      "tags": [
+        "flat",
+        "missing_commas",
+        "no_country",
+        "postal_district",
+        "postcode_wrong_line"
+      ],
+      "country_hint": "IE",
+      "raw_lines": [
+        "Flat A D16 E648",
+        "64 Devilly Street",
+        "Dublin 16"
+      ],
+      "gold": {
+        "StrtNm": "Devilly Street",
+        "BldgNb": "64",
+        "Room": "Flat A",
+        "PstCd": "D16 E648",
+        "TwnNm": "Dublin 16",
+        "Ctry": "IE"
+      },
+      "output": {
+        "Ctry": "IE",
+        "PstCd": "D16 E648",
+        "Room": "Flat A",
+        "TwnNm": "Dublin 16",
+        "BldgNb": "64",
+        "StrtNm": "Devilly Street"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "Room",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "IE",
+        "PstCd": "D16 E648",
+        "Room": "Flat A",
+        "TwnNm": "Dublin 16",
+        "BldgNb": "64",
+        "StrtNm": "Devilly Street"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.464,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "in-00001",
+      "country": "IN",
+      "difficulty": "easy",
+      "tags": [
+        "all_caps",
+        "county",
+        "locality"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "DOOR NO. 92-4-47, MG MARG",
+        "VELACHERY",
+        "CHENNAI, TAMIL NADU 600 042",
+        "IN"
+      ],
+      "gold": {
+        "StrtNm": "MG MARG",
+        "BldgNb": "DOOR NO. 92-4-47",
+        "PstCd": "600 042",
+        "TwnNm": "CHENNAI",
+        "TwnLctnNm": "VELACHERY",
+        "CtrySubDvsn": "TAMIL NADU",
+        "Ctry": "IN"
+      },
+      "output": {
+        "Ctry": "IN",
+        "PstCd": "600 042",
+        "CtrySubDvsn": "TAMIL NADU",
+        "TwnNm": "CHENNAI",
+        "BldgNb": "DOOR NO. 92-4-47",
+        "StrtNm": "MG MARG",
+        "TwnLctnNm": "VELACHERY"
+      },
+      "route": "NEEDS_LLM",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "TwnLctnNm",
+        "CtrySubDvsn",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "IN",
+        "PstCd": "600 042",
+        "CtrySubDvsn": "TAMIL NADU",
+        "TwnNm": "CHENNAI",
+        "BldgNb": "DOOR NO. 92-4-47",
+        "StrtNm": "MG MARG",
+        "TwnLctnNm": "VELACHERY"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.83,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": [
+          "low_confidence",
+          "by_elimination:TwnLctnNm"
+        ]
+      }
+    },
+    {
+      "id": "nl-00001",
+      "country": "NL",
+      "difficulty": "medium",
+      "tags": [
+        "extra_spaces",
+        "floor"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "Kaleplein  198,",
+        "Begane grond,",
+        "2621 KK Delft,  NL"
+      ],
+      "gold": {
+        "StrtNm": "Kaleplein",
+        "BldgNb": "198",
+        "Flr": "Begane grond",
+        "PstCd": "2621 KK",
+        "TwnNm": "Delft",
+        "Ctry": "NL"
+      },
+      "output": {
+        "Ctry": "NL",
+        "PstCd": "2621 KK",
+        "Flr": "Begane grond",
+        "TwnNm": "Delft",
+        "StrtNm": "Kaleplein",
+        "BldgNb": "198"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "Flr",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "NL",
+        "PstCd": "2621 KK",
+        "Flr": "Begane grond",
+        "TwnNm": "Delft",
+        "StrtNm": "Kaleplein",
+        "BldgNb": "198"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.315,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "us-00001",
+      "country": "US",
+      "difficulty": "hard",
+      "tags": [
+        "abbreviated",
+        "all_caps",
+        "country_name",
+        "county",
+        "extra_spaces"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        " 602  LAKE RD, ",
+        "DENVER,  CO  80274,  U.S.A."
+      ],
+      "gold": {
+        "StrtNm": "LAKE RD",
+        "BldgNb": "602",
+        "PstCd": "80274",
+        "TwnNm": "DENVER",
+        "CtrySubDvsn": "CO",
+        "Ctry": "US"
+      },
+      "output": {
+        "Ctry": "US",
+        "PstCd": "80274",
+        "CtrySubDvsn": "CO",
+        "TwnNm": "DENVER",
+        "BldgNb": "602",
+        "StrtNm": "LAKE RD"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "CtrySubDvsn",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "US",
+        "PstCd": "80274",
+        "CtrySubDvsn": "CO",
+        "TwnNm": "DENVER",
+        "BldgNb": "602",
+        "StrtNm": "LAKE RD"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.261,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "ca-00002",
+      "country": "CA",
+      "difficulty": "hard",
+      "tags": [
+        "county",
+        "missing_commas",
+        "no_country",
+        "postcode_wrong_line"
+      ],
+      "country_hint": "CA",
+      "raw_lines": [
+        "4492 boulevard Saint-Laurent",
+        "Montréal Québec",
+        "H3B 8B5"
+      ],
+      "gold": {
+        "StrtNm": "boulevard Saint-Laurent",
+        "BldgNb": "4492",
+        "PstCd": "H3B 8B5",
+        "TwnNm": "Montréal",
+        "CtrySubDvsn": "Québec",
+        "Ctry": "CA"
+      },
+      "output": {
+        "Ctry": "CA",
+        "PstCd": "H3B 8B5",
+        "CtrySubDvsn": "Québec",
+        "TwnNm": "Montréal",
+        "BldgNb": "4492",
+        "StrtNm": "boulevard Saint-Laurent"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "CtrySubDvsn",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "CA",
+        "PstCd": "H3B 8B5",
+        "CtrySubDvsn": "Québec",
+        "TwnNm": "Montréal",
+        "BldgNb": "4492",
+        "StrtNm": "boulevard Saint-Laurent"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.251,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "de-00002",
+      "country": "DE",
+      "difficulty": "easy",
+      "tags": [],
+      "country_hint": null,
+      "raw_lines": [
+        "Mühlenweg 45,",
+        "04357 Leipzig,",
+        "DE"
+      ],
+      "gold": {
+        "StrtNm": "Mühlenweg",
+        "BldgNb": "45",
+        "PstCd": "04357",
+        "TwnNm": "Leipzig",
+        "Ctry": "DE"
+      },
+      "output": {
+        "Ctry": "DE",
+        "PstCd": "04357",
+        "TwnNm": "Leipzig",
+        "StrtNm": "Mühlenweg",
+        "BldgNb": "45"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "DE",
+        "PstCd": "04357",
+        "TwnNm": "Leipzig",
+        "StrtNm": "Mühlenweg",
+        "BldgNb": "45"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.001,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "fr-00002",
+      "country": "FR",
+      "difficulty": "medium",
+      "tags": [
+        "building_name",
+        "reordered"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "21000 Dijon,",
+        "Résidence Le Clos,",
+        "175 Rue Anatole France,",
+        "FR"
+      ],
+      "gold": {
+        "StrtNm": "Rue Anatole France",
+        "BldgNb": "175",
+        "BldgNm": "Résidence Le Clos",
+        "PstCd": "21000",
+        "TwnNm": "Dijon",
+        "Ctry": "FR"
+      },
+      "output": {
+        "Ctry": "FR",
+        "PstCd": "21000",
+        "TwnNm": "Dijon",
+        "BldgNm": "Résidence Le Clos",
+        "BldgNb": "175",
+        "StrtNm": "Rue Anatole France"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "BldgNm",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "FR",
+        "PstCd": "21000",
+        "TwnNm": "Dijon",
+        "BldgNm": "Résidence Le Clos",
+        "BldgNb": "175",
+        "StrtNm": "Rue Anatole France"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.511,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "gb-00002",
+      "country": "GB",
+      "difficulty": "hard",
+      "tags": [
+        "all_caps",
+        "county",
+        "no_country",
+        "one_line",
+        "reordered"
+      ],
+      "country_hint": "GB",
+      "raw_lines": [
+        "BELFAST BT2 2RY, 164 CLARK CRESCENT, NORTHERN IRELAND"
+      ],
+      "gold": {
+        "StrtNm": "CLARK CRESCENT",
+        "BldgNb": "164",
+        "PstCd": "BT2 2RY",
+        "TwnNm": "BELFAST",
+        "CtrySubDvsn": "NORTHERN IRELAND",
+        "Ctry": "GB"
+      },
+      "output": {
+        "Ctry": "GB",
+        "PstCd": "BT2 2RY",
+        "CtrySubDvsn": "NORTHERN IRELAND",
+        "TwnNm": "BELFAST",
+        "BldgNb": "164",
+        "StrtNm": "CLARK CRESCENT"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "CtrySubDvsn",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "GB",
+        "PstCd": "BT2 2RY",
+        "CtrySubDvsn": "NORTHERN IRELAND",
+        "TwnNm": "BELFAST",
+        "BldgNb": "164",
+        "StrtNm": "CLARK CRESCENT"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.301,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "ie-00002",
+      "country": "IE",
+      "difficulty": "easy",
+      "tags": [
+        "one_line"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "58 Considine Lane, Galway H91 CNCP, IE"
+      ],
+      "gold": {
+        "StrtNm": "Considine Lane",
+        "BldgNb": "58",
+        "PstCd": "H91 CNCP",
+        "TwnNm": "Galway",
+        "Ctry": "IE"
+      },
+      "output": {
+        "Ctry": "IE",
+        "PstCd": "H91 CNCP",
+        "TwnNm": "Galway",
+        "BldgNb": "58",
+        "StrtNm": "Considine Lane"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "IE",
+        "PstCd": "H91 CNCP",
+        "TwnNm": "Galway",
+        "BldgNb": "58",
+        "StrtNm": "Considine Lane"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.198,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "in-00002",
+      "country": "IN",
+      "difficulty": "medium",
+      "tags": [
+        "country_name",
+        "county",
+        "extra_spaces",
+        "flat",
+        "locality",
+        "missing_commas"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "Flat 938",
+        "House No. 51  Link Road",
+        "Vastrapur ",
+        "Ahmedabad Gujarat 380015  India "
+      ],
+      "gold": {
+        "StrtNm": "Link Road",
+        "BldgNb": "House No. 51",
+        "Room": "Flat 938",
+        "PstCd": "380015",
+        "TwnNm": "Ahmedabad",
+        "TwnLctnNm": "Vastrapur",
+        "CtrySubDvsn": "Gujarat",
+        "Ctry": "IN"
+      },
+      "output": {
+        "Ctry": "IN",
+        "PstCd": "380015",
+        "CtrySubDvsn": "Gujarat",
+        "Room": "Flat 938",
+        "TwnNm": "Ahmedabad",
+        "BldgNb": "House No. 51",
+        "StrtNm": "Link Road",
+        "TwnLctnNm": "Vastrapur"
+      },
+      "route": "NEEDS_LLM",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "Room",
+        "PstCd",
+        "TwnNm",
+        "TwnLctnNm",
+        "CtrySubDvsn",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "IN",
+        "PstCd": "380015",
+        "CtrySubDvsn": "Gujarat",
+        "Room": "Flat 938",
+        "TwnNm": "Ahmedabad",
+        "BldgNb": "House No. 51",
+        "StrtNm": "Link Road",
+        "TwnLctnNm": "Vastrapur"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.972,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": [
+          "low_confidence",
+          "by_elimination:TwnLctnNm"
+        ]
+      }
+    },
+    {
+      "id": "nl-00002",
+      "country": "NL",
+      "difficulty": "hard",
+      "tags": [
+        "country_name",
+        "extra_spaces",
+        "flat",
+        "postcode_split"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "Kerksingel  237",
+        " Unit 12  2613 ",
+        "DP  Delft ",
+        "Holland "
+      ],
+      "gold": {
+        "StrtNm": "Kerksingel",
+        "BldgNb": "237",
+        "Room": "Unit 12",
+        "PstCd": "2613 DP",
+        "TwnNm": "Delft",
+        "Ctry": "NL"
+      },
+      "output": {
+        "Ctry": "NL",
+        "PstCd": "2613 DP",
+        "Room": "Unit 12",
+        "TwnNm": "Delft",
+        "StrtNm": "Kerksingel",
+        "BldgNb": "237"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "Room",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "NL",
+        "PstCd": "2613 DP",
+        "Room": "Unit 12",
+        "TwnNm": "Delft",
+        "StrtNm": "Kerksingel",
+        "BldgNb": "237"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.316,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "us-00002",
+      "country": "US",
+      "difficulty": "easy",
+      "tags": [
+        "county",
+        "extra_spaces"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "7834 Pine Street",
+        " Philadelphia,  PA  19118",
+        "US"
+      ],
+      "gold": {
+        "StrtNm": "Pine Street",
+        "BldgNb": "7834",
+        "PstCd": "19118",
+        "TwnNm": "Philadelphia",
+        "CtrySubDvsn": "PA",
+        "Ctry": "US"
+      },
+      "output": {
+        "Ctry": "US",
+        "PstCd": "19118",
+        "CtrySubDvsn": "PA",
+        "TwnNm": "Philadelphia",
+        "BldgNb": "7834",
+        "StrtNm": "Pine Street"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "CtrySubDvsn",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "US",
+        "PstCd": "19118",
+        "CtrySubDvsn": "PA",
+        "TwnNm": "Philadelphia",
+        "BldgNb": "7834",
+        "StrtNm": "Pine Street"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.279,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "ca-00003",
+      "country": "CA",
+      "difficulty": "easy",
+      "tags": [
+        "county",
+        "po_box"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "C.P. 26703",
+        "Québec Québec G1V 8M4",
+        "CA"
+      ],
+      "gold": {
+        "PstBx": "C.P. 26703",
+        "PstCd": "G1V 8M4",
+        "TwnNm": "Québec",
+        "CtrySubDvsn": "Québec",
+        "Ctry": "CA"
+      },
+      "output": {
+        "Ctry": "CA",
+        "PstCd": "G1V 8M4",
+        "CtrySubDvsn": "Québec",
+        "PstBx": "C.P. 26703",
+        "TwnNm": "Québec"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "PstBx",
+        "PstCd",
+        "TwnNm",
+        "CtrySubDvsn",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "CA",
+        "PstCd": "G1V 8M4",
+        "CtrySubDvsn": "Québec",
+        "PstBx": "C.P. 26703",
+        "TwnNm": "Québec"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.308,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "de-00003",
+      "country": "DE",
+      "difficulty": "medium",
+      "tags": [
+        "all_caps",
+        "country_name",
+        "flat"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "HOFMANNSTRASSE 82A",
+        "WOHNUNG 37",
+        "90449 NÜRNBERG, GERMANY"
+      ],
+      "gold": {
+        "StrtNm": "HOFMANNSTRASSE",
+        "BldgNb": "82A",
+        "Room": "WOHNUNG 37",
+        "PstCd": "90449",
+        "TwnNm": "NÜRNBERG",
+        "Ctry": "DE"
+      },
+      "output": {
+        "Ctry": "DE",
+        "PstCd": "90449",
+        "Room": "WOHNUNG 37",
+        "TwnNm": "NÜRNBERG",
+        "StrtNm": "HOFMANNSTRASSE",
+        "BldgNb": "82A"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "Room",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "DE",
+        "PstCd": "90449",
+        "Room": "WOHNUNG 37",
+        "TwnNm": "NÜRNBERG",
+        "StrtNm": "HOFMANNSTRASSE",
+        "BldgNb": "82A"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.181,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "fr-00003",
+      "country": "FR",
+      "difficulty": "hard",
+      "tags": [
+        "all_caps",
+        "cedex",
+        "extra_spaces",
+        "flat",
+        "no_country",
+        "one_line"
+      ],
+      "country_hint": "FR",
+      "raw_lines": [
+        "APPARTEMENT 14, 174  RUE DE VERDUN,  29200  BREST CEDEX 17 "
+      ],
+      "gold": {
+        "StrtNm": "RUE DE VERDUN",
+        "BldgNb": "174",
+        "Room": "APPARTEMENT 14",
+        "PstCd": "29200",
+        "TwnNm": "BREST CEDEX 17",
+        "Ctry": "FR"
+      },
+      "output": {
+        "Ctry": "FR",
+        "PstCd": "29200",
+        "Room": "APPARTEMENT 14",
+        "TwnNm": "BREST CEDEX 17",
+        "BldgNb": "174",
+        "StrtNm": "RUE DE VERDUN"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "Room",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "FR",
+        "PstCd": "29200",
+        "Room": "APPARTEMENT 14",
+        "TwnNm": "BREST CEDEX 17",
+        "BldgNb": "174",
+        "StrtNm": "RUE DE VERDUN"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.649,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "gb-00003",
+      "country": "GB",
+      "difficulty": "easy",
+      "tags": [
+        "missing_commas"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "90 Windsor Grove",
+        "Norwich",
+        "NR2 4TJ GB"
+      ],
+      "gold": {
+        "StrtNm": "Windsor Grove",
+        "BldgNb": "90",
+        "PstCd": "NR2 4TJ",
+        "TwnNm": "Norwich",
+        "Ctry": "GB"
+      },
+      "output": {
+        "Ctry": "GB",
+        "PstCd": "NR2 4TJ",
+        "TwnNm": "Norwich",
+        "BldgNb": "90",
+        "StrtNm": "Windsor Grove"
+      },
+      "route": "ACCEPT",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "GB",
+        "PstCd": "NR2 4TJ",
+        "TwnNm": "Norwich",
+        "BldgNb": "90",
+        "StrtNm": "Windsor Grove"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.221,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": []
+      }
+    },
+    {
+      "id": "ie-00003",
+      "country": "IE",
+      "difficulty": "medium",
+      "tags": [
+        "extra_spaces",
+        "locality",
+        "one_line"
+      ],
+      "country_hint": null,
+      "raw_lines": [
+        "139 Mill Street, Ballywaltrim, Bray  A98 DTNF, IE "
+      ],
+      "gold": {
+        "StrtNm": "Mill Street",
+        "BldgNb": "139",
+        "PstCd": "A98 DTNF",
+        "TwnNm": "Bray",
+        "TwnLctnNm": "Ballywaltrim",
+        "Ctry": "IE"
+      },
+      "output": {
+        "Ctry": "IE",
+        "PstCd": "A98 DTNF",
+        "TwnNm": "Bray",
+        "BldgNb": "139",
+        "StrtNm": "Mill Street",
+        "TwnLctnNm": "Ballywaltrim"
+      },
+      "route": "NEEDS_LLM",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "PstCd",
+        "TwnNm",
+        "TwnLctnNm",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "IE",
+        "PstCd": "A98 DTNF",
+        "TwnNm": "Bray",
+        "BldgNb": "139",
+        "StrtNm": "Mill Street",
+        "TwnLctnNm": "Ballywaltrim"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.335,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": [
+          "low_confidence",
+          "by_elimination:TwnLctnNm"
+        ]
+      }
+    },
+    {
+      "id": "in-00003",
+      "country": "IN",
+      "difficulty": "hard",
+      "tags": [
+        "building_name",
+        "county",
+        "extra_spaces",
+        "locality",
+        "missing_commas",
+        "no_country",
+        "reordered"
+      ],
+      "country_hint": "IN",
+      "raw_lines": [
+        "Hyderabad  Telangana  500020",
+        "Royal Plaza",
+        "Door No. 1-7-81  Airport Lane",
+        "Gachibowli "
+      ],
+      "gold": {
+        "StrtNm": "Airport Lane",
+        "BldgNb": "Door No. 1-7-81",
+        "BldgNm": "Royal Plaza",
+        "PstCd": "500020",
+        "TwnNm": "Hyderabad",
+        "TwnLctnNm": "Gachibowli",
+        "CtrySubDvsn": "Telangana",
+        "Ctry": "IN"
+      },
+      "output": {
+        "Ctry": "IN",
+        "PstCd": "500020",
+        "CtrySubDvsn": "Telangana",
+        "TwnNm": "Hyderabad",
+        "BldgNb": "Door No. 1-7-81",
+        "BldgNm": "Royal Plaza",
+        "StrtNm": "Airport Lane",
+        "TwnLctnNm": "Gachibowli"
+      },
+      "route": "NEEDS_LLM",
+      "exact": true,
+      "matched": [
+        "StrtNm",
+        "BldgNb",
+        "BldgNm",
+        "PstCd",
+        "TwnNm",
+        "TwnLctnNm",
+        "CtrySubDvsn",
+        "Ctry"
+      ],
+      "wrong": [],
+      "missing": [],
+      "extra_fields": [],
+      "hallucinated": [],
+      "proposal": {
+        "Ctry": "IN",
+        "PstCd": "500020",
+        "CtrySubDvsn": "Telangana",
+        "TwnNm": "Hyderabad",
+        "BldgNb": "Door No. 1-7-81",
+        "BldgNm": "Royal Plaza",
+        "StrtNm": "Airport Lane",
+        "TwnLctnNm": "Gachibowli"
+      },
+      "proposal_has_adrline": false,
+      "proposal_fields_exact": true,
+      "latency_ms": 1.781,
+      "cost_usd": 0.0,
+      "system_extra": {
+        "route_reasons": [
+          "low_confidence",
+          "by_elimination:TwnLctnNm"
+        ]
+      }
+    }
+  ]
+}
