@@ -16,3 +16,7 @@ This project does not claim CBPR+ certification. It implements a documented subs
 
 - The limit is one config value, so confirming it is a one-line change plus a test.
 - With no town written there is no hybrid (section 20): the address goes to REVIEW.
+
+## Day 4
+
+The agent's validator (`agent/repair/validator.py`, HYBRID_LINES_EXCEEDED and HYBRID_DUPLICATION) reads the same `max_adr_lines` config value. It remains a placeholder: the real CBPR+ limit must be confirmed before anyone relies on it.

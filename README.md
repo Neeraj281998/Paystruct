@@ -84,3 +84,15 @@ agent/.venv/bin/python -m agent.rules.cli --split dev           # rules only; de
 ```
 
 Design and caveats: `docs/decisions/rules-engine.md`.
+
+## Repair agent (Day 4)
+
+The model proposes, plain code decides (`docs/decisions/agent.md`, `docs/threat-model.md`). Everything below runs with no API key and no network:
+
+```bash
+agent/.venv/bin/python -m pytest agent evals -q                       # scripted fake model; PostgreSQL tests skip without database settings
+agent/.venv/bin/python -m agent.repair.worker --source dev --limit 30 --no-llm --memory   # rules + verifier only
+set -a; . ./.env; set +a; agent/.venv/bin/python -m agent.db          # create the agent tables (idempotent), then drop --memory above
+```
+
+A real run needs `ANTHROPIC_API_KEY` in the environment, a mandatory `--limit`, and prints an estimate first; see the decision record.
