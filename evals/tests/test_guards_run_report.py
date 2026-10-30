@@ -56,12 +56,16 @@ def test_the_evals_code_never_reads_the_test_file_directly():
 
 
 # -- systems ---------------------------------------------------------------------------------------------------------
-def test_llm_only_and_agent_are_stubs_that_say_not_yet_available():
-    for cls in (LlmOnly, Agent):
-        s = cls()
-        assert s.available is False and "not yet available" in s.unavailable_reason
-        with pytest.raises(NotAvailable):
-            s.run(["x"])
+def test_llm_only_is_a_stub_and_the_agent_needs_a_key(monkeypatch):
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    s = LlmOnly()
+    assert s.available is False and "not yet available" in s.unavailable_reason
+    with pytest.raises(NotAvailable):
+        s.run(["x"])
+    a = Agent()
+    assert a.available is False and "ANTHROPIC_API_KEY" in a.unavailable_reason
+    with pytest.raises(NotAvailable):
+        a.run(["x"])
 
 
 def test_rules_only_returns_fields_route_latency_and_zero_cost():
@@ -69,10 +73,16 @@ def test_rules_only_returns_fields_route_latency_and_zero_cost():
     assert out.route in ("ACCEPT", "NEEDS_LLM", "REVIEW") and out.cost_usd == 0.0 and out.latency_s > 0 and "Ctry" in out.fields
 
 
-def test_the_stub_systems_write_no_record(tmp_path):
-    p = subprocess.run([sys.executable, "-m", "evals.run", "--system", "agent", "--split", "dev", "--out-dir", str(tmp_path)],
-                       capture_output=True, text=True, cwd=guards.REPO_ROOT)
-    assert p.returncode == 3 and "not yet available" in p.stdout and list(tmp_path.iterdir()) == []
+def _env_without_key():
+    import os
+    return {k: v for k, v in os.environ.items() if k != "ANTHROPIC_API_KEY"}
+
+
+def test_the_stub_and_the_keyless_agent_write_no_record(tmp_path):
+    for system, expect in (("llm_only", "not yet available"), ("agent", "ANTHROPIC_API_KEY")):
+        p = subprocess.run([sys.executable, "-m", "evals.run", "--system", system, "--split", "dev", "--limit", "5", "--out-dir", str(tmp_path)],
+                           capture_output=True, text=True, cwd=guards.REPO_ROOT, env=_env_without_key())
+        assert p.returncode == 3 and expect in p.stdout and list(tmp_path.iterdir()) == []
 
 
 # -- run records -----------------------------------------------------------------------------------------------------
@@ -144,7 +154,7 @@ def test_the_report_uses_the_latest_run_per_system_and_split(tmp_path):
     d["date"] = "2000-01-01T00:00:00Z"
     p1.write_text(json.dumps(d))
     make_run(tmp_path, "rules_only", "dev", wrong=0)
-    assert report.load_runs(tmp_path)[("rules_only", "dev")]["metrics"]["false_repair"]["k"] == 0
+    assert report.load_runs(tmp_path)[("rules_only", "dev", None)]["metrics"]["false_repair"]["k"] == 0
 
 
 def test_the_hard_set_note_is_generated_from_records(tmp_path):
