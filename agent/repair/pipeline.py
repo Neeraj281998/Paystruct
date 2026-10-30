@@ -107,7 +107,7 @@ class RepairPipeline:
             conf = compute_confidence(cand.fields, rules, 1, None, [], unchecked, self.cfg)
             if conf >= self.cfg["threshold"]:
                 return Outcome(**base, status="repaired", route=REPAIRED, fields=cand.fields, confidence=conf, source="rules")
-            return Outcome(**base, status="review", route=REVIEW, confidence=conf, reasons=["LOW_CONFIDENCE"], source="rules")
+            return Outcome(**base, status="review", route=REVIEW, confidence=conf, reasons=["LOW_CONFIDENCE"], source="rules", proposal=dict(cand.fields))
         if rules.route == "REVIEW":
             return Outcome(**base, status="review", route=REVIEW, reasons=["RULES_REVIEW"] + rules.route_reasons, source="rules_review")
         if self.agent is None:
@@ -178,7 +178,7 @@ class RepairPipeline:
                     return Outcome(**base, status="repaired", route=REPAIRED, fields=cand.fields, adr_lines=cand.adr_lines, confidence=conf,
                                    attempts=attempt, cost_usd=total_cost, steps=steps, source="agent")
                 return Outcome(**base, status="review", route=REVIEW, confidence=conf, attempts=attempt, cost_usd=total_cost, steps=steps,
-                               reasons=["LOW_CONFIDENCE"], source="agent")
+                               reasons=["LOW_CONFIDENCE"], source="agent", proposal=cand.as_dict())
             feedback = hard + [f"lost text: '{t}'" for t in lost] + [f"UNSUPPORTED_FIELD:{n}" for n in unsupported]
             previous = sub["address"]
             reasons = feedback

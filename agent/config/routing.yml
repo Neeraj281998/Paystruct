@@ -1,5 +1,8 @@
-# Routing and confidence. PLACEHOLDERS: the threshold is set on the calibration split on Day 5, never on dev or test.
-threshold: 0.85            # valid + grounded + confidence at or above this -> REPAIRED, otherwise REVIEW
+# Routing and confidence.
+# The threshold below was set from the calibration split (python -m evals.calibrate --apply; docs/decisions/threshold.md).
+# The signal constants under `confidence:` remain untuned placeholders and are now FROZEN: the threshold was calibrated against the confidence they
+# produce, so changing any of them invalidates the threshold.
+threshold: 0.94   # set on the calibration split by evals/calibrate.py --apply (2026-10-30, 20261030T145505Z_agent_calibration_fe7054e.json); see docs/decisions/threshold.md
 max_attempts: 3            # attempts per payment
 max_tool_calls: 8          # tool calls per attempt
 max_cost_usd_per_payment: 0.05   # env MAX_COST_USD_PER_PAYMENT overrides
@@ -10,7 +13,7 @@ max_payment_tries: 3       # a payment that hits retry_later this many times goe
 lease_seconds: 600         # an in_progress claim older than this may be re-claimed
 max_tokens: 1024           # per API response
 effort: low                # Haiku 5.5: the model thinks less; sampling parameters are not sent (they 400 on this model)
-confidence:                # signals (placeholders, not tuned)
+confidence:                # signals: untuned placeholders, FROZEN (see the header)
   base: 0.80
   agree_rules_weight: 0.10      # share of output fields that equal a rules field with explicit evidence
   gazetteer_agree: 0.04

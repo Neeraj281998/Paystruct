@@ -50,8 +50,20 @@ class ScriptedClient:
         return item(kwargs) if callable(item) else item
 
 
-def make_pipeline(script, gazetteer=None, routing_overrides=None, repo=None, engine=None, default=None):
+TEST_THRESHOLD = 0.85     # tests that are not about the applied threshold use this one, so a recalibration cannot change what they test
+
+
+def explicit_routing(**overrides) -> dict:
+    """routing.yml with an explicit test threshold. The confidence constants are the real (frozen) ones; the threshold is not read from the file."""
     routing = load_routing()
+    routing["threshold"] = TEST_THRESHOLD
+    routing.update(overrides)
+    return routing
+
+
+def make_pipeline(script, gazetteer=None, routing_overrides=None, repo=None, engine=None, default=None, routing=None):
+    """`routing` is an explicit configuration; by default explicit_routing() (threshold 0.85). Pass load_routing() only to test the applied threshold."""
+    routing = dict(routing) if routing is not None else explicit_routing()
     routing.update(routing_overrides or {})
     engine = engine or RulesEngine(gazetteer=gazetteer if gazetteer is not None else make_gazetteer())
     client = ScriptedClient(script, default)

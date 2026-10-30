@@ -6,7 +6,7 @@ import sys
 
 from agent.rules.engine import RulesEngine
 from agent.tests.conftest import make_gazetteer
-from agent.tests.fakes import GOOD, NEEDS_LLM_LINES, ScriptedClient, reply, submit, text
+from agent.tests.fakes import explicit_routing, GOOD, NEEDS_LLM_LINES, ScriptedClient, reply, submit, text
 from evals import guards, report, run
 from evals.metrics import compute
 from evals.systems import Agent
@@ -24,7 +24,7 @@ def records():
 
 def test_the_agent_system_has_the_common_interface_and_cost():
     client = ScriptedClient([submit(GOOD, tin=3000, tout=400)])
-    system = Agent(client=client, engine=ENGINE)
+    system = Agent(client=client, engine=ENGINE, routing=explicit_routing())
     assert system.available and system.name == "agent"
     outs = [system.run(r["raw_lines"], None) for r in records()]
     assert [o.route for o in outs] == ["ACCEPT", "ACCEPT", "REVIEW"]            # rules accept, model repair, no town -> review
@@ -35,7 +35,7 @@ def test_the_agent_system_has_the_common_interface_and_cost():
 
 
 def test_the_agent_run_record_has_the_same_shape_and_a_cost(tmp_path):
-    system = Agent(client=ScriptedClient([submit(GOOD, tin=3000, tout=400)]), engine=ENGINE)
+    system = Agent(client=ScriptedClient([submit(GOOD, tin=3000, tout=400)]), engine=ENGINE, routing=explicit_routing())
     evals = run.run_system(system, records())
     rec = run.build_record(system, "dev", records(), evals, limit=3)
     for key in ("git_sha", "split", "n_records", "system", "config", "seed", "date", "metrics", "limit"):
@@ -49,7 +49,7 @@ def test_the_agent_run_record_has_the_same_shape_and_a_cost(tmp_path):
 
 def test_run_system_stops_at_the_run_budget():
     script = [submit(GOOD, tin=90_000, tout=100_000)] * 5
-    system = Agent(client=ScriptedClient(script), engine=ENGINE)
+    system = Agent(client=ScriptedClient(script), engine=ENGINE, routing=explicit_routing())
     recs = [dict(records()[1], id=str(i)) for i in range(5)]
     logs = []
     evals = run.run_system(system, recs, budget_usd=0.10, log=logs.append)
@@ -59,7 +59,7 @@ def test_run_system_stops_at_the_run_budget():
 
 
 def test_the_report_shows_the_first_n_table_with_every_system(tmp_path):
-    system = Agent(client=ScriptedClient([submit(GOOD)]), engine=ENGINE)
+    system = Agent(client=ScriptedClient([submit(GOOD)]), engine=ENGINE, routing=explicit_routing())
     run.write_record(run.build_record(system, "dev", records(), run.run_system(system, records()), limit=3), tmp_path)
     from evals.systems import RulesOnly
     ro = RulesOnly(engine=ENGINE)
@@ -96,7 +96,7 @@ def test_evals_cli_guards_for_the_model_systems():
 
 
 def test_run_records_keep_per_record_details_for_dev_and_calibration_only():
-    system = Agent(client=ScriptedClient([submit(GOOD)]), engine=ENGINE)
+    system = Agent(client=ScriptedClient([submit(GOOD)]), engine=ENGINE, routing=explicit_routing())
     evals = run.run_system(system, records())
     dev = run.build_record(system, "dev", records(), evals)
     assert len(dev["records"]) == 3
@@ -162,7 +162,7 @@ def test_the_agent_robustness_run_is_guarded_like_every_real_run():
 
 
 def test_a_scripted_agent_run_over_the_robustness_cases_keeps_details_and_is_flagged():
-    system = Agent(client=ScriptedClient([], default=reply(text("done"), stop="end_turn")), engine=ENGINE)
+    system = Agent(client=ScriptedClient([], default=reply(text("done"), stop="end_turn")), engine=ENGINE, routing=explicit_routing())
     recs = run.robustness_records()[:6]
     evals = run.run_system(system, recs)
     rec = run.build_record(system, "robustness", recs, evals, limit=6)
@@ -189,7 +189,7 @@ def test_review_correct_proposal_counts_rules_guesses_and_hybrids_with_matching_
 
 
 def test_the_report_column_is_computed_from_per_record_details_for_dev(tmp_path):
-    system = Agent(client=ScriptedClient([]), engine=ENGINE)
+    system = Agent(client=ScriptedClient([]), engine=ENGINE, routing=explicit_routing())
     recs = records()
     ev = run.run_system(system, recs)
     rec = run.build_record(system, "dev", recs, ev)
@@ -210,7 +210,7 @@ def test_older_run_records_without_the_stored_flag_still_give_the_column():
 
 
 def test_for_hard_and_test_only_the_count_is_shown_and_no_details_are_stored():
-    system = Agent(client=ScriptedClient([]), engine=ENGINE)
+    system = Agent(client=ScriptedClient([]), engine=ENGINE, routing=explicit_routing())
     recs = records()
     ev = run.run_system(system, recs)
     for split in ("hard", "test"):

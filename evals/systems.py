@@ -164,10 +164,11 @@ class Agent(System):
     """
     name = "agent"
 
-    def __init__(self, client=None, use_gazetteer: bool = True, engine=None):
+    def __init__(self, client=None, use_gazetteer: bool = True, engine=None, routing: dict | None = None):
         import os
         from agent.repair.config import model_from_env
         self.client = client
+        self._routing_arg = routing
         self.use_gazetteer = use_gazetteer
         self.engine = engine
         self.model = model_from_env()
@@ -190,7 +191,7 @@ class Agent(System):
         from agent.repair.worker import build_pipeline
         from agent.rules.engine import RulesEngine
         from agent.rules.gazetteer import Gazetteer
-        routing = load_routing()
+        routing = self._routing_arg or load_routing()
         engine = self.engine or (RulesEngine() if self.use_gazetteer else RulesEngine(gazetteer=Gazetteer()))
         self._routing = routing
         return build_pipeline(InMemoryRepository(routing["max_payment_tries"], routing["lease_seconds"]), client=self.client, routing=routing, engine=engine)
@@ -199,7 +200,7 @@ class Agent(System):
         from agent.repair.config import Prices
         from agent.repair.prompts import PROMPT_VERSION
         from agent.rules.engine import load_config
-        r = self._routing if self._pipeline else __import__("agent.repair.config", fromlist=["load_routing"]).load_routing()
+        r = self._routing_arg or (self._routing if self._pipeline else __import__("agent.repair.config", fromlist=["load_routing"]).load_routing())
         return {"model": self.model, "prompt_version": PROMPT_VERSION, "thresholds": {"repaired": r["threshold"], "rules_accept": load_config()["thresholds"]["accept"]},
                 "max_attempts": r["max_attempts"], "max_tool_calls": r["max_tool_calls"], "max_cost_usd_per_payment": r["max_cost_usd_per_payment"],
                 "effort": r["effort"], "temperature": "not sent (claude-haiku-5-5 rejects non-default sampling parameters)",

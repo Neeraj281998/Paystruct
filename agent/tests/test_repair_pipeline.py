@@ -11,7 +11,7 @@ from agent.rules.engine import RulesEngine
 from agent.rules.gazetteer import Gazetteer
 
 from .conftest import make_gazetteer
-from .fakes import GOOD, NEEDS_LLM_LINES, ScriptedClient, call, make_pipeline, reply, submit, text
+from .fakes import GOOD, NEEDS_LLM_LINES, ScriptedClient, call, make_pipeline, reply, submit, explicit_routing, text
 
 LINES = NEEDS_LLM_LINES
 
@@ -258,8 +258,7 @@ def test_a_duplicating_hybrid_is_rejected():
 
 # -- confidence ----------------------------------------------------------------------------------------------------------------
 def test_confidence_signals(engine):
-    from agent.repair.config import load_routing
-    routing = load_routing()
+    routing = explicit_routing()
     rules = engine.parse(["14 Main St", "Cork T12 AC34", "IE"])
     full = compute_confidence(rules.fields, rules, 1, 1.0, [], False, routing)
     assert compute_confidence(rules.fields, rules, 1, 1.0, [], True, routing) < full                 # gazetteer unchecked lowers it
@@ -307,7 +306,7 @@ def test_the_loop_works_with_real_sdk_response_objects():
     import anthropic
     import httpx2 as httpx
     from agent.repair.agent import RepairAgent
-    from agent.repair.config import Prices, load_routing
+    from agent.repair.config import Prices
     from agent.repair.pipeline import RepairPipeline
 
     responses = [
@@ -326,7 +325,7 @@ def test_the_loop_works_with_real_sdk_response_objects():
                                          "usage": {"input_tokens": 1200, "output_tokens": 80}, **r})
 
     client = anthropic.Anthropic(api_key="sk-ant-fake-key-for-test", http_client=httpx.Client(transport=httpx.MockTransport(handler)), max_retries=0)
-    routing = load_routing()
+    routing = explicit_routing()
     engine = RulesEngine(gazetteer=make_gazetteer())
     pipe = RepairPipeline(engine, RepairAgent(client, engine, "claude-haiku-5-5", routing, Prices.load()), InMemoryRepository(), routing)
     out = pipe.process("real-1", LINES)
@@ -343,16 +342,42 @@ def test_a_real_sdk_connection_error_is_retried_then_left_as_retry_later():
     import anthropic
     import httpx2 as httpx
     from agent.repair.agent import RepairAgent
-    from agent.repair.config import Prices, load_routing
+    from agent.repair.config import Prices
     from agent.repair.pipeline import RepairPipeline
 
     def handler(request):
         raise httpx.ConnectError("down", request=request)
 
     client = anthropic.Anthropic(api_key="sk-ant-fake", http_client=httpx.Client(transport=httpx.MockTransport(handler)), max_retries=0)
-    routing = load_routing()
+    routing = explicit_routing()
     engine = RulesEngine(gazetteer=make_gazetteer())
     sleeps = []
     pipe = RepairPipeline(engine, RepairAgent(client, engine, "claude-haiku-5-5", routing, Prices.load(), sleep=sleeps.append), InMemoryRepository(), routing)
     out = pipe.process("real-2", LINES)
     assert out.status == "retry_later" and sleeps == [1.0, 2.0]
+
+
+# -- the applied threshold: what it means for a retry ----------------------------------------------------------------------------------
+def test_with_the_applied_threshold_a_fix_correct_only_on_attempt_2_goes_to_review_with_its_proposal_while_attempt_1_is_repaired():
+    """Documents a deliberate consequence of the calibrated threshold (docs/decisions/threshold.md). This test reads routing.yml ON PURPOSE:
+    it is about the applied threshold. The attempt penalty lowers a valid, grounded, correct fix from the first attempt's score to the second's;
+    with the threshold sitting at the plateau of the first attempt's score, the second attempt's score falls below it."""
+    from agent.repair.config import load_routing
+    from agent.repair.pipeline import compute_confidence
+    applied = load_routing()                                              # the real applied threshold, not the test one
+    rules = RulesEngine(gazetteer=make_gazetteer()).parse(LINES)
+    first = compute_confidence(GOOD, rules, 1, 0.95, [], False, applied)
+    second = compute_confidence(GOOD, rules, 2, 0.95, [], False, applied)
+    assert first >= applied["threshold"] > second, ("the applied threshold no longer separates attempt 1 from attempt 2: "
+                                                    "re-read docs/decisions/threshold.md and update this test and the docs together")
+    # the same good fix on attempt 1 reaches REPAIRED
+    one = make_pipeline([submit(GOOD, confidence=0.95)], routing=applied).process("a1", LINES)
+    assert one.status == "repaired" and one.route == REPAIRED and one.attempts == 1 and one.confidence >= applied["threshold"]
+    # the fix that is only right on attempt 2 is valid and grounded, but routes REVIEW and keeps the proposal for the person
+    bad = dict(GOOD, PstCd="302099")                                      # an invented postcode: rejected, with feedback
+    two = make_pipeline([submit(bad), submit(GOOD, confidence=0.95)], routing=applied).process("a2", LINES)
+    assert two.attempts == 2 and two.status == "review" and two.route == REVIEW and two.reasons == ["LOW_CONFIDENCE"]
+    assert two.fields == {} and two.proposal == GOOD and two.confidence < applied["threshold"]
+    assert two.source == "agent"
+    # with an explicit lower threshold (the tests' default) the same attempt-2 fix is accepted: it is the threshold, not the checks, that routes it
+    assert make_pipeline([submit(bad), submit(GOOD, confidence=0.95)]).process("a3", LINES).status == "repaired"

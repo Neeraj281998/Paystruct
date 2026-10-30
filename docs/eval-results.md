@@ -46,10 +46,11 @@ Dataset size: 600 records. Rules-only counts every non-ACCEPT record as not repa
 | system | n | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | REVIEW cases with a correct proposal | latency p50 / p95 (ms) | cost per 1,000 (USD) |
 |---|---|---|---|---|---|---|---|---|---|---|
 | rules_only | 30 | 86.7% (26/30) [70.3-94.7] | 0.0% (0/26) [0.0-12.9] | 0.0% (0/30) (0 values) | 86.7% (26/30) | 13.3% (4/30) | 0.0% (0/30) | - (0/0) | 1.31 / 1.97 | 0.0000 |
-| llm_only | not run yet | | | | | | | | | |
+| llm_only | 30 | 93.3% (28/30) [78.7-98.2] | 3.4% (1/29) [0.6-17.2] | 0.0% (0/30) (0 values) | 96.7% (29/30) | 0.0% (0/30) | 3.3% (1/30) | 0/1 | 1229.50 / 1661.54 | 0.2639 |
 | agent | 30 | 86.7% (26/30) [70.3-94.7] | 0.0% (0/26) [0.0-12.9] | 0.0% (0/30) (0 values) | 86.7% (26/30) | 0.0% (0/30) | 13.3% (4/30) | 4/4 | 2.15 / 2.86 | 0.0000 |
 
 - rules_only: run 2026-10-30T14:28:08Z, git `2fcc5fdd04`, model none, total cost $0.0000, file `20261030T142808Z_rules_only_dev_first30_2fcc5fd.json`
+- llm_only: run 2026-10-30T14:53:54Z, git `fe7054e765`, model claude-haiku-5-5, total cost $0.0079, file `20261030T145354Z_llm_only_dev_first30_fe7054e.json`
 - agent: run 2026-10-30T14:11:03Z, git `093ead5a97`, model claude-haiku-5-5, total cost $0.0000, file `20261030T141103Z_agent_dev_first30_093ead5.json`
 
 **By country**
@@ -83,15 +84,16 @@ Dataset size: 400 records. Rules-only counts every non-ACCEPT record as not repa
 |---|---|---|---|---|---|---|---|---|---|---|
 | rules_only | 400 | 85.5% (342/400) [81.7-88.6] | 0.6% (2/344) [0.2-2.1] | 0.0% (0/400) (0 values) | 86.0% (344/400) | 14.0% (56/400) | 0.0% (0/400) | - (0/0) | 1.37 / 1.87 | 0.0000 |
 | llm_only | not run yet | | | | | | | | | |
-| agent | not run yet | | | | | | | | | |
+| agent | 400 | 85.8% (343/400) [82.0-88.8] | 0.6% (2/345) [0.2-2.1] | 0.0% (0/400) (0 values) | 86.2% (345/400) | 0.0% (0/400) | 13.8% (55/400) | 96.4% (53/55) | 2.23 / 3.56 | 0.0155 |
 
 - rules_only: run 2026-10-30T14:28:06Z, git `2fcc5fdd04` (uncommitted changes), 400 records, seed 0, file `20261030T142806Z_rules_only_calibration_2fcc5fd.json`
 - llm_only: not run yet
-- agent: not run yet
+- agent: run 2026-10-30T14:55:05Z, git `fe7054e765`, 400 records, seed 0, file `20261030T145505Z_agent_calibration_fe7054e.json`
 
 **Per system: exact match on all fields and field accuracy** (not comparable across systems, so not in the table above)
 
 - rules_only: exact_all 99.0% (396/400) [97.5-99.6]; field accuracy 99.6% (2361/2370) [99.3-99.8] of gold values. Here, every field of every record is the rules' own output, whether or not the record is ACCEPT.
+- agent: exact_all 85.8% (343/400) [82.0-88.8]; field accuracy 83.6% (1981/2370) [82.0-85.0] of gold values. Here, a record routed to REVIEW publishes no fields, so it counts as not exact here.
 
 
 **Per element** (precision, recall, F1 in percent; n_gold is the number of gold values)
