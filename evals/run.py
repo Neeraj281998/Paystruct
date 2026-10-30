@@ -131,7 +131,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.system == "agent":
         # The agent costs real money: dev only, a mandatory --limit, an estimate, a budget, and the session's 30-record rule.
         from agent.repair import worker
-        from agent.repair.config import Prices, load_routing, run_budget_usd
+        from agent.repair.config import load_routing, run_budget_usd
         if args.split not in worker.ALLOWED_SPLITS and args.split != ROBUSTNESS:
             sys.stderr.write(f"REFUSED: the agent runs on {', '.join(worker.ALLOWED_SPLITS)} only today (calibration, hard and test are Day 5); --source robustness is the development-only audit set\n")
             return 2
@@ -145,11 +145,6 @@ def main(argv: list[str] | None = None) -> int:
         if n_run > worker.UNAPPROVED_REAL_API_RECORDS and not args.approved_over_30:
             sys.stderr.write(f"REFUSED: more than {worker.UNAPPROVED_REAL_API_RECORDS} records against the real API needs the owner's approval (--approved-over-30)\n")
             return 2
-        est = worker.estimate(n_run, system.model, Prices.load(), load_routing())
-        print(f"model {system.model}; estimate: {json.dumps(est)}")
-        if n_run > worker.CONFIRM_ABOVE and not args.yes:
-            sys.stderr.write(f"REFUSED: more than {worker.CONFIRM_ABOVE} records need --yes after you have read the estimate\n")
-            return 2
         budget = run_budget_usd()
     records = robustness_records() if args.source else guards.load_records(decision)
     if ids:
@@ -161,6 +156,16 @@ def main(argv: list[str] | None = None) -> int:
         records = [by_id[i] for i in ids]
     elif args.limit:
         records = records[: args.limit]
+    if args.system == "agent":
+        # run the rules offline (free), count what would reach the model, and price that from measured usage
+        from agent.repair.config import load_routing
+        from agent.repair.estimate import estimate_agent
+        from agent.rules.engine import RulesEngine
+        items = [(r["id"], r["raw_lines"], r.get("country_hint")) for r in records]
+        print(f"model {system.model}; estimate: {json.dumps(estimate_agent(items, RulesEngine(), load_routing()))}")
+        if len(records) > worker.CONFIRM_ABOVE and not args.yes:
+            sys.stderr.write(f"REFUSED: more than {worker.CONFIRM_ABOVE} records need --yes after you have read the estimate\n")
+            return 2
     evals = run_system(system, records, budget)
     source_file = guards.REPO_ROOT / "agent" / "audit" / "robustness_cases.py" if args.source else decision.path
     split_sha = hashlib.sha256(source_file.read_bytes()).hexdigest()

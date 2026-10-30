@@ -162,3 +162,55 @@ def test_a_scripted_agent_run_over_the_robustness_cases_keeps_details_and_is_fla
     evals = run.run_system(system, recs)
     rec = run.build_record(system, "robustness", recs, evals, limit=6)
     assert rec["development_only"] is True and len(rec["records"]) == 6 and rec["config"]["prompt_version"] == "repair-v2"
+
+
+# -- the "REVIEW cases with a correct proposal" column -----------------------------------------------------------------------------------
+def _eval(rec, fields, route, extra=None):
+    from evals.metrics import evaluate_record
+    from evals.systems import SystemOutput
+    return evaluate_record(rec, SystemOutput(fields, route, 0.001, 0.0, extra or {}))
+
+
+def test_review_correct_proposal_counts_rules_guesses_and_hybrids_with_matching_fields():
+    from evals.metrics import compute
+    rec = records()[0]
+    gold = rec["gold"]
+    rules_guess = {"rules": {"fields": dict(gold)}, "attempt_log": []}
+    hybrid_ok = {"attempt_log": [{"proposal": {**gold, "AdrLine": ["t.a.v. Administratie"]}}]}
+    hybrid_bad = {"attempt_log": [{"proposal": {"TwnNm": "Cork", "Ctry": "IE", "AdrLine": ["14 Main St"]}}]}
+    evals = [_eval(rec, {}, "REVIEW", rules_guess), _eval(rec, {}, "REVIEW", hybrid_ok), _eval(rec, {}, "REVIEW", hybrid_bad),
+             _eval(rec, dict(gold), "ACCEPT", rules_guess), _eval(rec, {}, "REVIEW", {"rules": {"fields": {**gold, "TwnNm": "Dublin"}}, "attempt_log": []})]
+    assert compute(evals)["review_correct_proposal"] == {"k": 2, "n": 4}        # the ACCEPT record is not a REVIEW case
+
+
+def test_the_report_column_is_computed_from_per_record_details_for_dev(tmp_path):
+    system = Agent(client=ScriptedClient([]), engine=ENGINE)
+    recs = records()
+    ev = run.run_system(system, recs)
+    rec = run.build_record(system, "dev", recs, ev)
+    review = [r for r in rec["records"] if r["route"] == "REVIEW"]
+    assert review and "proposal_fields_exact" in review[0]
+    run.write_record(rec, tmp_path)
+    assert report.review_correct(report.load_runs(tmp_path)[("agent", "dev", None)]) == f"{sum(r['proposal_fields_exact'] for r in review)}/{len(review)}"
+    text_ = report.render(report.load_runs(tmp_path))
+    assert "REVIEW cases with a correct proposal" in text_
+
+
+def test_older_run_records_without_the_stored_flag_still_give_the_column():
+    old = {"split": "dev", "metrics": {}, "records": [
+        {"route": "REVIEW", "gold": {"TwnNm": "Cork", "Ctry": "IE"}, "country": "IE", "output": {}, "system_extra": {"rules": {"fields": {"TwnNm": "Cork", "Ctry": "IE"}}, "attempt_log": []}},
+        {"route": "REVIEW", "gold": {"TwnNm": "Cork", "Ctry": "IE"}, "country": "IE", "output": {}, "system_extra": {"rules": {"fields": {"TwnNm": "Dublin", "Ctry": "IE"}}, "attempt_log": []}},
+        {"route": "ACCEPT", "gold": {"TwnNm": "Cork", "Ctry": "IE"}, "country": "IE", "output": {"TwnNm": "Cork"}, "system_extra": {}}]}
+    assert report.review_correct(old) == "1/2"
+
+
+def test_for_hard_and_test_only_the_count_is_shown_and_no_details_are_stored():
+    system = Agent(client=ScriptedClient([]), engine=ENGINE)
+    recs = records()
+    ev = run.run_system(system, recs)
+    for split in ("hard", "test"):
+        rec = run.build_record(system, split, recs, ev)
+        assert "records" not in rec and set(rec["metrics"]["review_correct_proposal"]) == {"k", "n"}
+        rec["_file"] = "x.json"
+        shown = report.review_correct(rec)
+        assert "/" in shown and "%" not in shown                                    # a count, never a rate

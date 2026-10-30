@@ -17,6 +17,7 @@ from pathlib import Path
 
 from agent.repair.agent import RepairAgent, make_client
 from agent.repair.config import Prices, load_routing, model_from_env, run_budget_usd
+from agent.repair.estimate import estimate_agent
 from agent.repair.pipeline import RepairPipeline
 from agent.repair.store import InMemoryRepository
 from agent.rules.engine import RulesEngine
@@ -26,13 +27,6 @@ from agent.rules.xsd import REPO_ROOT
 ALLOWED_SPLITS = ("dev",)
 UNAPPROVED_REAL_API_RECORDS = 30
 CONFIRM_ABOVE = 50
-EST_TOKENS_IN, EST_TOKENS_OUT, EST_ATTEMPTS = 3000, 400, 1.3
-
-
-def estimate(n: int, model: str, prices: Prices, routing: dict) -> dict:
-    per = prices.cost(model, EST_TOKENS_IN, EST_TOKENS_OUT) * EST_ATTEMPTS
-    return {"records": n, "typical_if_all_need_the_model": round(n * per, 4), "hard_cap_per_payment": routing["max_cost_usd_per_payment"],
-            "hard_cap_total": round(n * routing["max_cost_usd_per_payment"], 4), "run_budget": run_budget_usd()}
 
 
 def load_jsonl(split: str, limit: int) -> list[tuple[str, list[str], str | None]]:
@@ -95,8 +89,12 @@ def main(argv: list[str] | None = None) -> int:
         if args.limit > UNAPPROVED_REAL_API_RECORDS and not args.approved_over_30:
             sys.stderr.write(f"REFUSED: more than {UNAPPROVED_REAL_API_RECORDS} records against the real API needs the owner's approval (--approved-over-30)\n")
             return 2
-        est = estimate(args.limit, model, prices, routing)
-        print(f"model {model}; estimate: {json.dumps(est)}")
+        # the estimate needs the records: load them, run the rules offline (free), count how many would reach the model
+        if args.source == "queue":
+            sys.stderr.write("the estimate for the queue source needs a database connection; use --source dev for the first real runs\n")
+            return 2
+        est_items = load_jsonl(args.source, args.limit)
+        print(f"model {model}; estimate: {json.dumps(estimate_agent(est_items, RulesEngine(), routing))}")
         if args.limit > CONFIRM_ABOVE and not args.yes:
             sys.stderr.write(f"REFUSED: more than {CONFIRM_ABOVE} records need --yes after you have read the estimate above\n")
             return 2

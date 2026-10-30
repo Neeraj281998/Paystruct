@@ -118,6 +118,10 @@ class RepairPipeline:
                            proposal=dict(rules.fields))
         return self._with_agent(msg_id, raw_lines, hint, rules, prior_failures, base)
 
+    def reaches_model(self, rules) -> bool:
+        """Would a record with this rules result be sent to the model? (used by the free cost estimate; same test as _decide)"""
+        return rules.route == "NEEDS_LLM" and not self._only_unsupported_elimination(rules)
+
     def _only_unsupported_elimination(self, rules) -> bool:
         """True when the only thing between the rules' output and ACCEPT is a field set by elimination that nothing can support."""
         elim = [n for n, b in rules.field_basis.items() if b == "elimination"]

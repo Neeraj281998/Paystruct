@@ -8,6 +8,7 @@ import argparse
 import json
 from pathlib import Path
 
+from evals.metrics import proposal_exact_from_details
 from evals.stats import MIN_BUCKET, fmt, rate
 from evals.systems import SYSTEMS
 
@@ -44,13 +45,25 @@ def _pct(x) -> str:
     return "-" if x is None else f"{100 * x:.1f}"
 
 
+COUNTS_ONLY_SPLITS = ("hard", "test")
+
+
+def review_correct(run: dict) -> str:
+    """REVIEW cases with a correct proposal. dev and calibration: computed from the per-record details; hard and test: the in-run count only."""
+    if run["split"] not in COUNTS_ONLY_SPLITS and "records" in run:
+        review = [r for r in run["records"] if r["route"] == "REVIEW"]
+        return fmt(rate(sum(proposal_exact_from_details(r) for r in review), len(review)))
+    c = run["metrics"].get("review_correct_proposal")
+    return f"{c['k']}/{c['n']}" if c else "-"
+
+
 def head_row(system: str, run: dict | None) -> str:
     if run is None:
-        return f"| {system} | not run yet | | | | | | | | | |"
+        return f"| {system} | not run yet | | | | | | | | | | |"
     m = run["metrics"]
     r = m["routes"]
     return (f"| {system} | {m['n']} | {fmt(m['exact_all'], True)} | {fmt(m['auto_correct'], True)} | {fmt(m['false_repair'], True)} | "
-            f"{fmt(m['hallucinated_records'])} ({m['hallucinated_values']} values) | {fmt(r['ACCEPT'])} | {fmt(r['NEEDS_LLM'])} | {fmt(r['REVIEW'])} | "
+            f"{fmt(m['hallucinated_records'])} ({m['hallucinated_values']} values) | {fmt(r['ACCEPT'])} | {fmt(r['NEEDS_LLM'])} | {fmt(r['REVIEW'])} | {review_correct(run)} | "
             f"{m['latency_ms']['p50']:.2f} / {m['latency_ms']['p95']:.2f} | {m['cost_per_1000_usd']:.4f} |")
 
 
@@ -83,8 +96,8 @@ def subset_tables(split: str, runs: dict) -> list[str]:
         n_sub = next(r["n_records"] for r in here.values() if r)
         title = f"First {n_sub} records of {split}" if lim.startswith("first") else f"{n_sub} selected records of {split} ({lim})"
         out += [f"**{title}** (the same records for every system)", "",
-                "| system | n | exact_all [95% CI] | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | latency p50 / p95 (ms) | cost per 1,000 (USD) |",
-                "|---|---|---|---|---|---|---|---|---|---|---|"]
+                "| system | n | exact_all [95% CI] | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | REVIEW cases with a correct proposal | latency p50 / p95 (ms) | cost per 1,000 (USD) |",
+                "|---|---|---|---|---|---|---|---|---|---|---|---|"]
         out += [head_row(s, here[s]) for s in SYSTEM_ORDER]
         out.append("")
         for s in SYSTEM_ORDER:
@@ -107,8 +120,8 @@ def split_section(split: str, runs: dict) -> list[str]:
     sizes = sorted({r["n_records"] for r in here.values() if r})
     out.append(f"Dataset size: {', '.join(str(s) for s in sizes)} records. Rules-only counts every non-ACCEPT record as not repaired.")
     out.append("")
-    out += ["| system | n | exact_all [95% CI] | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | latency p50 / p95 (ms) | cost per 1,000 (USD) |",
-            "|---|---|---|---|---|---|---|---|---|---|---|"]
+    out += ["| system | n | exact_all [95% CI] | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | REVIEW cases with a correct proposal | latency p50 / p95 (ms) | cost per 1,000 (USD) |",
+            "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for s in SYSTEM_ORDER:
         out.append(head_row(s, here[s]))
     out.append("")

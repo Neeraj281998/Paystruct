@@ -113,12 +113,44 @@ def breakdown(evals: list[RecordEval], keys) -> dict:
     return {k: headline(v) for k, v in sorted(groups.items())}
 
 
+def proposal_of(e: RecordEval) -> tuple[dict, bool]:
+    """The best proposal for a record and whether it carries AdrLine: the model's last submitted proposal, else the rules' own output
+    (rules REVIEW, a record the model never saw), else what the system output. AdrLine is not a structured field and is set aside."""
+    x = e.extra or {}
+    proposals = [a["proposal"] for a in (x.get("attempt_log") or []) if a.get("proposal")]
+    if proposals:
+        p = dict(proposals[-1])
+    elif (x.get("rules") or {}).get("fields"):
+        p = dict(x["rules"]["fields"])
+    else:
+        p = dict(e.fields)
+    return {k: v for k, v in p.items() if k != "AdrLine"}, bool(p.get("AdrLine"))
+
+
+def proposal_matches(e: RecordEval) -> bool:
+    """True when the structured fields of the proposal equal the expected fields (a hybrid counts when its structured fields match)."""
+    p, _ = proposal_of(e)
+    return score_record(p, e.rec["gold"], e.rec["country"]).exact
+
+
+def proposal_exact_from_details(r: dict) -> bool:
+    """The same judgement from a stored per-record detail (older run records lack the stored flag)."""
+    if "proposal_fields_exact" in r:
+        return bool(r["proposal_fields_exact"])
+    x = r.get("system_extra") or {}
+    proposals = [a["proposal"] for a in (x.get("attempt_log") or []) if a.get("proposal")]
+    p = dict(proposals[-1]) if proposals else dict((x.get("rules") or {}).get("fields") or r.get("output") or {})
+    p.pop("AdrLine", None)
+    return score_record(p, r["gold"], r["country"]).exact
+
+
 def record_details(e: RecordEval) -> dict:
     """Everything needed to diagnose one record. Only written for dev and calibration (see evals/run.py)."""
     r, s = e.rec, e.score
     return {"id": r["id"], "country": r["country"], "difficulty": r.get("difficulty"), "tags": r.get("tags", []), "country_hint": r.get("country_hint"),
             "raw_lines": r["raw_lines"], "gold": r["gold"], "output": e.fields, "route": e.route, "exact": s.exact,
             "matched": s.matched, "wrong": s.wrong, "missing": s.missing, "extra_fields": s.extra, "hallucinated": e.hallucinated,
+            "proposal": proposal_of(e)[0], "proposal_has_adrline": proposal_of(e)[1], "proposal_fields_exact": proposal_matches(e),
             "latency_ms": round(e.latency_s * 1000, 3), "cost_usd": e.cost_usd, "system_extra": e.extra}
 
 
@@ -135,6 +167,9 @@ def compute(evals: list[RecordEval]) -> dict:
         "field_accuracy": rate(matched, gold_fields),
         "per_element": _element_prf(evals),
         "not_repaired": rate(sum(not e.accepted for e in evals), n),  # rules-only: every non-ACCEPT record
+        # REVIEW cases whose proposal (its structured fields) already equals the expected fields: a person only has to confirm them.
+        # Counts only; computed in-run, so hard-set and test records need no per-record details for it.
+        "review_correct_proposal": {"k": sum(e.route == "REVIEW" and proposal_matches(e) for e in evals), "n": sum(e.route == "REVIEW" for e in evals)},
         "hallucinated_values": sum(len(e.hallucinated) for e in evals),
         "hallucinated_by_element": dict(Counter(f for e in evals for f in e.hallucinated)),
         "no_town": {"n": len(no_town),

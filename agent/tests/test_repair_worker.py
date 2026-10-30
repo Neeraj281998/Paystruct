@@ -32,7 +32,7 @@ def test_more_than_30_real_records_need_the_owners_approval_and_more_than_50_nee
     p = cli("--source", "dev", "--limit", "31", "--memory", env={"ANTHROPIC_API_KEY": "sk-ant-not-a-real-key"})
     assert p.returncode == 2 and "approval" in p.stderr
     p = cli("--source", "dev", "--limit", "60", "--memory", "--approved-over-30", env={"ANTHROPIC_API_KEY": "sk-ant-not-a-real-key"})
-    assert p.returncode == 2 and "--yes" in p.stderr and "estimate" in p.stdout
+    assert p.returncode == 2 and "--yes" in p.stderr and "estimate" in p.stdout and "would_reach_the_model" in p.stdout
     assert "sk-ant-not-a-real-key" not in p.stdout + p.stderr
 
 
@@ -67,9 +67,3 @@ def test_duplicate_deliveries_in_one_run_are_skipped():
     p = make_pipeline([submit(GOOD)], repo=InMemoryRepository())
     res = worker.run([("same", NEEDS_LLM_LINES, None), ("same", NEEDS_LLM_LINES, None)], p, budget_usd=1.0)
     assert res["repaired"] == 1 and res["skipped"] == 1 and len(p.client.requests) == 1
-
-
-def test_estimate_uses_the_price_table():
-    from agent.repair.config import Prices, load_routing
-    est = worker.estimate(30, "claude-haiku-5-5", Prices.load(), load_routing())
-    assert est["records"] == 30 and 0 < est["typical_if_all_need_the_model"] < est["hard_cap_total"] == pytest.approx(1.5)
