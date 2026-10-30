@@ -1,0 +1,44 @@
+# Canada. Labelling guide section 16. English and French; the street type comes last in English, first in French.
+code: CA
+names: [Canada]
+postcode:
+  patterns: ['[ABCEGHJ-NPRSTVXY]\d[ABCEGHJ-NPRSTV-Z]\s?\d[ABCEGHJ-NPRSTV-Z]\d']
+  max_tokens: 2
+  unique: true
+number_position: before
+unit_prefix_number: true
+street:
+  words_after: [street, st, avenue, ave, road, rd, drive, dr, crescent, cres, boulevard, blvd, court, ct, way, lane, ln, trail, place, pl]
+  words_before: [rue, avenue, boulevard, boul, chemin, rang, place, côte, montée]
+  trailing: [east, west, north, south, est, ouest, nord, sud, e, w, n, s, o, ne, nw, se, sw]
+building_words: [building, tower, centre, plaza, complex, édifice, tour, complexe]
+unit_patterns:
+  - '(?:unit|suite|ste|app|apt|bureau)\.?\s*(?:no\.?\s*)?\d+[A-Za-z]?'
+  - '#\s?\d+[A-Za-z]?'
+floor_patterns:
+  - '\d+(?:st|nd|rd|th|e)\s*(?:floor|[eé]tage)'
+  - 'floor\s*\d+'
+pobox_patterns:
+  - 'p\.?\s?o\.?\s?box\s*\d+'
+  - 'c\.?\s?p\.?\s*\d+'
+region:
+  entries:
+    - {name: Alberta, abbr: [AB, Alta]}
+    - {name: British Columbia, abbr: [BC, B.C.]}
+    - {name: Manitoba, abbr: [MB, Man]}
+    - {name: New Brunswick, abbr: [NB, N.B.]}
+    - {name: Nouveau-Brunswick}
+    - {name: Newfoundland and Labrador, abbr: [NL, NF, Nfld]}
+    - {name: Nova Scotia, abbr: [NS, N.S.]}
+    - {name: Nouvelle-Écosse}
+    - {name: Ontario, abbr: ['ON', Ont]}
+    - {name: Prince Edward Island, abbr: [PE, PEI, P.E.I.]}
+    - {name: Quebec, abbr: [QC, Que, PQ]}
+    - {name: Québec}
+    - {name: Saskatchewan, abbr: [SK, Sask]}
+    - {name: Northwest Territories, abbr: [NT, NWT]}
+    - {name: Nunavut, abbr: [NU]}
+    - {name: Yukon, abbr: [YT]}
+town:
+  suffixes: []
+localities: false

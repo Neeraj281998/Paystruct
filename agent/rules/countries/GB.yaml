@@ -1,0 +1,87 @@
+# United Kingdom. Labelling guide section 6 (same street, building and unit words as IE).
+code: GB
+names: [United Kingdom, UK, Great Britain, Britain, U.K.]
+postcode:
+  patterns: ['[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}']
+  partial_patterns: ['[A-Z]{1,2}\d[A-Z\d]?']
+  max_tokens: 2
+  unique: true
+number_position: before
+street:
+  words_after: [street, st, road, rd, lane, ln, avenue, ave, drive, dr, terrace, ter, close, cl, way, place, square, sq, quay, crescent, cres, gardens, gdns, grove, row, hill, walk]
+  trailing: [lower, upper, north, south, east, west]
+building_words: [house, court, lodge, tower, building, centre, plaza, mansions, cottage, business park, industrial estate, block]
+unit_patterns:
+  - '(?:flat|apt|apartment|unit|suite|ste|room)\.?\s*(?:no\.?\s*)?(?:\d+[A-Za-z]?|[A-Za-z])'
+floor_patterns:
+  - '(?:ground|basement|\d+(?:st|nd|rd|th)?)\s*floor'
+  - 'floor\s*\d+'
+  - 'basement'
+pobox_patterns:
+  - 'p\.?\s?o\.?\s?box\s*\d+'
+region:
+  entries:
+    - England
+    - Scotland
+    - Wales
+    - Northern Ireland
+    - Bedfordshire
+    - Berkshire
+    - Buckinghamshire
+    - Cambridgeshire
+    - Cheshire
+    - Cornwall
+    - Cumbria
+    - Derbyshire
+    - Devon
+    - Dorset
+    - East Sussex
+    - Essex
+    - Gloucestershire
+    - Greater London
+    - Greater Manchester
+    - Hampshire
+    - Herefordshire
+    - Hertfordshire
+    - Isle of Wight
+    - Kent
+    - Lancashire
+    - Leicestershire
+    - Lincolnshire
+    - Merseyside
+    - Norfolk
+    - North Yorkshire
+    - Northamptonshire
+    - Northumberland
+    - Nottinghamshire
+    - Oxfordshire
+    - Shropshire
+    - Somerset
+    - South Yorkshire
+    - Staffordshire
+    - Suffolk
+    - Surrey
+    - Tyne and Wear
+    - Warwickshire
+    - West Midlands
+    - West Sussex
+    - West Yorkshire
+    - Wiltshire
+    - Worcestershire
+    - Aberdeenshire
+    - Argyll
+    - Ayrshire
+    - Fife
+    - Lanarkshire
+    - Perthshire
+    - Clwyd
+    - Dyfed
+    - Gwent
+    - Gwynedd
+    - Powys
+    - Antrim
+    - Fermanagh
+    - Tyrone
+town:
+  suffixes: []
+localities: true

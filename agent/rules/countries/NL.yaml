@@ -1,0 +1,22 @@
+# Netherlands. Labelling guide section 15.
+code: NL
+names: [Nederland, The Netherlands, Netherlands, Holland]
+postcode:
+  patterns: ['[1-9]\d{3}\s?[A-Z]{2}']
+  max_tokens: 2
+  unique: true
+number_position: after
+street:
+  particles: [van, de, den, der, het, "'t", ten, ter, op, aan]
+  suffixes: [straat, laan, weg, gracht, plein, kade, singel, dijk, steeg, hof, pad]
+building_words: [gebouw, toren]
+unit_patterns:
+  - '(?:unit|kamer)\s*\d+[A-Za-z]?'
+floor_patterns:
+  - '\d+(?:e|de|ste)?\s*(?:etage|verdieping)'
+  - 'begane grond'
+pobox_patterns:
+  - 'postbus\s*\d+'
+town:
+  suffixes: []
+localities: false

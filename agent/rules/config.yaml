@@ -1,0 +1,25 @@
+# Engine configuration. The thresholds are PLACEHOLDERS: they are set on the calibration split on Day 5, never on test.
+order: [normalise, country, postcode, region, pobox, floor, unit, town, landmark, street, locality, length, confidence, routing, hybrid]
+wrap_limit: 70          # raw lines are wrapped at 70 characters (labelling guide section 9)
+max_adr_lines: 2        # PLACEHOLDER: the real CBPR+ limit for hybrid addresses must be confirmed (docs/decisions/rules-engine.md)
+adr_line_max: 70        # Max70Text (XSD)
+thresholds:
+  accept: 0.80          # address confidence at or above this (and nothing unresolved) routes to ACCEPT
+  review: 0.35          # address confidence below this routes to REVIEW
+signals:                # simple confidence signals (placeholders, not tuned)
+  rule_set: 0.90        # a field set by a rule
+  postcode_full: 0.95
+  postcode_partial: 0.60
+  postcode_ambiguous: 0.85
+  town_gazetteer: 0.95
+  town_unverified: 0.50
+  street_word: 0.92
+  street_no_word: 0.50
+  country_code: 0.98
+  country_name: 0.97
+  country_pattern: 0.90
+  country_cues: 0.70
+  country_hint: 0.60
+  hint_agrees_bonus: 0.02
+  leftover_penalty: 0.15
+  landmark_penalty: 0.02

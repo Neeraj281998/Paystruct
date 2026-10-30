@@ -58,7 +58,8 @@ Errors are JSON `{"error": "<CODE>", "message": "..."}`: `DTD_NOT_ALLOWED`, `MAL
 ## Repository layout
 
 ```
-service/        Spring Boot application (ingestion so far)
+service/        Spring Boot application (ingestion front door)
+agent/          Python: rules engine (agent/rules), later the repair agent and MCP server
 data/           generator, labelling guide, dataset splits
 eval/           evaluation harness and baselines
 review-ui/      review screen and demo page
@@ -72,4 +73,14 @@ The XSDs in `service/src/main/resources/xsd/` are `pacs.008.001.14` and `pain.00
 
 ## Attribution
 
-Town reference data will come from GeoNames (CC BY licence) when the rules engine is built.
+Town reference data for the rules engine comes from [GeoNames](https://www.geonames.org) (`cities500.txt`, licensed CC BY 4.0). The file is not committed; it is read-only input at `service/src/main/resources/gazetteer/cities500.txt`. GeoNames postal-code data (also CC BY 4.0) was used to build the synthetic splits. The generator and the rules engine both use GeoNames, so town and postcode accuracy on the synthetic splits is optimistic (`docs/decisions/geonames-circularity.md`).
+
+## Rules engine (Day 2)
+
+```bash
+/opt/homebrew/bin/python3.12 -m venv agent/.venv && agent/.venv/bin/pip install -r agent/requirements.txt
+agent/.venv/bin/python -m pytest agent/tests                    # unit and property tests
+agent/.venv/bin/python -m agent.rules.cli --split dev           # rules only; dev or calibration, nothing else
+```
+
+Design and caveats: `docs/decisions/rules-engine.md`.

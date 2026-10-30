@@ -1,0 +1,27 @@
+# France. Labelling guide section 13.
+code: FR
+names: [France]
+postcode:
+  patterns: ['\d{5}']
+  max_tokens: 1
+  unique: false
+number_position: before
+number_regex: '\d+'
+number_suffix_words: [bis, ter, quater]
+street:
+  words_before: [rue, avenue, av, boulevard, bd, place, pl, chemin, ch, impasse, imp, allee, all, quai, route, cours, passage, square]
+building_words: [résidence, résid, rés, bâtiment, bât, immeuble, tour, villa]
+unit_patterns:
+  - '(?:appartement|appt|apt|bureau|bur)\.?\s*(?:n°\s*)?\d+[A-Za-z]?'
+floor_patterns:
+  - '\d+(?:e|ème|eme|er|ère)?\s*[eé]tage'
+  - 'rez-de-chauss[eé]e'
+  - 'rdc'
+pobox_patterns:
+  - 'b\.?\s?p\.?\s*\d+'
+  - 'case postale\s*\d+'
+town:
+  suffixes:
+    - {pattern: '\d{1,2}(?:e|er|ème|eme)', towns: [Paris, Lyon, Marseille], tokens: 1}
+    - {pattern: 'cedex(?:\s+\d{1,2})?', towns: [], tokens: 2}
+localities: false

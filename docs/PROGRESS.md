@@ -13,7 +13,7 @@ Scope changed on 2026-10-30 to a one-week merged plan: see `docs/PLAN.md` and `d
 ## The seven days (2026-10-30 onward)
 
 - [x] Day 1: finish and build the hard set (real N = 40)
-- [ ] Day 2: Python rules engine for all 8 countries, tuned on dev only
+- [x] Day 2: Python rules engine for all 8 countries, tuned on dev only (`agent/rules`, `docs/decisions/rules-engine.md`; thresholds are placeholders until Day 5)
 - [ ] Day 3: small eval harness and rules-only results table
 - [ ] Day 4: agent loop, grounding check, retries, routing, property tests
 - [ ] Day 5: three-way comparison, threshold on calibration, one final run on test, injection cases
@@ -79,3 +79,14 @@ Things to know:
 - The generator and the Phase 3 rules engine will both use GeoNames, so town and postcode accuracy on synthetic data is optimistic; the AI-drafted, AI-verified hard set is the independent check (N = 40) and must be reported beside it.
 - The test split must not be regenerated again without the owner's explicit approval.
 
+
+## Day 2 notes (2026-10-30)
+
+Built: `agent/rules/` (ParseState with token spans, evidence and confidence; 15 small rules run in a configurable order; 8 country profiles as YAML; GeoNames gazetteer; XSD-driven lengths; hybrid fallback; routing ACCEPT / NEEDS_LLM / REVIEW; `allowlist.py` shared with the Day 4 grounding check; `scoring.py` for labelling guide section 10; CLI that refuses everything but dev and calibration), tests in `agent/tests/` including Hypothesis property tests, `agent/requirements.txt` (PyYAML, pytest, hypothesis).
+
+Not built, by design: LLM, agent, MCP, threshold calibration, any run on test or on the hard set.
+
+Things to know:
+- Tuned on dev only. Dev was never held out, and it is generator-shaped and shares GeoNames with the engine, so dev accuracy is optimistic (`docs/decisions/rules-engine.md`). No accuracy number is in the docs until the Day 3 harness writes `eval_runs` records.
+- Confidence thresholds and `max_adr_lines` are placeholders; the real CBPR+ hybrid limit must be confirmed (`docs/decisions/hybrid-address.md`).
+- The gazetteer file is gitignored; tests use a small in-test gazetteer, and one test skips if `cities500.txt` is absent.

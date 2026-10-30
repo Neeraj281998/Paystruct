@@ -1,0 +1,29 @@
+# Ireland. Labelling guide sections 1, 3-5, 7. Regexes are matched against whole token windows, case-insensitively.
+code: IE
+names: [Ireland, Éire, Eire, Republic of Ireland]
+postcode:
+  patterns: ['(?:[ACDEFHKNPRTVWXY]\d{2}|D6W)\s?[0-9ACDEFHKNPRTVWXY]{4}']
+  partial_patterns: ['(?:[ACDEFHKNPRTVWXY]\d{2}|D6W)']
+  max_tokens: 2
+  unique: true
+number_position: before
+street:
+  words_after: [street, st, road, rd, lane, ln, avenue, ave, drive, dr, terrace, ter, close, cl, way, place, square, sq, quay, crescent, cres, gardens, gdns, grove, row, hill, walk]
+  trailing: [lower, upper, north, south, east, west]
+building_words: [house, court, lodge, tower, building, centre, plaza, mansions, cottage, business park, industrial estate, block]
+unit_patterns:
+  - '(?:flat|apt|apartment|unit|suite|ste|room)\.?\s*(?:no\.?\s*)?(?:\d+[A-Za-z]?|[A-Za-z])'
+floor_patterns:
+  - '(?:ground|basement|\d+(?:st|nd|rd|th)?)\s*floor'
+  - 'floor\s*\d+'
+  - 'basement'
+pobox_patterns:
+  - 'p\.?\s?o\.?\s?box\s*\d+'
+region:
+  prefixes: [co., co, county]
+  requires_prefix: true
+  entries: [Carlow, Cavan, Clare, Cork, Donegal, Dublin, Galway, Kerry, Kildare, Kilkenny, Laois, Leitrim, Limerick, Longford, Louth, Mayo, Meath, Monaghan, Offaly, Roscommon, Sligo, Tipperary, Waterford, Westmeath, Wexford, Wicklow]
+town:
+  suffixes:
+    - {pattern: '\d{1,2}w?', towns: [Dublin], tokens: 1}
+localities: true

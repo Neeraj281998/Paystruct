@@ -1,0 +1,61 @@
+# India. Labelling guide section 18. House numbers keep their keyword; landmarks stay unlabelled.
+code: IN
+names: [India, Bharat]
+postcode:
+  patterns: ['[1-9]\d{2}\s?\d{3}']
+  max_tokens: 2
+  unique: true
+number_position: before
+bldgnb_patterns:
+  - '(?:plot|house\s+no\.?|h\.\s?no\.?|door\s+no\.?|new\s+no\.?|no\.?)\s*[\w/-]+'
+street:
+  words_after: [road, rd, marg, street, lane, cross, highway]
+building_words: [residency, towers, heights, apartments, plaza, complex, mansion]
+unit_patterns:
+  - '(?:flat|apartment|apt)\.?\s*(?:no\.?\s*)?\d+[A-Za-z]?'
+floor_patterns:
+  - '\d+(?:st|nd|rd|th)\s*floor'
+landmark_keywords: [near, opp, opposite, behind, next to, beside, adjacent to, nr]
+landmark_suffixes: [ke paas, ke pass]
+region:
+  entries:
+    - {name: Andhra Pradesh, abbr: [AP]}
+    - {name: Arunachal Pradesh, abbr: [AR]}
+    - {name: Assam, abbr: [AS]}
+    - {name: Bihar, abbr: [BR]}
+    - {name: Chhattisgarh, abbr: [CG, CT]}
+    - {name: Goa, abbr: [GA]}
+    - {name: Gujarat, abbr: [GJ]}
+    - {name: Haryana, abbr: [HR]}
+    - {name: Himachal Pradesh, abbr: [HP]}
+    - {name: Jharkhand, abbr: [JH]}
+    - {name: Karnataka, abbr: [KA]}
+    - {name: Kerala, abbr: [KL]}
+    - {name: Madhya Pradesh, abbr: [MP]}
+    - {name: Maharashtra, abbr: [MH]}
+    - {name: Manipur, abbr: [MN]}
+    - {name: Meghalaya, abbr: [ML]}
+    - {name: Mizoram, abbr: [MZ]}
+    - {name: Nagaland, abbr: [NL]}
+    - {name: Odisha, abbr: [OD, OR]}
+    - {name: Orissa}
+    - {name: Punjab, abbr: [PB]}
+    - {name: Rajasthan, abbr: [RJ]}
+    - {name: Sikkim, abbr: [SK]}
+    - {name: Tamil Nadu, abbr: [TN]}
+    - {name: Telangana, abbr: [TS, TG]}
+    - {name: Tripura, abbr: [TR]}
+    - {name: Uttar Pradesh, abbr: [UP]}
+    - {name: Uttarakhand, abbr: [UK, UA]}
+    - {name: West Bengal, abbr: [WB]}
+    - {name: Delhi, abbr: [DL]}
+    - {name: Chandigarh, abbr: [CH]}
+    - {name: Puducherry, abbr: [PY]}
+    - {name: Jammu and Kashmir, abbr: [JK]}
+    - {name: Ladakh, abbr: [LA]}
+town:
+  suffixes: []
+localities: true
+locality_patterns:
+  - 'sector\s*\d+[A-Za-z]?(?:-[A-Za-z0-9]+)?'
+  - 'phase\s*\d+'

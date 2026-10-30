@@ -1,0 +1,24 @@
+# Germany. Labelling guide section 14. Street name = everything before the number.
+code: DE
+names: [Deutschland, Germany, Allemagne]
+postcode:
+  patterns: ['\d{5}']
+  max_tokens: 1
+  unique: false
+number_position: after
+street:
+  particles: [am, an, im, zum, zur, von, vom, auf, der, dem, den]
+  suffixes: [straße, strasse, str, weg, allee, platz, gasse, ring, damm, ufer]
+  words_after: [straße, strasse]
+building_words: [haus, gebäude, turm, center]
+unit_patterns:
+  - '(?:wohnung|whg|zimmer|b[uü]ro)\.?\s*\d+[A-Za-z]?'
+floor_patterns:
+  - '\d+\.?\s*(?:og|etage|obergeschoss|stock)'
+  - 'eg'
+  - 'erdgeschoss'
+pobox_patterns:
+  - 'postfach\s*\d+'
+town:
+  suffixes: []
+localities: false
