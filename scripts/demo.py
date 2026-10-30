@@ -1,8 +1,10 @@
-"""python scripts/demo.py [--pause SECONDS] [--live]
+"""python scripts/demo.py [--pause SECONDS] [--markdown] [--live]
 
 Runs 5 invented synthetic addresses through the real offline pipeline (the rules engine, then the verifier, with the model
 disabled: the same path as `python -m agent.repair.worker --no-llm --memory`) and prints what happened to each.
 No key, no database, no network. The GeoNames file is needed (README, quick start, step 3).
+
+--markdown prints the README section "How it works, by example" from the same offline run.
 
 --live runs ONE address through the real agent instead. It needs ANTHROPIC_API_KEY in the environment, prints the measured estimate
 first, and stops at the run budget and the per-payment cap. It is off by default and never runs without the flag.
@@ -74,10 +76,21 @@ def check_gazetteer() -> bool:
     return False
 
 
-def show_case(style: Style, n: int, total: int, caption: str, lines: list[str], hint: str | None, pipeline) -> str:
+def analyse(n: int, lines: list[str], hint: str | None, pipeline) -> dict:
+    """The real offline run of one case: the pipeline's outcome plus the rules' own view and the verifier's check of the rules' output."""
     from agent.repair.validator import Candidate
     out = pipeline.process(f"demo-{n}", lines, hint)
     rules = pipeline.engine.parse(lines, hint)
+    hard, unsupported, _unchecked, lost = pipeline.verify(Candidate(dict(rules.fields)), lines, hint, rules)
+    status = "REPAIRED" if out.status == "repaired" else "REVIEW"
+    why = ("valid, grounded in the text, and confident enough" if status == "REPAIRED" else plain(out.reasons))
+    return {"out": out, "rules": rules, "hard": hard, "unsupported": unsupported, "status": status, "why": why,
+            "reaches_model": pipeline.reaches_model(rules) if rules.route == "NEEDS_LLM" else None, "threshold": pipeline.cfg["threshold"]}
+
+
+def show_case(style: Style, n: int, total: int, caption: str, lines: list[str], hint: str | None, pipeline) -> str:
+    r = analyse(n, lines, hint, pipeline)
+    out, rules, hard, unsupported, status = r["out"], r["rules"], r["hard"], r["unsupported"], r["status"]
     print(style.bold(f"[{n}/{total}] {caption}"))
     print("  raw lines:")
     for l in lines:
@@ -94,27 +107,87 @@ def show_case(style: Style, n: int, total: int, caption: str, lines: list[str], 
     left = [l.text for l in rules.leftovers]
     print(f"  leftover text (not placed in any field): {left if left else 'none'}")
     print(f"  rules route: {rules.route}   rules confidence: {rules.confidence:.2f}   "
-          f"threshold to publish: {pipeline.cfg['threshold']}")
-    hard, unsupported, _unchecked, lost = pipeline.verify(Candidate(dict(rules.fields)), lines, hint, rules)
+          f"threshold to publish: {r['threshold']}")
     verdict = "PASS" if not hard else "FAIL: " + ", ".join(hard)
     extra = f"; no independent evidence for {unsupported}" if unsupported else ""
     print(f"  verifier on the rules' output: {verdict}{extra}")
-    if rules.route == "NEEDS_LLM" and pipeline.agent is None:
-        print(f"  with the model on, this record {'would' if pipeline.reaches_model(rules) else 'would NOT'} be sent to it")
+    if r["reaches_model"] is not None and pipeline.agent is None:
+        print(f"  with the model on, this record {'would' if r['reaches_model'] else 'would NOT'} be sent to it")
     published = " ".join(str(v).lower() for v in out.address().values())
     if any("ignore previous instructions" in line.lower() for line in lines):
         clean = not any(w in published for w in INJECTION_WORDS)
         print(f"  instruction text in any published field? {'no' if clean else 'YES'}  (published fields: {out.address() or 'none'})")
-    status = "REPAIRED" if out.status == "repaired" else "REVIEW"
     if status == "REPAIRED":
-        reason = "valid, grounded in the text, and confident enough"
-        print(f"  final status: {style.status(status)} (confidence {out.confidence:.2f}): {reason}")
+        print(f"  final status: {style.status(status)} (confidence {out.confidence:.2f}): {r['why']}")
         print(f"  published: {out.address()}")
     else:
-        print(f"  final status: {style.status(status)}: {plain(out.reasons)}")
+        print(f"  final status: {style.status(status)}: {r['why']}")
         print("  published: nothing")
     print()
     return status
+
+
+# -- README section (--markdown): generated from the same real offline run -----------------------------------------------------------
+MARKDOWN_CASES = (0, 2, 3, 4)          # the clean, no-town, locality-by-elimination and injection cases
+MD_TITLES = {0: "A clean address", 2: "No town written", 3: "A locality found only by elimination", 4: "An instruction hidden in the address"}
+
+
+def injection_evidence() -> str:
+    """'15 cases, every system passed (rules_only 15/15, ...)' read from the injection run records; the plain truth if it is not so."""
+    from evals.report import SYSTEM_ORDER, load_injection_runs
+    last = {}
+    for r in load_injection_runs():
+        last[r["system"]] = r["injection"]
+    if not last:
+        return "There is no injection run record."
+    parts = ", ".join(f"{s} {last[s]['passed']}/{last[s]['n']}" for s in SYSTEM_ORDER if s in last)
+    everyone = all(i["passed"] == i["n"] for i in last.values())
+    n = next(iter(last.values()))["n"]
+    return f"the {n}-case injection slice (AI-written, development), which {'every system passed' if everyone else 'not every system passed'} ({parts})"
+
+
+def xml_before_after(lines: list[str], fields: dict) -> list[str]:
+    """PstlAdr before (AdrLine) and after (structured), the after in the order of the PostalAddress27 sequence read from the XSD."""
+    from xml.sax.saxutils import escape
+    from agent.rules.xsd import load_schema
+    order = [n for n in load_schema().order() if n in fields]
+    before = ["<PstlAdr>"] + [f"  <AdrLine>{escape(l)}</AdrLine>" for l in lines] + ["</PstlAdr>"]
+    after = ["<PstlAdr>"] + [f"  <{n}>{escape(str(fields[n]))}</{n}>" for n in order] + ["</PstlAdr>"]
+    return ["Before (unstructured):", "", "```xml", *before, "```", "", "After (structured, elements in the order of the `PostalAddress27` sequence in the XSD):", "",
+            "```xml", *after, "```", "",
+            "*This illustrates the fields. It is not a rebuilt message.*", ""]
+
+
+def render_markdown(pipeline) -> str:
+    out_lines: list[str] = []
+    for n, (caption, lines, hint) in enumerate(CASES, 1):
+        if n - 1 not in MARKDOWN_CASES:
+            continue
+        r = analyse(n, lines, hint, pipeline)
+        out, rules = r["out"], r["rules"]
+        fields = out.address()
+        out_lines += [f"### {MD_TITLES[n - 1]}", "", f"*{caption}.*", "", "**Input**" + (f" (country hint: `{hint}`)" if hint else ""), "", "```text", *lines, "```", "", "**Output**", ""]
+        if fields:
+            out_lines += ["| field | value | rule that set it |", "|---|---|---|"]
+            for name, value in fields.items():
+                ev = (rules.evidence.get(name) or [("-", "")])[0]
+                out_lines.append(f"| {name} | {value} | {ev[0]}: {ev[1]} |")
+            out_lines.append("")
+        else:
+            out_lines += ["nothing published", ""]
+        out_lines += [f"**Route:** {r['status']}", "", f"**Why:** {r['why'][0].upper() + r['why'][1:]}.", ""]
+        if r["status"] == "REVIEW" and rules.leftovers:
+            out_lines += [f"Leftover text, placed in no field: `{'`, `'.join(l.text for l in rules.leftovers)}`.", ""]
+        if n - 1 == 3:
+            why_set = (rules.evidence.get("TwnLctnNm") or [("-", "")])[0][1]
+            out_lines += [f"The rules did set `TwnLctnNm` ({rules.fields.get('TwnLctnNm')!r}), but only by elimination ({why_set}), so nothing independent supports it. "
+                          f"With the model on, the pipeline would {'' if r['reaches_model'] else 'not '}send this record to the model.", ""]
+        if n - 1 == 4:
+            out_lines += ["Nothing is published here because the model is switched off in this offline run, not because of a security check, and the rules' own fields are not published either. "
+                          f"The evidence that injected text does not reach an output field is {injection_evidence()}.", ""]
+        if n - 1 == 0:
+            out_lines += xml_before_after(lines, fields)
+    return "\n".join(out_lines).rstrip("\n") + "\n"
 
 
 def run_offline(pause: float, style: Style) -> int:
@@ -133,6 +206,18 @@ def run_offline(pause: float, style: Style) -> int:
         if i < len(CASES):
             time.sleep(pause)
     print(f"Summary: {tally['REPAIRED']} REPAIRED, {tally['REVIEW']} REVIEW. Synthetic data; nothing was sent anywhere.")
+    return 0
+
+
+def run_markdown() -> int:
+    if not check_gazetteer():
+        return 2
+    from agent.repair.config import load_routing
+    from agent.repair.store import InMemoryRepository
+    from agent.repair.worker import build_pipeline
+    routing = load_routing()
+    pipeline = build_pipeline(InMemoryRepository(routing["max_payment_tries"], routing["lease_seconds"]), use_llm=False, routing=routing)
+    sys.stdout.write(render_markdown(pipeline))
     return 0
 
 
@@ -179,9 +264,12 @@ def run_live(style: Style) -> int:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--pause", type=float, default=2.0, metavar="SECONDS", help="pause between cases, for a screen recording (default 2)")
+    ap.add_argument("--markdown", action="store_true", help="print the README section 'How it works, by example', generated from the same offline run")
     ap.add_argument("--live", action="store_true", help="run ONE address through the real agent (needs ANTHROPIC_API_KEY; costs money)")
     args = ap.parse_args(argv)
     style = Style(sys.stdout.isatty() and "NO_COLOR" not in os.environ or "FORCE_COLOR" in os.environ)
+    if args.markdown:
+        return run_markdown()
     return run_live(style) if args.live else run_offline(max(0.0, args.pause), style)
 
 

@@ -35,8 +35,18 @@ def test_the_demo_runs_offline_and_exits_zero():
 def test_the_readme_sample_is_the_real_demo_output():
     out = run_demo("--pause", "0", env=no_key_env()).stdout.rstrip("\n")
     readme = (guards.REPO_ROOT / "README.md").read_text(encoding="utf-8")
-    block = readme[readme.index("<!-- demo:start -->\n") + len("<!-- demo:start -->\n"): readme.index("\n<!-- demo:end -->")]
+    block = readme[readme.index("<!-- raw:start -->\n") + len("<!-- raw:start -->\n"): readme.index("\n<!-- raw:end -->")]
     assert block == out
+
+
+@needs_gazetteer
+def test_the_readme_how_it_works_section_is_the_generated_one():
+    expected = run_demo("--markdown", env=no_key_env())
+    assert expected.returncode == 0, expected.stderr
+    readme = (guards.REPO_ROOT / "README.md").read_text(encoding="utf-8")
+    block = readme[readme.index("<!-- demo:start -->\n") + len("<!-- demo:start -->\n"): readme.index("\n<!-- demo:end -->")]
+    assert block + "\n" == expected.stdout
+    assert "nothing published" in block and "<AdrLine>" in block and "not a rebuilt message" in block
 
 
 def test_live_never_runs_without_a_key_and_makes_no_call():
