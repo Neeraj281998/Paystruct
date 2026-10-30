@@ -36,7 +36,6 @@ PLAIN = {
     "LOW_CONFIDENCE": "confidence is below the acceptance threshold",
     "RULES_REVIEW": "the rules found something they will not guess",
     "no_town_written": "no town is written in the address, and a town is never derived",
-    "NO_AGENT": "the rules could not resolve all of it and the model is switched off in this offline demo, so nothing is published",
     "ELIMINATION_ONLY_NO_EVIDENCE": "the only open field was set by elimination and nothing can support it, so the model is not asked to guess",
     "HYBRID_FOR_REVIEW": "only an unstructured fallback was possible, so a person looks at it",
     "ATTEMPTS_EXHAUSTED": "the agent's proposals did not pass the verifier",
@@ -44,6 +43,35 @@ PLAIN = {
     "DROPS_TEXT": "the proposal would lose text that was in the address",
     "CONTRADICTS_RULES": "the proposal contradicts a field the rules read directly",
 }
+
+
+class ModelCalled(Exception):
+    pass
+
+
+class StubModelClient:
+    """Stands in for the Anthropic client. If the pipeline ever tries to call the model, it records the fact and raises: nothing leaves this machine."""
+
+    def __init__(self):
+        self.called = False
+        self.messages = self
+
+    def create(self, **_kwargs):
+        self.called = True
+        raise ModelCalled("the model would be called here; the offline demo never calls it")
+
+
+def offline_pipeline():
+    """The FULL pipeline (rules, agent, verifier, routing) with the agent enabled but wired to the stub client."""
+    from agent.repair.config import load_routing
+    from agent.repair.store import InMemoryRepository
+    from agent.repair.worker import build_pipeline
+    routing = load_routing()
+    stub = StubModelClient()
+    return build_pipeline(InMemoryRepository(routing["max_payment_tries"], routing["lease_seconds"]), client=stub, use_llm=True, routing=routing), stub
+
+
+NOT_RUN = "would reach the model; not run offline"
 
 
 class Style:
@@ -76,20 +104,26 @@ def check_gazetteer() -> bool:
     return False
 
 
-def analyse(n: int, lines: list[str], hint: str | None, pipeline) -> dict:
+def analyse(n: int, lines: list[str], hint: str | None, pipeline, stub) -> dict:
     """The real offline run of one case: the pipeline's outcome plus the rules' own view and the verifier's check of the rules' output."""
     from agent.repair.validator import Candidate
+    stub.called = False
     out = pipeline.process(f"demo-{n}", lines, hint)
+    reached_model = stub.called
     rules = pipeline.engine.parse(lines, hint)
     hard, unsupported, _unchecked, lost = pipeline.verify(Candidate(dict(rules.fields)), lines, hint, rules)
-    status = "REPAIRED" if out.status == "repaired" else "REVIEW"
-    why = ("valid, grounded in the text, and confident enough" if status == "REPAIRED" else plain(out.reasons))
+    if reached_model:
+        status, why = NOT_RUN, "the rules could not resolve all of it, so the pipeline asked the model; the demo does not call it"
+    elif out.status == "repaired":
+        status, why = "REPAIRED", "valid, grounded in the text, and confident enough"
+    else:
+        status, why = "REVIEW", plain(out.reasons)
     return {"out": out, "rules": rules, "hard": hard, "unsupported": unsupported, "status": status, "why": why,
-            "reaches_model": pipeline.reaches_model(rules) if rules.route == "NEEDS_LLM" else None, "threshold": pipeline.cfg["threshold"]}
+            "reached_model": reached_model, "threshold": pipeline.cfg["threshold"]}
 
 
-def show_case(style: Style, n: int, total: int, caption: str, lines: list[str], hint: str | None, pipeline) -> str:
-    r = analyse(n, lines, hint, pipeline)
+def show_case(style: Style, n: int, total: int, caption: str, lines: list[str], hint: str | None, pipeline, stub) -> str:
+    r = analyse(n, lines, hint, pipeline, stub)
     out, rules, hard, unsupported, status = r["out"], r["rules"], r["hard"], r["unsupported"], r["status"]
     print(style.bold(f"[{n}/{total}] {caption}"))
     print("  raw lines:")
@@ -106,30 +140,32 @@ def show_case(style: Style, n: int, total: int, caption: str, lines: list[str], 
         print("    (none)")
     left = [l.text for l in rules.leftovers]
     print(f"  leftover text (not placed in any field): {left if left else 'none'}")
-    print(f"  rules route: {rules.route}   rules confidence: {rules.confidence:.2f}   "
-          f"threshold to publish: {r['threshold']}")
+    print(f"  rules route: {rules.route}   rules' own score: {rules.confidence:.2f}")
     verdict = "PASS" if not hard else "FAIL: " + ", ".join(hard)
     extra = f"; no independent evidence for {unsupported}" if unsupported else ""
     print(f"  verifier on the rules' output: {verdict}{extra}")
-    if r["reaches_model"] is not None and pipeline.agent is None:
-        print(f"  with the model on, this record {'would' if r['reaches_model'] else 'would NOT'} be sent to it")
     published = " ".join(str(v).lower() for v in out.address().values())
     if any("ignore previous instructions" in line.lower() for line in lines):
         clean = not any(w in published for w in INJECTION_WORDS)
-        print(f"  instruction text in any published field? {'no' if clean else 'YES'}  (published fields: {out.address() or 'none'})")
+        if r["reached_model"]:
+            print("  instruction text in any published field? not tested here: the case reaches the model, which is not run offline")
+        else:
+            print(f"  instruction text in any published field? {'no' if clean else 'YES'}  (published fields: {out.address() or 'none'})")
     if status == "REPAIRED":
-        print(f"  final status: {style.status(status)} (confidence {out.confidence:.2f}): {r['why']}")
+        print(f"  pipeline's final confidence (recomputed after the verifier; the publish threshold {r['threshold']} applies to this one): {out.confidence:.2f}")
+        print(f"  final status: {style.status(status)}: {r['why']}")
         print(f"  published: {out.address()}")
     else:
+        print(f"  pipeline's final confidence: {'not computed' if out.confidence is None else f'{out.confidence:.2f}'}")
         print(f"  final status: {style.status(status)}: {r['why']}")
-        print("  published: nothing")
+        print("  published: nothing" if not r["reached_model"] else "  published: nothing (not run)")
     print()
     return status
 
 
 # -- README section (--markdown): generated from the same real offline run -----------------------------------------------------------
-MARKDOWN_CASES = (0, 2, 3, 4)          # the clean, no-town, locality-by-elimination and injection cases
-MD_TITLES = {0: "A clean address", 2: "No town written", 3: "A locality found only by elimination", 4: "An instruction hidden in the address"}
+MARKDOWN_CASES = (0, 2, 3)             # the clean, no-town and locality-by-elimination cases
+MD_TITLES = {0: "A clean address", 2: "No town written", 3: "A locality found only by elimination"}
 
 
 def injection_evidence() -> str:
@@ -158,12 +194,12 @@ def xml_before_after(lines: list[str], fields: dict) -> list[str]:
             "*This illustrates the fields. It is not a rebuilt message.*", ""]
 
 
-def render_markdown(pipeline) -> str:
+def render_markdown(pipeline, stub) -> str:
     out_lines: list[str] = []
     for n, (caption, lines, hint) in enumerate(CASES, 1):
         if n - 1 not in MARKDOWN_CASES:
             continue
-        r = analyse(n, lines, hint, pipeline)
+        r = analyse(n, lines, hint, pipeline, stub)
         out, rules = r["out"], r["rules"]
         fields = out.address()
         out_lines += [f"### {MD_TITLES[n - 1]}", "", f"*{caption}.*", "", "**Input**" + (f" (country hint: `{hint}`)" if hint else ""), "", "```text", *lines, "```", "", "**Output**", ""]
@@ -181,43 +217,35 @@ def render_markdown(pipeline) -> str:
         if n - 1 == 3:
             why_set = (rules.evidence.get("TwnLctnNm") or [("-", "")])[0][1]
             out_lines += [f"The rules did set `TwnLctnNm` ({rules.fields.get('TwnLctnNm')!r}), but only by elimination ({why_set}), so nothing independent supports it. "
-                          f"With the model on, the pipeline would {'' if r['reaches_model'] else 'not '}send this record to the model.", ""]
-        if n - 1 == 4:
-            out_lines += ["Nothing is published here because the model is switched off in this offline run, not because of a security check, and the rules' own fields are not published either. "
-                          f"The evidence that injected text does not reach an output field is {injection_evidence()}.", ""]
+                          f"The pipeline reason is `{'`, `'.join(out.reasons)}`.", ""]
         if n - 1 == 0:
             out_lines += xml_before_after(lines, fields)
+    out_lines += ["### Injection", "",
+                  f"The evidence for injection resistance is {injection_evidence()}. The demo's fifth case, which carries an instruction inside the address, would reach the model, "
+                  "so it appears only in the raw output below, marked as not run offline.", ""]
     return "\n".join(out_lines).rstrip("\n") + "\n"
 
 
 def run_offline(pause: float, style: Style) -> int:
     if not check_gazetteer():
         return 2
-    from agent.repair.config import load_routing
-    from agent.repair.store import InMemoryRepository
-    from agent.repair.worker import build_pipeline
-    routing = load_routing()
-    pipeline = build_pipeline(InMemoryRepository(routing["max_payment_tries"], routing["lease_seconds"]), use_llm=False, routing=routing)
-    print(style.bold("PayStruct offline demo") + style.dim(": 5 invented synthetic addresses, rules then verifier, model disabled, no network"))
+    pipeline, stub = offline_pipeline()
+    print(style.bold("PayStruct offline demo") + style.dim(": 5 invented synthetic addresses, the full pipeline with a stub model client that is never allowed to call out, no network"))
     print()
-    tally = {"REPAIRED": 0, "REVIEW": 0}
+    tally = {"REPAIRED": 0, "REVIEW": 0, NOT_RUN: 0}
     for i, (caption, lines, hint) in enumerate(CASES, 1):
-        tally[show_case(style, i, len(CASES), caption, lines, hint, pipeline)] += 1
+        tally[show_case(style, i, len(CASES), caption, lines, hint, pipeline, stub)] += 1
         if i < len(CASES):
             time.sleep(pause)
-    print(f"Summary: {tally['REPAIRED']} REPAIRED, {tally['REVIEW']} REVIEW. Synthetic data; nothing was sent anywhere.")
+    print(f"Summary: {tally['REPAIRED']} REPAIRED, {tally['REVIEW']} REVIEW, {tally[NOT_RUN]} {NOT_RUN}. Synthetic data; nothing was sent anywhere.")
     return 0
 
 
 def run_markdown() -> int:
     if not check_gazetteer():
         return 2
-    from agent.repair.config import load_routing
-    from agent.repair.store import InMemoryRepository
-    from agent.repair.worker import build_pipeline
-    routing = load_routing()
-    pipeline = build_pipeline(InMemoryRepository(routing["max_payment_tries"], routing["lease_seconds"]), use_llm=False, routing=routing)
-    sys.stdout.write(render_markdown(pipeline))
+    pipeline, stub = offline_pipeline()
+    sys.stdout.write(render_markdown(pipeline, stub))
     return 0
 
 

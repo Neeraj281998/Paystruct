@@ -27,7 +27,9 @@ def test_the_demo_runs_offline_and_exits_zero():
     for n in range(1, 6):
         assert f"[{n}/5]" in out
     assert "REPAIRED" in out and "REVIEW" in out and "\033[" not in out          # piped output has no colour codes
-    assert "instruction text in any published field? no" in out
+    assert "instruction text in any published field? not tested here" in out and "would reach the model; not run offline" in out
+    assert "the only open field was set by elimination" in out          # case 4: the real ELIMINATION_ONLY_NO_EVIDENCE reason
+    assert "rules' own score" in out and "final confidence" in out
     assert "no town is written" in out
 
 
@@ -61,3 +63,26 @@ def test_live_is_off_by_default():
     spec.loader.exec_module(mod)
     import inspect
     assert "run_live(style) if args.live else" in inspect.getsource(mod.main)
+
+
+@needs_gazetteer
+def test_the_demo_pipeline_uses_a_stub_that_refuses_to_call_out():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("demo", SCRIPT)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    pipeline, stub = mod.offline_pipeline()
+    assert pipeline.agent is not None
+    with pytest.raises(mod.ModelCalled):
+        stub.messages.create(model="x")
+    results = [mod.analyse(i, lines, hint, pipeline, stub) for i, (_c, lines, hint) in enumerate(mod.CASES, 1)]
+    assert [r["status"] for r in results] == ["REPAIRED", "REPAIRED", "REVIEW", "REVIEW", mod.NOT_RUN]
+    assert results[3]["out"].reasons == ["ELIMINATION_ONLY_NO_EVIDENCE"] and not results[3]["reached_model"]
+    assert results[4]["reached_model"] and results[4]["out"].address() == {}
+
+
+def test_the_test_split_agent_record_keeps_no_model_count():
+    # the README says so; if a later record keeps one, the README sentence must change
+    import json
+    rec = json.loads((guards.REPO_ROOT / "evals" / "results" / "20261030T154720Z_agent_test_e7d2f7f.json").read_text())
+    assert not [k for k in rec["metrics"] if "model" in k or "call" in k]
