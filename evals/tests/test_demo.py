@@ -38,7 +38,7 @@ def test_the_readme_sample_is_the_real_demo_output():
     out = run_demo("--pause", "0", env=no_key_env()).stdout.rstrip("\n")
     readme = (guards.REPO_ROOT / "README.md").read_text(encoding="utf-8")
     block = readme[readme.index("<!-- raw:start -->\n") + len("<!-- raw:start -->\n"): readme.index("\n<!-- raw:end -->")]
-    assert block == out
+    assert block == "```text\n" + out + "\n```"          # the markers are outside the code fence
 
 
 @needs_gazetteer

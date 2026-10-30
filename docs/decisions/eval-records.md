@@ -29,3 +29,7 @@ A record holds: the git sha (and whether tracked files were modified), the split
 ## Development-only sources
 
 `--source robustness` runs the 30 audit addresses (`agent/audit/robustness_cases.py`), scored against the author's own expectations. The run record has `split: robustness` and `development_only: true`, keeps per-record details, and is **excluded from `docs/eval-results.md`** (the report skips it and says so). It is not a result.
+
+## One README figure that is not from a run record
+
+The README states that 6 of the 1,000 test records would reach the model. That count was printed on screen by `scripts/final_run.py` (the estimate from the rules engine) before the final run and is not stored in any run record, because the record keeps no model-handled or call count. It is the one figure in the README that does not come from a run record, so it is labelled there as a stated figure. It is consistent with the record: the agent accepted 892 records against 886 for rules-only.

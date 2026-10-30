@@ -10,8 +10,6 @@ PayStruct implements a documented subset of CBPR+ address rules. It is not certi
 
 What goes in is free-text address lines and an optional country hint; what comes out is a set of structured address elements, each with the rule that set it, a confidence, and a route. REPAIRED means the structured address is published; REVIEW means nothing is published and a person looks at it.
 
-On the frozen test split, the run record of the agent (`20261030T154720Z_agent_test_e7d2f7f.json`) does not keep how many of the 1,000 records reached the model (it keeps no call count and no model-handled count), so no such number is given here and none is estimated; its total model cost is in the results table.
-
 The demo prints two confidence numbers. The rules' own score is what the rules engine computed from its evidence; the pipeline's final confidence is recomputed in code after the verifier, from the fields that survived its checks, so the two can differ. The publish threshold applies to the final one.
 
 <!-- demo:start -->
@@ -229,6 +227,7 @@ Total recorded API spend: $0.43 across 10 run records with a cost (22 run record
 
 ## What the results do and do not show
 
+- **Almost no test records reach the model.** Before the final run, `scripts/final_run.py` printed a count from the rules engine: 6 of the 1,000 test records would reach the model (this count was printed on screen and is not stored in a run record, so treat it as a stated figure, not a run-record number). The agent accepted 892 records against 886 for rules-only, which is consistent with those 6; its total model cost for the test run was $0.0066 (run record `20261030T154720Z_agent_test_e7d2f7f.json`). So on this data the agent's results are almost the rules' results, and its value is the gate, not extra accuracy.
 - **The agent is not better than the rules on accuracy.** Its auto-correct interval overlaps the rules-only interval on the test split, and its false repairs are the same two. What it adds is the routing: it sends records to review rather than publishing them.
 - **There is a safety gap against LLM-only on false repairs, and a cost gap, on this data.** LLM-only accepts everything it can parse and has no verifier; the agent matches the rules' false-repair count at a small fraction of the cost per 1,000 on the test split.
 - **The cost advantage does not hold on the hard set.** There the agent costs more per 1,000 than LLM-only, because most hard records reach the model.
@@ -268,8 +267,8 @@ The whole project's API spend is in the results block above, summed from the run
 
 The real output of `python scripts/demo.py --pause 0` (offline, stub model client; colours are left out when the output is not a terminal). A test fails if this block differs from the script's output. Case 5 would reach the model, so it is marked "would reach the model; not run offline".
 
-```text
 <!-- raw:start -->
+```text
 PayStruct offline demo: 5 invented synthetic addresses, the full pipeline with a stub model client that is never allowed to call out, no network
 
 [1/5] A clean address: the rules structure it and the verifier passes it
@@ -367,8 +366,8 @@ PayStruct offline demo: 5 invented synthetic addresses, the full pipeline with a
   published: nothing (not run)
 
 Summary: 2 REPAIRED, 2 REVIEW, 1 would reach the model; not run offline. Synthetic data; nothing was sent anywhere.
-<!-- raw:end -->
 ```
+<!-- raw:end -->
 
 </details>
 
