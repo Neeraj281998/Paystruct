@@ -25,3 +25,7 @@ A record holds: the git sha (and whether tracked files were modified), the split
 ## Not yet
 
 `llm_only` and `agent` are stubs that print "not yet available". They write no record, and the report shows "not run yet" for them.
+
+## Development-only sources
+
+`--source robustness` runs the 30 audit addresses (`agent/audit/robustness_cases.py`), scored against the author's own expectations. The run record has `split: robustness` and `development_only: true`, keeps per-record details, and is **excluded from `docs/eval-results.md`** (the report skips it and says so). It is not a result.

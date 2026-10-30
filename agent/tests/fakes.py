@@ -63,6 +63,14 @@ def make_pipeline(script, gazetteer=None, routing_overrides=None, repo=None, eng
     return pipe
 
 
-# An address the rules send to the model: unclaimed text ("Attn Accounts") and a locality found by elimination.
-NEEDS_LLM_LINES = ["Attn Accounts", "14 Main St", "Cork T12 AC34", "IE"]
-GOOD = {"BldgNb": "14", "StrtNm": "Main St", "TwnNm": "Cork", "PstCd": "T12 AC34", "Ctry": "IE"}
+# An address the rules send to the model although every field has explicit evidence: the landmark ran into the town, so where it
+# stops is a guess (landmark_unbounded). The model can only confirm the rules' fields; the landmark text is exempt from completeness.
+NEEDS_LLM_LINES = ["No. 10 Hospital Marg opp. Railway Station Jaipur Rajasthan 302006", "India"]
+GOOD = {"BldgNb": "No. 10", "StrtNm": "Hospital Marg", "TwnNm": "Jaipur", "CtrySubDvsn": "Rajasthan", "PstCd": "302006", "Ctry": "IN"}
+
+# Unclaimed text ("Attn Accounts") plus a locality found by elimination ("Zorb Hall"): the model is called, and can place neither
+# with support, so it cannot produce a repair without losing text.
+UNCLAIMED_LINES = ["Attn Accounts", "Zorb Hall", "14 Main St", "Cork T12 AC34", "IE"]
+UNCLAIMED_STRUCTURED = {"BldgNb": "14", "StrtNm": "Main St", "TwnNm": "Cork", "PstCd": "T12 AC34", "Ctry": "IE"}
+# Only an elimination field stands between this and ACCEPT: the model is skipped.
+ELIMINATION_ONLY_LINES = ["14 Main St", "Zorb Hall", "Cork T12 AC34", "IE"]

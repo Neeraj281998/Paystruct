@@ -90,8 +90,28 @@ GOODS = [{"BldgNb": "14", "StrtNm": "Main St", "TwnNm": "Cork", "PstCd": "T12 AC
          {"StrtNm": "Elm Way", "BldgNb": "12", "TwnNm": "Bristol", "PstCd": "BS6 7QD", "Ctry": "GB"}]
 
 
+IN_LINES = ["No. 10 Hospital Marg opp. Railway Station Jaipur Rajasthan 302006", "India"]
+GOODS_IN = [{"BldgNb": "No. 10", "StrtNm": "Hospital Marg", "TwnNm": "Jaipur", "CtrySubDvsn": "Rajasthan", "PstCd": "302006", "Ctry": "IN"},
+            {"TwnNm": "Jaipur", "Ctry": "IN", "AdrLine": ["No. 10 Hospital Marg", "Rajasthan 302006"]}]
+
+
 @st.composite
 def realistic(draw):
+    if draw(st.integers(0, 2)) == 0:
+        raw = list(IN_LINES)
+        answers = []
+        for _ in range(draw(st.integers(1, 3))):
+            addr = dict(draw(st.sampled_from(GOODS_IN)))
+            for k in (list(addr) if draw(st.booleans()) else []):
+                how = draw(st.sampled_from(["keep", "invent", "drop", "long"]))
+                if how == "drop":
+                    addr.pop(k)
+                elif how == "invent" and k != "AdrLine":
+                    addr[k] = draw(st.sampled_from(["Mumbai", "99", "ZZ", "Nowhere Road"]))
+                elif how == "long" and k != "AdrLine":
+                    addr[k] = addr[k] * 40
+            answers.append(submit(addr, confidence=draw(st.floats(0, 1)), rules=("normalise",)))
+        return raw, "IN", answers
     if draw(st.booleans()):
         noise = draw(st.lists(st.sampled_from(["Attn Accounts", "Mulberry Hall", "Zorbleville", "Flat 2", "Ground Floor", "PO Box 12", "Templeogue"]), max_size=2, unique=True))
         raw = draw(st.permutations(["14 Main St", "Cork T12 AC34", "IE", *noise]))
@@ -122,8 +142,8 @@ def test_realistic_addresses_with_mutated_model_answers(s):
 
 def test_the_realistic_generator_does_reach_repaired_outputs():
     """Guards the property test against being vacuous: a good answer to a NEEDS_LLM address is repaired."""
-    pipe = make_pipeline([submit(GOODS[0], rules=("normalise",))])
-    out = pipe.process("p1", ["Attn Accounts", "14 Main St", "Cork T12 AC34", "IE"])
+    pipe = make_pipeline([submit(GOODS_IN[0], rules=("normalise",))])
+    out = pipe.process("p1", IN_LINES)
     assert out.status == "repaired"
 
 

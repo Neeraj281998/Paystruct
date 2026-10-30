@@ -10,11 +10,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from agent.repair import grounding, support
+from agent.repair import completeness, grounding, support
 from agent.repair.agent import AttemptResult, RepairAgent, Step
 from agent.repair.store import Claim
 from agent.repair.validator import Candidate, validate
-from agent.rules.engine import RulesEngine
+from agent.rules.engine import RulesEngine, load_config
 from agent.rules.profile import all_profiles
 from agent.rules.scoring import values_equal
 
@@ -35,6 +35,7 @@ class Outcome:
     source: str = "none"              # rules | agent | rules_review | none
     steps: list[Step] = field(default_factory=list)
     rules_route: str | None = None
+    proposal: dict = field(default_factory=dict)       # for a REVIEW: the best candidate (the model's hybrid, the rules' guess), for the person
     rules: dict = field(default_factory=dict)          # what the rules produced (kept for the run record)
     attempt_log: list[dict] = field(default_factory=list)   # per attempt: proposal, checks, confidence (kept for the run record)
 
@@ -67,14 +68,17 @@ class RepairPipeline:
         self.engine, self.agent, self.repo, self.cfg = engine, agent, repo, routing
 
     # -- verification: code decides ----------------------------------------------------------------------------------
-    def verify(self, candidate: Candidate, raw_lines, hint, rules) -> tuple[list[str], list[str], bool]:
-        """(hard reasons, unsupported fields, town unchecked). Hard reasons: validator + grounding."""
+    def verify(self, candidate: Candidate, raw_lines, hint, rules) -> tuple[list[str], list[str], bool, list[str]]:
+        """(hard reasons, unsupported fields, town unchecked, lost text). Hard reasons: validator, grounding, locked fields, completeness."""
         hard = validate(candidate)
         g = grounding.check(candidate, raw_lines, hint, rules, self.engine.gazetteer)
         hard += g.reasons
+        lost = completeness.check(candidate, raw_lines, rules)
+        if lost:
+            hard.append(completeness.DROPS_TEXT)
         country = candidate.fields.get("Ctry")
         unsupported, unchecked = support.unsupported_fields(candidate.fields, country, all_profiles().get(country), self.engine.gazetteer)
-        return hard, unsupported, g.unchecked or unchecked
+        return hard, unsupported, g.unchecked or unchecked, lost
 
     # -- one payment ---------------------------------------------------------------------------------------------------
     def process(self, msg_id: str, raw_lines: list[str], country_hint: str | None = None) -> Outcome:
@@ -97,7 +101,7 @@ class RepairPipeline:
                            "how_set": dict(rules.field_basis), "leftovers": [l.text for l in rules.leftovers]})
         if rules.route == "ACCEPT":
             cand = Candidate(dict(rules.fields))
-            hard, _, unchecked = self.verify(cand, raw_lines, hint, rules)
+            hard, _, unchecked, _lost = self.verify(cand, raw_lines, hint, rules)
             if hard:
                 return Outcome(**base, status="review", route=REVIEW, reasons=hard, source="rules")
             conf = compute_confidence(cand.fields, rules, 1, None, [], unchecked, self.cfg)
@@ -108,7 +112,27 @@ class RepairPipeline:
             return Outcome(**base, status="review", route=REVIEW, reasons=["RULES_REVIEW"] + rules.route_reasons, source="rules_review")
         if self.agent is None:
             return Outcome(**base, status="review", route=REVIEW, reasons=["NO_AGENT"], source="none")
+        if self._only_unsupported_elimination(rules):
+            # The model has no tool that can supply the missing evidence, so a call could only guess or delete. The honest answer is a person.
+            return Outcome(**base, status="review", route=REVIEW, reasons=["ELIMINATION_ONLY_NO_EVIDENCE"], source="rules_elimination",
+                           proposal=dict(rules.fields))
         return self._with_agent(msg_id, raw_lines, hint, rules, prior_failures, base)
+
+    def _only_unsupported_elimination(self, rules) -> bool:
+        """True when the only thing between the rules' output and ACCEPT is a field set by elimination that nothing can support."""
+        elim = [n for n, b in rules.field_basis.items() if b == "elimination"]
+        if not elim:
+            return False
+        others = [r for r in rules.route_reasons if r != "low_confidence" and not r.startswith("by_elimination:")]
+        if others or any(l.reason == "unclaimed text" for l in rules.leftovers) or any(
+                f in rules.flags for f in ("partial_postcode", "town_unverified", "landmark_unbounded", "street_town_clash")):
+            return False
+        accept = load_config()["thresholds"]["accept"]
+        if any(c < accept for n, c in rules.field_confidence.items() if rules.field_basis.get(n) != "elimination"):
+            return False                      # something else is not confident either (for example a country inferred from cues)
+        country = rules.fields.get("Ctry")
+        unsupported, _ = support.unsupported_fields(rules.fields, country, all_profiles().get(country), self.engine.gazetteer)
+        return set(elim) <= set(unsupported)
 
     def _with_agent(self, msg_id, raw_lines, hint, rules, prior_failures, base) -> Outcome:
         total_cost, steps, feedback, previous = 0.0, [], None, None
@@ -137,8 +161,12 @@ class RepairPipeline:
                 continue
             sub = ar.submitted
             cand = Candidate.from_dict(sub["address"])
-            hard, unsupported, unchecked = self.verify(cand, raw_lines, hint, rules)
-            log[-1].update({"hard_reasons": list(hard), "unsupported": list(unsupported), "town_unchecked": unchecked})
+            hard, unsupported, unchecked, lost = self.verify(cand, raw_lines, hint, rules)
+            log[-1].update({"hard_reasons": list(hard), "unsupported": list(unsupported), "town_unchecked": unchecked, "lost_text": list(lost)})
+            if not hard and cand.adr_lines:
+                # A valid hybrid is the system saying it could not structure the address safely: a person looks at it.
+                return Outcome(**base, status="review", route=REVIEW, attempts=attempt, cost_usd=total_cost, steps=steps, source="agent",
+                               reasons=["HYBRID_FOR_REVIEW"], proposal=cand.as_dict())
             if not hard and not unsupported:
                 conf = compute_confidence(cand.fields, rules, attempt, sub.get("confidence"), [], unchecked, self.cfg)
                 log[-1]["confidence"] = conf
@@ -147,7 +175,7 @@ class RepairPipeline:
                                    attempts=attempt, cost_usd=total_cost, steps=steps, source="agent")
                 return Outcome(**base, status="review", route=REVIEW, confidence=conf, attempts=attempt, cost_usd=total_cost, steps=steps,
                                reasons=["LOW_CONFIDENCE"], source="agent")
-            feedback = hard + [f"UNSUPPORTED_FIELD:{n}" for n in unsupported]
+            feedback = hard + [f"lost text: '{t}'" for t in lost] + [f"UNSUPPORTED_FIELD:{n}" for n in unsupported]
             previous = sub["address"]
             reasons = feedback
         return Outcome(**base, status="review", route=REVIEW, attempts=max_attempts, cost_usd=total_cost, steps=steps,

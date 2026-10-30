@@ -57,5 +57,24 @@ def main(path: str | None = None) -> None:
                   f"{'REPAIRED' if not hard and not unsupported and conf[1] >= routing['threshold'] else 'not repaired at attempt 1'}")
 
 
+def skips() -> None:
+    """Which dev records the model would see after fix 5 (elimination-only records are routed to REVIEW without a model call)."""
+    import collections
+    engine = RulesEngine()
+    pipe = RepairPipeline(engine, object(), InMemoryRepository(), load_routing())
+    counts: collections.Counter = collections.Counter()
+    for rec in load_split("dev"):
+        rules = engine.parse(rec["raw_lines"], rec.get("country_hint"))
+        if rules.route == "NEEDS_LLM":
+            counts["skipped: only unsupported elimination fields" if pipe._only_unsupported_elimination(rules) else "model called"] += 1
+        else:
+            counts[f"rules {rules.route}: no model call"] += 1
+    for k, v in sorted(counts.items()):
+        print(f"{v:5d}  {k}")
+
+
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else None)
+    if "--skips" in sys.argv:
+        skips()
+    else:
+        main(next((a for a in sys.argv[1:] if not a.startswith("--")), None))

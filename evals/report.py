@@ -31,6 +31,8 @@ def load_runs(results_dir: Path = RESULTS_DIR) -> dict[tuple[str, str, str | Non
     latest: dict[tuple[str, str, str | None], dict] = {}
     for path in sorted(results_dir.glob("*.json")):
         rec = json.loads(path.read_text(encoding="utf-8"))
+        if rec.get("development_only") or rec["split"] not in SPLITS:
+            continue   # the robustness audit set is a development aid, never a result
         key = (rec["system"], rec["split"], rec.get("subset") or (f"first{rec['limit']}" if rec.get("limit") else None))
         if key not in latest or rec["date"] >= latest[key]["date"]:
             rec["_file"] = path.name
@@ -148,6 +150,8 @@ def render(runs: dict) -> str:
             lines += ["## test", "", "*frozen; run once, on Day 5.* Not run yet.", ""]
             continue
         lines += split_section(split, runs)
+    lines += ["## Not results", "", "Run records marked development-only (the 30 audit addresses, `--source robustness`) are left out of every table above: "
+              "they are addresses written to find weaknesses, scored against the author's own expectations, and are not a measure of anything.", ""]
     return "\n".join(lines).rstrip() + "\n"
 
 

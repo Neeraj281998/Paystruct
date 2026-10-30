@@ -95,4 +95,4 @@ agent/.venv/bin/python -m agent.repair.worker --source dev --limit 30 --no-llm -
 set -a; . ./.env; set +a; agent/.venv/bin/python -m agent.db          # create the agent tables (idempotent), then drop --memory above
 ```
 
-A real run needs `ANTHROPIC_API_KEY` in the environment, a mandatory `--limit`, and prints an estimate first; see the decision record.
+The checks never let the model delete text, overwrite what the rules know, or publish a hybrid (`docs/decisions/agent.md`, "First real run on dev"). A real run needs `ANTHROPIC_API_KEY` in the environment, a mandatory `--limit`, and prints an estimate first; see the decision record.

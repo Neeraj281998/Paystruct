@@ -73,7 +73,7 @@ def test_duplicate_delivery_through_the_pipeline_makes_one_repair(repo):
     assert first.route == REPAIRED and second.status == "skipped"
     assert repo.count() == 1 and len(p.client.requests) == 1
     row = repo.get("dup-9")
-    assert row.attempts == 1 and row.status == "repaired" and row.repaired["TwnNm"] == "Cork"
+    assert row.attempts == 1 and row.status == "repaired" and row.repaired["TwnNm"] == "Jaipur"
 
 
 def test_nothing_secret_is_stored(repo, monkeypatch):

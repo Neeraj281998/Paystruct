@@ -114,3 +114,7 @@ Things to know:
 - The routing threshold (0.85) and the confidence weights are placeholders for Day 5, to be set on calibration. The AdrLine maximum is still the placeholder from the rules config; the CBPR+ limit must be confirmed.
 - A field with no pattern, word-list or gazetteer support caps confidence below the threshold, so such a field is never auto-accepted, by the rules or by the model.
 - The agent runs on dev only until Day 5; real runs need `--limit`, a run budget, an estimate, `--yes` above 50 and the owner's approval above 30 records.
+
+## Day 4 follow-up: first real run on dev (2026-10-30)
+
+The first real dev run (30 records) lost four correct localities: the verifier had no completeness check. Fixed (`docs/decisions/agent.md`, "First real run on dev"): completeness (`DROPS_TEXT`), all explicit rules fields locked, a valid hybrid routes to REVIEW, the model is skipped when it can only guess, prompt `repair-v2` with the rules' `how_set` and the labelling conventions. Run records keep per-record details for dev and calibration; `--ids` re-runs chosen records; `--source robustness` runs the 30 audit cases as a development-only source that never appears in the results report. Not yet measured with the real API: the user runs it.

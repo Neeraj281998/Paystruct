@@ -237,3 +237,7 @@ Records whose gold has no town: 5; the system output a town for 1, accepted one 
 ## test
 
 *frozen; run once, on Day 5.* Not run yet.
+
+## Not results
+
+Run records marked development-only (the 30 audit addresses, `--source robustness`) are left out of every table above: they are addresses written to find weaknesses, scored against the author's own expectations, and are not a measure of anything.

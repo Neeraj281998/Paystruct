@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from agent.repair import grounding, jsonschema_lite, support
+from agent.repair import completeness, grounding, jsonschema_lite, support
 from agent.repair.validator import Candidate, validate
 from agent.rules.engine import RulesEngine
 from agent.rules.gazetteer import fold
@@ -83,6 +83,7 @@ class AttemptContext:
     raw_lines: list[str]
     country_hint: str | None
     engine: RulesEngine
+    rules: object = None          # the rules' result on the original lines: locks explicit fields, names recognised landmarks
     returned_rule_ids: set[str] = field(default_factory=set)
     submitted: dict | None = None
     submit_error: list[str] | None = None
@@ -100,9 +101,12 @@ class AttemptContext:
     def validate_candidate(self, address: dict) -> dict:
         cand = Candidate.from_dict(address)
         reasons = validate(cand)
-        g = grounding.check(cand, self.raw_lines, self.country_hint, None, self.engine.gazetteer)
+        g = grounding.check(cand, self.raw_lines, self.country_hint, self.rules, self.engine.gazetteer)
         reasons += g.reasons
-        return {"pass": not reasons, "reasons": reasons, "town_unchecked": g.unchecked}
+        lost = completeness.check(cand, self.raw_lines, self.rules)
+        if lost:
+            reasons.append(completeness.DROPS_TEXT)
+        return {"pass": not reasons, "reasons": reasons, "lost_text": lost, "town_unchecked": g.unchecked}
 
     def submit_repair(self, args: dict) -> dict:
         errors = jsonschema_lite.validate(args, SUBMIT_SCHEMA)

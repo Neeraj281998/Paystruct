@@ -88,7 +88,7 @@ class RepairAgent:
                 feedback: list[str] | None = None, previous: dict | None = None) -> AttemptResult:
         cap = int(self.cfg["max_tool_calls"])
         budget = float(self.cfg["max_cost_usd_per_payment"])
-        ctx = AttemptContext(raw_lines, country_hint, self.engine)
+        ctx = AttemptContext(raw_lines, country_hint, self.engine, rules=rules)
         rules_summary = {"fields": rules.fields, "evidence_rule_ids": {n: sorted({r for r, _ in ev}) for n, ev in rules.evidence.items()},
                          "how_set": rules.field_basis, "leftover_text": [l.text for l in rules.leftovers], "rules_confidence": rules.confidence}
         for ids in rules_summary["evidence_rule_ids"].values():

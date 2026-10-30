@@ -131,13 +131,18 @@ def test_an_underivable_country_is_ungrounded_country():
 
 def test_agreement_with_explicit_rules_fields():
     engine = RulesEngine(gazetteer=GAZ)
-    rules = engine.parse(["14 Main St", "Cork T12 AC34", "IE"])
-    assert g(c(TwnNm="Cork", PstCd="T12 AC34", Ctry="IE"), rules=rules).ok
-    other = grounding.check(c(TwnNm="Cork", PstCd="T12 AD34", Ctry="IE"), ["14 Main St", "Cork T12 AC34 T12 AD34", "IE"], None, rules, GAZ)
-    assert "CONTRADICTS_RULES:PstCd" in other.reasons
-    assert "CONTRADICTS_RULES:TwnNm" in grounding.check(c(TwnNm="Galway", PstCd="T12 AC34", Ctry="IE"), ["14 Main St", "Cork Galway T12 AC34", "IE"], None, rules, GAZ).reasons
-    # leaving out the postcode of a structured address is also a contradiction
-    assert "CONTRADICTS_RULES:PstCd" in g(c(TwnNm="Cork", Ctry="IE"), rules=rules).reasons
+    raw = ["14 Main St", "Cork T12 AC34", "IE"]
+    rules = engine.parse(raw)
+    full = dict(BldgNb="14", StrtNm="Main St", TwnNm="Cork", PstCd="T12 AC34", Ctry="IE")
+    assert g(c(**full), rules=rules).ok
+    # every explicit field is locked, not just the postcode and the town
+    for name, other in (("PstCd", "T12 AD34"), ("TwnNm", "Galway"), ("BldgNb", "15"), ("StrtNm", "Elm Road")):
+        raw2 = raw + [other]
+        res = grounding.check(c(**dict(full, **{name: other})), raw2, None, rules, GAZ)
+        assert f"CONTRADICTS_RULES:{name}" in res.reasons, name
+    # leaving out an explicit field of a structured address is a contradiction too; a hybrid restructures by design
+    assert "CONTRADICTS_RULES:PstCd" in g(c(TwnNm="Cork", Ctry="IE", BldgNb="14", StrtNm="Main St"), rules=rules).reasons
+    assert not any(r.startswith("CONTRADICTS_RULES") for r in g(c(TwnNm="Cork", Ctry="IE", AdrLine=["14 Main St", "T12 AC34"]), rules=rules).reasons)
 
 
 def test_a_written_town_must_exist_in_the_gazetteer():
@@ -200,9 +205,12 @@ def test_parse_address_returns_fields_and_rule_ids():
 
 def test_validate_candidate_tool_runs_the_validator_and_grounding():
     ctx = _ctx()
-    assert ctx.run("validate_candidate", {"address": {"TwnNm": "Cork", "Ctry": "IE"}})["pass"] is True
-    bad = ctx.run("validate_candidate", {"address": {"TwnNm": "Dublin", "Ctry": "IE"}})
+    full = {"BldgNb": "14", "StrtNm": "Main St", "TwnNm": "Cork", "PstCd": "T12 AC34", "Ctry": "IE"}
+    assert ctx.run("validate_candidate", {"address": full})["pass"] is True
+    bad = ctx.run("validate_candidate", {"address": dict(full, TwnNm="Dublin")})
     assert bad["pass"] is False and "UNGROUNDED_VALUE:TwnNm" in bad["reasons"]
+    lossy = ctx.run("validate_candidate", {"address": {"TwnNm": "Cork", "Ctry": "IE"}})
+    assert lossy["pass"] is False and "DROPS_TEXT" in lossy["reasons"] and "14 Main St" in lossy["lost_text"]
 
 
 def test_submit_repair_is_schema_checked_and_citation_guarded():

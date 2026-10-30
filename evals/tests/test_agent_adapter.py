@@ -17,7 +17,7 @@ ENGINE = RulesEngine(gazetteer=make_gazetteer())
 def records():
     gold = {"BldgNb": "14", "StrtNm": "Main St", "TwnNm": "Cork", "PstCd": "T12 AC34", "Ctry": "IE"}
     return [{"id": "a", "country": "IE", "raw_lines": ["14 Main St", "Cork T12 AC34", "IE"], "gold": gold, "tags": [], "difficulty": "easy"},
-            {"id": "b", "country": "IE", "raw_lines": NEEDS_LLM_LINES, "gold": gold, "tags": ["x"], "difficulty": "medium"},
+            {"id": "b", "country": "IN", "raw_lines": NEEDS_LLM_LINES, "gold": dict(GOOD), "tags": ["x"], "difficulty": "medium"},
             {"id": "c", "country": "FR", "raw_lines": ["27 rue des Acacias", "69003", "France"], "gold": {"BldgNb": "27", "StrtNm": "rue des Acacias", "PstCd": "69003", "Ctry": "FR"},
              "tags": ["no_town"], "difficulty": "hard"}]
 
@@ -126,3 +126,39 @@ def test_the_agent_accepts_ids_in_place_of_limit_under_the_same_guards():
     assert both.returncode == 2 and "not both" in both.stderr
     many = subprocess.run([*base, "--ids", ",".join(f"ca-{i:05d}" for i in range(31))], capture_output=True, text=True, cwd=guards.REPO_ROOT, env=env)
     assert many.returncode == 2 and "approval" in many.stderr
+
+
+def test_the_robustness_source_is_development_only_and_never_a_result(tmp_path):
+    p = subprocess.run([sys.executable, "-m", "evals.run", "--system", "rules_only", "--source", "robustness", "--out-dir", str(tmp_path)],
+                       capture_output=True, text=True, cwd=guards.REPO_ROOT)
+    assert p.returncode == 0 and "development only, not a result" in p.stdout, p.stderr
+    rec = json.loads(next(tmp_path.iterdir()).read_text())
+    assert rec["split"] == "robustness" and rec["development_only"] is True and rec["n_records"] == 30 and len(rec["records"]) == 30
+    assert rec["records"][0]["id"] == "IE-1" and rec["records"][0]["gold"]["BldgNm"] == "The Old Creamery"     # scored against the author's own 'want'
+    subprocess.run([sys.executable, "-m", "evals.run", "--system", "rules_only", "--split", "dev", "--limit", "5", "--out-dir", str(tmp_path)],
+                   capture_output=True, text=True, cwd=guards.REPO_ROOT, check=True)
+    runs = report.load_runs(tmp_path)
+    assert all(k[1] != "robustness" for k in runs) and len(runs) == 1
+    text_ = report.render(runs)
+    assert "robustness" not in text_.replace("`--source robustness`", "") and "## Not results" in text_ and "not a measure of anything" in text_
+
+
+def test_the_agent_robustness_run_is_guarded_like_every_real_run():
+    env = {**os.environ, "ANTHROPIC_API_KEY": "sk-ant-not-a-real-key"}
+    base = [sys.executable, "-m", "evals.run", "--system", "agent", "--source", "robustness"]
+
+    def go(*args):
+        return subprocess.run([*base, *args], capture_output=True, text=True, cwd=guards.REPO_ROOT, env=env)
+
+    assert go().returncode == 2 and "mandatory" in go().stderr
+    assert "approval" in go("--limit", "31").stderr
+    both = subprocess.run([*base, "--split", "dev", "--limit", "3"], capture_output=True, text=True, cwd=guards.REPO_ROOT, env=env)
+    assert both.returncode == 2 and "not both" in both.stderr
+
+
+def test_a_scripted_agent_run_over_the_robustness_cases_keeps_details_and_is_flagged():
+    system = Agent(client=ScriptedClient([], default=reply(text("done"), stop="end_turn")), engine=ENGINE)
+    recs = run.robustness_records()[:6]
+    evals = run.run_system(system, recs)
+    rec = run.build_record(system, "robustness", recs, evals, limit=6)
+    assert rec["development_only"] is True and len(rec["records"]) == 6 and rec["config"]["prompt_version"] == "repair-v2"

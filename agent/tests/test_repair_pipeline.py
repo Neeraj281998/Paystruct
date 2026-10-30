@@ -72,13 +72,15 @@ def test_a_rules_accept_that_fails_verification_goes_to_review():
 
 # -- the model proposes wrong things; the code rejects and feeds back -----------------------------------------------------------
 def test_an_invented_postcode_is_rejected_then_retried_with_feedback():
-    bad = dict(GOOD, PstCd="T12 ZZ99")
+    bad = dict(GOOD, PstCd="302099")
     p = make_pipeline([submit(bad), submit(GOOD)])
     out = p.process("m1", LINES)
-    assert out.status == "repaired" and out.attempts == 2 and out.fields["PstCd"] == "T12 AC34"
+    assert out.status == "repaired" and out.attempts == 2 and out.fields["PstCd"] == "302006"
     feedback = first_user_text(p.client.requests[1])
-    assert "UNGROUNDED_VALUE:PstCd" in feedback and "POSTCODE_FORMAT" in feedback and "T12 ZZ99" in feedback
+    assert "UNGROUNDED_VALUE:PstCd" in feedback and "CONTRADICTS_RULES:PstCd" in feedback and "302099" in feedback
     assert out.confidence < 0.97   # the second attempt costs confidence
+    badformat = make_pipeline([submit(dict(GOOD, PstCd="30 20 06"))] * 3).process("m2", LINES)
+    assert "POSTCODE_FORMAT" in badformat.reasons or "UNGROUNDED_VALUE:PstCd" in badformat.reasons
 
 
 def test_an_invented_town_is_never_accepted():
@@ -232,25 +234,26 @@ def test_a_closing_marker_in_the_address_cannot_end_the_data_block():
 
 
 # -- support: nothing without support is auto-accepted -----------------------------------------------------------------------------
+UNSUPPORTED_LINES = ["Zorb Hall Attn Accounts Dept", "14 Main St", "Cork T12 AC34", "IE"]   # five unclaimed words: the model is called
+
+
 def test_a_grounded_field_with_no_support_is_never_repaired():
-    lines = ["Mulberry Hall", "14 Main St", "Cork T12 AC34", "IE"]
-    mine = {"BldgNm": "Mulberry Hall", "BldgNb": "14", "StrtNm": "Main St", "TwnNm": "Cork", "PstCd": "T12 AC34", "Ctry": "IE"}
+    mine = {"BldgNm": "Zorb Hall Attn Accounts Dept", "BldgNb": "14", "StrtNm": "Main St", "TwnNm": "Cork", "PstCd": "T12 AC34", "Ctry": "IE"}
     p = make_pipeline([submit(mine)] * 3)
-    out = p.process("m1", lines)
-    assert out.route == REVIEW and "UNSUPPORTED_FIELD:BldgNm" in out.reasons
+    out = p.process("m1", UNSUPPORTED_LINES)
+    assert p.engine.parse(UNSUPPORTED_LINES).route == "NEEDS_LLM" and out.route == REVIEW
+    assert "UNSUPPORTED_FIELD:BldgNm" in out.reasons
     assert "UNSUPPORTED_FIELD:BldgNm" in first_user_text(p.client.requests[1])
-    # the model may leave it out and be accepted
-    p2 = make_pipeline([submit(mine), submit({k: v for k, v in mine.items() if k != "BldgNm"})])
-    out2 = p2.process("m2", lines)
-    assert out2.status == "repaired" and "BldgNm" not in out2.fields and out2.attempts == 2
+    # leaving it out is not an escape: the text would be lost
+    gone = {k: v for k, v in mine.items() if k != "BldgNm"}
+    out2 = make_pipeline([submit(gone)] * 3).process("m2", UNSUPPORTED_LINES)
+    assert out2.route == REVIEW and "DROPS_TEXT" in out2.reasons
 
 
-def test_a_grounded_hybrid_address_is_accepted_and_a_duplicating_one_is_not():
-    hybrid = {"TwnNm": "Cork", "Ctry": "IE", "AdrLine": ["Attn Accounts", "14 Main St T12 AC34"]}
-    out = make_pipeline([submit(hybrid)]).process("m1", LINES)
-    assert out.status == "repaired" and out.adr_lines == hybrid["AdrLine"] and out.address()["AdrLine"] == hybrid["AdrLine"]
-    dup = dict(hybrid, AdrLine=["14 Main St Cork"])
-    assert "HYBRID_DUPLICATION" in make_pipeline([submit(dup)] * 3).process("m2", LINES).reasons
+def test_a_duplicating_hybrid_is_rejected():
+    dup = {"TwnNm": "Jaipur", "Ctry": "IN", "AdrLine": ["Hospital Marg Jaipur"]}
+    out = make_pipeline([submit(dup)] * 3).process("m1", LINES)
+    assert out.route == REVIEW and "HYBRID_DUPLICATION" in out.reasons and "HYBRID_FOR_REVIEW" not in out.reasons
 
 
 # -- confidence ----------------------------------------------------------------------------------------------------------------

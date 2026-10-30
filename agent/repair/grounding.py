@@ -25,8 +25,9 @@ TOWN_NOT_IN_GAZETTEER = "TOWN_NOT_IN_GAZETTEER"
 
 _PUNCT = re.compile(r"[,;()\[\]\"“”]+")
 # fields whose explicit evidence from the rules the model may not contradict
-AGREEMENT_FIELDS = ("PstCd", "TwnNm", "CtrySubDvsn", "Room", "Flr", "PstBx")
-CORE_FIELDS = ("PstCd", "TwnNm")
+# Every field the rules set with explicit evidence is locked: the model may repeat it (or an allowlisted form of it), never change or delete it.
+# A field the rules set by elimination is not locked: the model may place it differently, and the completeness check stops it vanishing.
+AGREEMENT_FIELDS = ("PstCd", "TwnNm", "CtrySubDvsn", "Room", "Flr", "PstBx", "StrtNm", "BldgNb", "BldgNm", "TwnLctnNm")
 
 
 @dataclass
@@ -118,7 +119,7 @@ def check(candidate: Candidate, raw_lines: list[str], country_hint: str | None =
             mv = fields.get(name)
             if mv is not None and not values_equal(mv, rv, name, ctry or ""):
                 res.reasons.append(f"{CONTRADICTS_RULES}:{name}")
-            elif mv is None and name in CORE_FIELDS and not candidate.adr_lines:
+            elif mv is None and not candidate.adr_lines:
                 res.reasons.append(f"{CONTRADICTS_RULES}:{name}")
         if rules.fields.get("Ctry") and ctry and rules.fields["Ctry"] != ctry and rules.field_basis.get("Ctry") != "elimination":
             res.reasons.append(f"{CONTRADICTS_RULES}:Ctry")
