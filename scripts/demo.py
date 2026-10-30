@@ -69,7 +69,7 @@ def check_gazetteer() -> bool:
     from agent.rules.gazetteer import GAZETTEER_PATH
     if GAZETTEER_PATH.exists():
         return True
-    sys.stderr.write(f"The GeoNames file is missing: {GAZETTEER_PATH.relative_to(REPO_ROOT)}\n"
+    sys.stderr.write(f"The GeoNames file is missing: {GAZETTEER_PATH}\n"
                      "The demo needs it (CC BY 4.0, not committed). README, quick start, step 3, downloads it.\n")
     return False
 
