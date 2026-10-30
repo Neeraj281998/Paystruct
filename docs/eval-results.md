@@ -150,17 +150,19 @@ Dataset size: 40 records. Rules-only counts every non-ACCEPT record as not repai
 
 | system | n | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | REVIEW cases with a correct proposal | latency p50 / p95 (ms) | cost per 1,000 (USD) |
 |---|---|---|---|---|---|---|---|---|---|---|
-| rules_only | 40 | 32.5% (13/40) [20.1-48.0] | 13.3% (2/15) [3.7-37.9] | 0.0% (0/40) (0 values) | 37.5% (15/40) | 52.5% (21/40) | 10.0% (4/40) | 4/4 | 1.29 / 1.78 | 0.0000 |
-| llm_only | not run yet | | | | | | | | | |
-| agent | not run yet | | | | | | | | | |
+| rules_only | 40 | 32.5% (13/40) [20.1-48.0] | 13.3% (2/15) [3.7-37.9] | 0.0% (0/40) (0 values) | 37.5% (15/40) | 52.5% (21/40) | 10.0% (4/40) | 4/4 | 1.29 / 1.75 | 0.0000 |
+| llm_only | 40 | 77.5% (31/40) [62.5-87.7] | 20.5% (8/39) [10.8-35.5] | 2.5% (1/40) (2 values) | 97.5% (39/40) | 0.0% (0/40) | 2.5% (1/40) | 0/1 | 1198.26 / 1433.56 | 0.2579 |
+| agent | 40 | 35.0% (14/40) [22.1-50.5] | 12.5% (2/16) [3.5-36.0] | 0.0% (0/40) (0 values) | 40.0% (16/40) | 0.0% (0/40) | 60.0% (24/40) | 8/24 | 7.12 / 9313.96 | 0.7580 |
 
-- rules_only: run 2026-10-30T14:28:07Z, git `2fcc5fdd04` (uncommitted changes), 40 records, seed 0, file `20261030T142807Z_rules_only_hard_2fcc5fd.json`
-- llm_only: not run yet
-- agent: not run yet
+- rules_only: run 2026-10-30T15:22:34Z, git `e7d2f7fbcb`, 40 records, seed 0, file `20261030T152234Z_rules_only_hard_e7d2f7f.json`
+- llm_only: run 2026-10-30T15:23:23Z, git `e7d2f7fbcb`, 40 records, seed 0, file `20261030T152323Z_llm_only_hard_e7d2f7f.json`
+- agent: run 2026-10-30T15:25:14Z, git `e7d2f7fbcb`, 40 records, seed 0, file `20261030T152514Z_agent_hard_e7d2f7f.json`
 
 **Per system: exact match on all fields and field accuracy** (not comparable across systems, so not in the table above)
 
 - rules_only: exact_all 57.5% (23/40) [42.2-71.5]; field accuracy 89.8% (194/216) [85.1-93.2] of gold values. Here, every field of every record is the rules' own output, whether or not the record is ACCEPT.
+- llm_only: exact_all 77.5% (31/40) [62.5-87.7]; field accuracy 92.6% (200/216) [88.3-95.4] of gold values. Here, the model's single answer is the output of every record it could parse; an answer that does not parse is no output.
+- agent: exact_all 35.0% (14/40) [22.1-50.5]; field accuracy 38.0% (82/216) [31.8-44.6] of gold values. Here, a record routed to REVIEW publishes no fields, so it counts as not exact here.
 
 Records whose gold has no town: 5; the system output a town for 1, accepted one for 1, and the output town was not in the input for 0.
 
@@ -247,7 +249,73 @@ Records whose gold has no town: 5; the system output a town for 1, accepted one 
 
 ## test
 
-*frozen; run once, on Day 5.* Not run yet.
+*frozen; run once, on Day 5.*
+
+Dataset size: 1000 records. Rules-only counts every non-ACCEPT record as not repaired.
+
+| system | n | auto-correct [95% CI] | **false-repair rate** [95% CI] | hallucinated | ACCEPT | NEEDS_LLM | REVIEW | REVIEW cases with a correct proposal | latency p50 / p95 (ms) | cost per 1,000 (USD) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| rules_only | 1000 | 88.4% (884/1000) [86.3-90.2] | 0.2% (2/886) [0.1-0.8] | 0.0% (0/1000) (0 values) | 88.6% (886/1000) | 11.3% (113/1000) | 0.1% (1/1000) | 0/1 | 1.40 / 2.00 | 0.0000 |
+| llm_only | 1000 | 96.2% (962/1000) [94.8-97.2] | 3.4% (34/996) [2.5-4.7] | 0.0% (0/1000) (0 values) | 99.6% (996/1000) | 0.0% (0/1000) | 0.4% (4/1000) | 0/4 | 1226.60 / 1896.26 | 0.2629 |
+| agent | 1000 | 89.0% (890/1000) [86.9-90.8] | 0.2% (2/892) [0.1-0.8] | 0.0% (0/1000) (0 values) | 89.2% (892/1000) | 0.0% (0/1000) | 10.8% (108/1000) | 107/108 | 2.32 / 3.63 | 0.0066 |
+
+- rules_only: run 2026-10-30T15:25:17Z, git `e7d2f7fbcb`, 1000 records, seed 0, file `20261030T152517Z_rules_only_test_e7d2f7f.json`
+- llm_only: run 2026-10-30T15:46:49Z, git `e7d2f7fbcb`, 1000 records, seed 0, file `20261030T154649Z_llm_only_test_e7d2f7f.json`
+- agent: run 2026-10-30T15:47:20Z, git `e7d2f7fbcb`, 1000 records, seed 0, file `20261030T154720Z_agent_test_e7d2f7f.json`
+
+**Per system: exact match on all fields and field accuracy** (not comparable across systems, so not in the table above)
+
+- rules_only: exact_all 99.5% (995/1000) [98.8-99.8]; field accuracy 99.9% (5888/5896) [99.7-99.9] of gold values. Here, every field of every record is the rules' own output, whether or not the record is ACCEPT.
+- llm_only: exact_all 96.2% (962/1000) [94.8-97.2]; field accuracy 98.9% (5829/5896) [98.6-99.1] of gold values. Here, the model's single answer is the output of every record it could parse; an answer that does not parse is no output.
+- agent: exact_all 89.0% (890/1000) [86.9-90.8]; field accuracy 87.4% (5151/5896) [86.5-88.2] of gold values. Here, a record routed to REVIEW publishes no fields, so it counts as not exact here.
+
+
+**Per element** (precision, recall, F1 in percent; n_gold is the number of gold values)
+
+| element | n_gold | tp | fp | fn | precision | recall | F1 |
+|---|---|---|---|---|---|---|---|
+| StrtNm | 934 | 934 | 0 | 0 | 100.0 | 100.0 | 100.0 |
+| BldgNb | 860 | 860 | 0 | 0 | 100.0 | 100.0 | 100.0 |
+| BldgNm | 165 | 163 | 1 | 2 | 99.4 | 98.8 | 99.1 |
+| Flr | 82 | 81 | 0 | 1 | 100.0 | 98.8 | 99.4 |
+| Room | 193 | 193 | 0 | 0 | 100.0 | 100.0 | 100.0 |
+| PstBx | 45 | 45 | 0 | 0 | 100.0 | 100.0 | 100.0 |
+| PstCd | 1000 | 1000 | 0 | 0 | 100.0 | 100.0 | 100.0 |
+| TwnNm | 1000 | 999 | 1 | 1 | 99.9 | 99.9 | 99.9 |
+| TwnLctnNm | 171 | 170 | 1 | 1 | 99.4 | 99.4 | 99.4 |
+| CtrySubDvsn | 446 | 443 | 2 | 3 | 99.6 | 99.3 | 99.4 |
+| Ctry | 1000 | 1000 | 0 | 0 | 100.0 | 100.0 | 100.0 |
+
+**By country**
+
+| bucket | n | exact_all | auto-correct | false repair (k/n ACCEPT) | hallucinated records | ACCEPT | NEEDS_LLM | REVIEW |
+|---|---|---|---|---|---|---|---|---|
+| CA | 125 | 99.2% (124/125) | 97.6% (122/125) | 0.8% (1/123) | 0.0% (0/125) | 98.4% (123/125) | 1.6% (2/125) | 0.0% (0/125) |
+| DE | 125 | 99.2% (124/125) | 98.4% (123/125) | 0.0% (0/123) | 0.0% (0/125) | 98.4% (123/125) | 1.6% (2/125) | 0.0% (0/125) |
+| FR | 125 | 100.0% (125/125) | 100.0% (125/125) | 0.0% (0/125) | 0.0% (0/125) | 100.0% (125/125) | 0.0% (0/125) | 0.0% (0/125) |
+| GB | 125 | 98.4% (123/125) | 86.4% (108/125) | 0.9% (1/109) | 0.0% (0/125) | 87.2% (109/125) | 12.8% (16/125) | 0.0% (0/125) |
+| IE | 125 | 100.0% (125/125) | 85.6% (107/125) | 0.0% (0/107) | 0.0% (0/125) | 85.6% (107/125) | 14.4% (18/125) | 0.0% (0/125) |
+| IN | 125 | 100.0% (125/125) | 40.0% (50/125) | 0.0% (0/50) | 0.0% (0/125) | 40.0% (50/125) | 60.0% (75/125) | 0.0% (0/125) |
+| NL | 125 | 100.0% (125/125) | 100.0% (125/125) | 0.0% (0/125) | 0.0% (0/125) | 100.0% (125/125) | 0.0% (0/125) | 0.0% (0/125) |
+| US | 125 | 99.2% (124/125) | 99.2% (124/125) | 0.0% (0/124) | 0.0% (0/125) | 99.2% (124/125) | 0.0% (0/125) | 0.8% (1/125) |
+
+**By tier**
+
+| bucket | n | exact_all | auto-correct | false repair (k/n ACCEPT) | hallucinated records | ACCEPT | NEEDS_LLM | REVIEW |
+|---|---|---|---|---|---|---|---|---|
+| easy | 333 | 100.0% (333/333) | 89.8% (299/333) | 0.0% (0/299) | 0.0% (0/333) | 89.8% (299/333) | 10.2% (34/333) | 0.0% (0/333) |
+| hard | 333 | 98.8% (329/333) | 88.0% (293/333) | 0.7% (2/295) | 0.0% (0/333) | 88.6% (295/333) | 11.1% (37/333) | 0.3% (1/333) |
+| medium | 334 | 99.7% (333/334) | 87.4% (292/334) | 0.0% (0/292) | 0.0% (0/334) | 87.4% (292/334) | 12.6% (42/334) | 0.0% (0/334) |
+
+**Failure patterns** (count of records; no record ids)
+
+| pattern | records |
+|---|---|
+| BldgNm:wrong+TwnLctnNm:missing | 1 |
+| CtrySubDvsn:wrong+Flr:missing | 1 |
+| CtrySubDvsn:missing+TwnLctnNm:extra | 1 |
+| CtrySubDvsn:wrong+TwnNm:wrong | 1 |
+| BldgNm:missing | 1 |
 
 ## Injection slice (AI-written, N=15, development, run once)
 
