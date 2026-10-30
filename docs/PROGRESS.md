@@ -14,7 +14,7 @@ Scope changed on 2026-10-30 to a one-week merged plan: see `docs/PLAN.md` and `d
 
 - [x] Day 1: finish and build the hard set (real N = 40)
 - [x] Day 2: Python rules engine for all 8 countries, tuned on dev only (`agent/rules`, `docs/decisions/rules-engine.md`; thresholds are placeholders until Day 5)
-- [ ] Day 3: small eval harness and rules-only results table
+- [x] Day 3: small eval harness and rules-only results table (`evals/`, `docs/eval-results.md`; plan said `agent/eval/`, the code is in `evals/`)
 - [ ] Day 4: agent loop, grounding check, retries, routing, property tests
 - [ ] Day 5: three-way comparison, threshold on calibration, one final run on test, injection cases
 - [ ] Day 6: MCP server and approval gate
@@ -90,3 +90,15 @@ Things to know:
 - Tuned on dev only. Dev was never held out, and it is generator-shaped and shares GeoNames with the engine, so dev accuracy is optimistic (`docs/decisions/rules-engine.md`). No accuracy number is in the docs until the Day 3 harness writes `eval_runs` records.
 - Confidence thresholds and `max_adr_lines` are placeholders; the real CBPR+ hybrid limit must be confirmed (`docs/decisions/hybrid-address.md`).
 - The gazetteer file is gitignored; tests use a small in-test gazetteer, and one test skips if `cities500.txt` is absent.
+
+## Day 3 notes (2026-10-30)
+
+Built: `evals/` (common system interface with `rules_only` and stubs for `llm_only` and `agent`; metrics with Wilson intervals, false-repair k/n and a hallucinated-value check for every system; guards; run records in `evals/results/`; `evals/report.py` generating `docs/eval-results.md`; `evals/smoke.py` and `.github/workflows/ci.yml`), `docs/decisions/eval-records.md`, `docs/results-changelog.md` (empty), `docs/decisions/hard-set-results.md` (generated). CLAUDE.md now says numbers come only from run records in `evals/results/`.
+
+Not built, by design: LLM-only, the agent, MCP. The test split is refused by the harness, with or without `--final`, until it is enabled on Day 5.
+
+Things to know:
+- Rules-only was run on dev, calibration and the hard set; the numbers are in `docs/eval-results.md` and nowhere else.
+- No engine change was made after seeing hard-set results (the changelog is empty).
+- The CI smoke run uses no GeoNames file (it is not committed), so its baseline is lower than the local dev result and it only catches regressions in the non-gazetteer parts. The workflow has not run on GitHub yet.
+- Calibration has been seen twice for reporting (Day 2 audit, Day 3 baseline); Day 5 threshold setting on it is slightly optimistic.
