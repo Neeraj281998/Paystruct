@@ -118,3 +118,13 @@ Things to know:
 ## Day 4 follow-up: first real run on dev (2026-10-30)
 
 The first real dev run (30 records) lost four correct localities: the verifier had no completeness check. Fixed (`docs/decisions/agent.md`, "First real run on dev"): completeness (`DROPS_TEXT`), all explicit rules fields locked, a valid hybrid routes to REVIEW, the model is skipped when it can only guess, prompt `repair-v2` with the rules' `how_set` and the labelling conventions. Run records keep per-record details for dev and calibration; `--ids` re-runs chosen records; `--source robustness` runs the 30 audit cases as a development-only source that never appears in the results report. Not yet measured with the real API: the user runs it.
+
+## Day 5, session A (2026-10-30)
+
+Built: the `llm_only` baseline (`docs/decisions/llm-only-baseline.md`), run guards for the model systems (mandatory `--limit`/`--ids` except on hard and test, the 30/50-record rules on the selected records, a $0.50 tuning budget), the measured estimates (agent and llm_only), `evals/calibrate.py` (threshold table, CSV, SVG, `--apply` on request only), `evals/injection_cases.py` (15 AI-written cases, pass rule in code, own section of the report with first and final result), the report without `exact_all` in the headline, `scripts/final_run.py` and `docs/decisions/final-run-protocol.md`.
+
+Not done, by design: no real API call (the owner runs them), the test guard is not enabled (the owner flips it in a separate commit, then tags `final-config`), the threshold is still the 0.85 placeholder until `evals.calibrate --apply`, nothing under `agent/rules/` changed.
+
+Things to know:
+- The injection slice, the robustness set and calibration are development material; calibration was already used for reporting, so the threshold chosen on it is slightly optimistic (`docs/decisions/threshold.md` will say so).
+- A test that wrote to the real `routing.yml` during development was fixed (default paths are now looked up at call time) and the file restored; no stray run records were kept.
