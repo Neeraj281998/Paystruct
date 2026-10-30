@@ -1,15 +1,40 @@
 # Progress
 
+Scope changed on 2026-10-30 to a one-week merged plan: see `docs/PLAN.md` and `docs/decisions/scope-change.md`.
+
+## Done
+
 - [x] Phase 0: setup
-- [x] Phase 1: foundations and ingestion
-- [x] Phase 2: synthetic data (2A and 2B done; the hand-written hard set is still to be written by the owner)
-- [ ] Phase 3: rules engine
-- [ ] Phase 4: evaluation harness and baselines
-- [ ] Phase 5: LLM fallback
-- [ ] Phase 6: review queue and API and UI
-- [ ] Phase 7: RAG explanations
-- [ ] Phase 8: Kafka pipeline
-- [ ] Phase 9: final evaluation and publish
+- [x] Phase 1: foundations and ingestion (Java service, kept as the front door)
+- [x] Phase 2A: labelling guide and IE/GB generator
+- [x] Phase 2B: all 8 countries, dev, calibration and frozen test splits, sample messages
+
+**Pending:** the hard-set review. The files in `data/hard_set/` are still AI drafts (each keeps its "Drafted by AI" header) and `docs/hard-set-review.md` has 8 VERIFY and 28 GUIDE? items waiting for the owner. `data/splits/hard.jsonl` is empty.
+
+## The seven days (2026-10-30 onward)
+
+- [ ] Day 1: finish and build the hard set (about 40 entries, report the real N)
+- [ ] Day 2: Python rules engine for all 8 countries, tuned on dev only
+- [ ] Day 3: small eval harness and rules-only results table
+- [ ] Day 4: agent loop, grounding check, retries, routing, property tests
+- [ ] Day 5: three-way comparison, threshold on calibration, one final run on test, injection cases
+- [ ] Day 6: MCP server and approval gate
+- [ ] Day 7: README, results, resume bullets
+
+Cut order if time runs short: MCP first, then injection cases, then threshold polish. Never cut the verifier, the three-way table or the README.
+
+## Deferred (not abandoned)
+
+| Old phase | Item | Reason |
+|---|---|---|
+| 3 | Java rules engine | Replaced by one Python rules engine (no duplicate validator). Uncommitted Java work in `service/` is not extended. |
+| 3B | Message rebuild and CBPR+ validation layers | Not needed for the repair agent; no time in a week |
+| 4 | Swift model and libpostal baselines | Setup cost too high; the comparison is now rules-only, LLM-only, full agent |
+| 5 | Java LLM stage | The LLM now lives in the Python agent |
+| 6 | Review screen, API and UI | Review is a Postgres queue plus the MCP server |
+| 7 | RAG and repair memory | Not needed for the core claim; time |
+| 8 | Kafka pipeline | A Postgres table is enough for the queue |
+| 9 | Grafana, demo page, publish | Replaced by Day 7 README and results |
 
 ## Phase 1 notes
 

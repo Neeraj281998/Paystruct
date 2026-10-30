@@ -1,3 +1,5 @@
+> Partly superseded by docs/PLAN.md (one-week merged scope)
+
 # PayStruct: ISO 20022 Address Structuring Engine
 
 Oct 7, 2026 · @Neeraj
