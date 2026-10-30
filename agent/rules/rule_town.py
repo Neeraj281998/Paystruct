@@ -8,7 +8,7 @@ import math
 
 from agent.rules.base import Rule, building_word_hit, country_name_keys, has_digit, is_street_word, token_gap
 from agent.rules.gazetteer import fold
-from agent.rules.state import ParseState, SEP_COMMA
+from agent.rules.state import ELIMINATION, ParseState, SEP_COMMA
 
 
 class TownRule(Rule):
@@ -34,7 +34,26 @@ class TownRule(Rule):
                         return span
         return []
 
-    def _excluded(self, state, prof, i, j) -> bool:
+    def _street_phrase(self, state, prof, i) -> str:
+        """Is a candidate starting at token i inside a street name? 'out', 'in', or 'clash'.
+
+        A type word that is both English-last and French-first (Boulevard, Place, Avenue in Canada) is read by position:
+        with a name before it ("Williams Boulevard") it ends the street, so the town after it is a town; right after a
+        number or at the start of a segment ("123 Boulevard Winnipeg") it opens a street, which is a clash.
+        """
+        k = i - 1
+        while k >= 0 and state.tokens[k].sep == 0 and state.is_free(k):
+            t = state.tokens[k]
+            if t.fold in prof.street_words_before:
+                if t.fold in prof.street_words_after:
+                    name_before = k - 1 >= 0 and state.tokens[k - 1].sep == 0 and state.is_free(k - 1) and not has_digit(state.tokens[k - 1])
+                    return "out" if name_before else "clash"
+                return "in"
+            k -= 1
+        return "out"
+
+    def _excluded(self, state, prof, i, j):
+        """True: not a town. False: may be. 'clash': may be, but the street/town split is unclear (flag it)."""
         n = len(state.tokens)
         nxt = state.tokens[j + 1] if j + 1 < n else None
         prev = state.tokens[i - 1] if i > 0 else None
@@ -47,17 +66,17 @@ class TownRule(Rule):
             if any(nxt.fold == w.split()[0] for w in prof.building_words):
                 return True
         if prev is not None and state.tokens[i - 1].sep == 0 and state.is_free(i - 1):
-            if prev.fold in prof.street_words_before or prev.fold in prof.building_words:
+            if prev.fold in prof.building_words:
                 return True
-        # inside a street phrase that starts with a type word: "96 Rue de la Paix"
+            if prev.fold in prof.street_words_before and prev.fold not in prof.street_words_after:
+                return True
         refs = set(self._refs(state))
-        if (i - 1 in refs and state.tokens[i - 1].sep == 0) or (j + 1 in refs and state.tokens[j].sep == 0):
-            return False  # written right against the postcode or region: "Moulin Grenoble 38000"
-        k = i - 1
-        while k >= 0 and state.tokens[k].sep == 0 and state.is_free(k):
-            if state.tokens[k].fold in prof.street_words_before:
-                return True
-            k -= 1
+        adjacent_ref = (i - 1 in refs and state.tokens[i - 1].sep == 0) or (j + 1 in refs and state.tokens[j].sep == 0)
+        where = self._street_phrase(state, prof, i)
+        if where == "in":
+            return not adjacent_ref  # "Moulin Grenoble 38000": written right against the postcode, so a town
+        if where == "clash":
+            return "clash" if adjacent_ref else True
         return False
 
     def run(self, state: ParseState) -> None:
@@ -81,15 +100,18 @@ class TownRule(Rule):
                     continue
                 phrase = " ".join(state.tokens[k].text for k in range(i, j + 1))
                 place = gaz.lookup(prof.code, phrase)
-                if place is None or self._excluded(state, prof, i, j):
+                verdict = self._excluded(state, prof, i, j) if place is not None else True
+                if verdict is True:
                     continue
                 span = list(range(i, j + 1)) + self._extend(state, prof, fold(phrase), j)
                 gap = min((token_gap(i, span[-1], r) for r in refs), default=0)
                 score = -0.8 * gap + 0.5 * math.log10(place.population + 1) + 0.2 * length + 0.01 * i
-                cands.append((score, span, place, phrase))
+                cands.append((score, span, place, phrase, verdict == "clash"))
         if cands:
             cands.sort(key=lambda c: -c[0])
-            _, span, place, phrase = cands[0]
+            _, span, place, phrase, clash = cands[0]
+            if clash:
+                state.flag("street_town_clash")
             conf = sig["town_gazetteer"]
             why = f"'{phrase}' is listed in the {prof.code} gazetteer" + (f" (population {place.population})" if place.population else "")
             region = state.fields.get("CtrySubDvsn")
@@ -123,5 +145,6 @@ class TownRule(Rule):
             if best is None or gap < best[0]:
                 best = (gap, chunk)
         if best:
-            state.claim("TwnNm", best[1], self.id, "written beside the postcode, but not found in the gazetteer", sig["town_unverified"])
+            state.claim("TwnNm", best[1], self.id, "written beside the postcode, but not found in the gazetteer", sig["town_unverified"],
+                        basis=ELIMINATION)
             state.flag("town_unverified")

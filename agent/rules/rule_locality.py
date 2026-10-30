@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from agent.rules.base import Rule, building_word_hit, country_name_keys, has_digit, is_street_word, token_gap
-from agent.rules.state import ParseState
+from agent.rules.state import ELIMINATION, EXPLICIT, ParseState
 
 
 class LocalityRule(Rule):
@@ -23,8 +23,37 @@ class LocalityRule(Rule):
                 continue
             if any(is_street_word(prof, t) for t in toks) or building_word_hit(prof, [t.fold for t in toks]):
                 continue
+            if town and " ".join(t.fold for t in toks) == " ".join(state.tokens[i].fold for i in town):
+                continue  # the town written twice is not a locality
             gap = token_gap(chunk[0], chunk[-1], town[0]) if town else 0
             if best is None or gap < best[0]:
                 best = (gap, chunk)
         if best:
-            state.claim("TwnLctnNm", best[1], self.id, "unclaimed segment nearest the town", self.ctx.config["signals"]["rule_set"] - 0.05)
+            chunk = best[1]
+            text = state.text_of(chunk)
+            if prof.locality_patterns and any(p.fullmatch(text) for p in prof.locality_patterns):
+                state.claim("TwnLctnNm", chunk, self.id, "matches a locality pattern of the profile", self.ctx.config["signals"]["rule_set"] - 0.05)
+            elif self.ctx.gazetteer.lookup(prof.code, text):
+                state.claim("TwnLctnNm", chunk, self.id, "a place listed in the gazetteer, beside the town", self.ctx.config["signals"]["rule_set"] - 0.05)
+            else:
+                state.claim("TwnLctnNm", chunk, self.id, "unclaimed segment nearest the town, not a listed place",
+                            self.ctx.config["signals"]["rule_set"] - 0.05, basis=ELIMINATION)
+
+
+class LocalityPatternRule(Rule):
+    """'Sector 12', 'Sec 12', 'Sector-12', 'Phase 2' are localities, not house numbers (guide section 18)."""
+    id = "locality_pattern"
+
+    def run(self, state: ParseState) -> None:
+        prof = self.profile(state)
+        if prof is None or not prof.locality_patterns or "TwnLctnNm" in state.fields:
+            return
+        for chunk in state.chunks():
+            for a in range(len(chunk)):
+                for b in range(min(len(chunk), a + 3), a, -1):
+                    win = chunk[a:b]
+                    text = state.text_of(win)
+                    if any(p.fullmatch(text) for p in prof.locality_patterns):
+                        state.claim("TwnLctnNm", win, self.id, f"'{text}' matches a locality pattern of the {prof.code} profile",
+                                    self.ctx.config["signals"]["rule_set"] - 0.05)
+                        return

@@ -13,7 +13,7 @@ from agent.rules.profile import Profile, all_profiles
 from agent.rules.rule_country import CountryRule
 from agent.rules.rule_finalize import ConfidenceRule, HybridRule, LengthRule, RoutingRule
 from agent.rules.rule_landmark import LandmarkRule
-from agent.rules.rule_locality import LocalityRule
+from agent.rules.rule_locality import LocalityPatternRule, LocalityRule
 from agent.rules.rule_normalise import NormaliseRule
 from agent.rules.rule_postcode import PostcodeRule
 from agent.rules.rule_region import RegionRule
@@ -27,7 +27,7 @@ CONFIG_PATH = Path(__file__).resolve().parent / "config.yaml"
 
 REGISTRY: dict[str, type[Rule]] = {r.id: r for r in (
     NormaliseRule, CountryRule, PostcodeRule, RegionRule, LandmarkRule, PoBoxRule, FloorRule, UnitRule, TownRule,
-    StreetRule, LocalityRule, LengthRule, ConfidenceRule, RoutingRule, HybridRule)}
+    StreetRule, LocalityRule, LocalityPatternRule, LengthRule, ConfidenceRule, RoutingRule, HybridRule)}
 
 
 def load_config(path: Path = CONFIG_PATH) -> dict:
@@ -40,6 +40,7 @@ class RulesResult:
     route: str
     confidence: float
     field_confidence: dict[str, float]
+    field_basis: dict[str, str]
     evidence: dict[str, list[tuple[str, str]]]
     spans: dict[str, list[tuple[int, int]]]
     leftovers: list[Leftover]
@@ -73,7 +74,7 @@ class RulesEngine:
         state = self.run(ParseState(raw_lines=list(raw_lines), country_hint=country_hint))
         return RulesResult(
             fields=dict(state.fields), route=state.route or "REVIEW", confidence=state.address_confidence or 0.0,
-            field_confidence=dict(state.confidence), evidence={k: [(e.rule, e.why) for e in v] for k, v in state.evidence.items()},
+            field_confidence=dict(state.confidence), field_basis=dict(state.basis), evidence={k: [(e.rule, e.why) for e in v] for k, v in state.evidence.items()},
             spans={k: list(v) for k, v in state.spans.items()}, leftovers=list(state.leftovers), flags=list(state.flags),
             route_reasons=list(state.notes.get("route_reasons", [])), hybrid=state.hybrid, country=state.country, text=state.text)
 

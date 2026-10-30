@@ -10,7 +10,7 @@ number_regex: '\d+'
 number_suffix_words: [bis, ter, quater]
 street:
   words_before: [rue, avenue, av, boulevard, bd, place, pl, chemin, ch, impasse, imp, allee, all, quai, route, cours, passage, square]
-building_words: [résidence, résid, rés, bâtiment, bât, immeuble, tour, villa]
+building_words: [résidence, bâtiment, bât, immeuble, tour, villa]
 unit_patterns:
   - '(?:appartement|appt|apt|bureau|bur)\.?\s*(?:n°\s*)?\d+[A-Za-z]?'
 floor_patterns:

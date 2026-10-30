@@ -17,9 +17,9 @@ PLACES = {
            ("Grenoble", "84", 158198), ("Dijon", "27", 156920)],
     "DE": [("Münster", "07", 310039), ("Köln", "07", 963395), ("Hamburg", "04", 1739117), ("Stuttgart", "01", 589793), ("Heidelberg", "01", 140000)],
     "NL": [("Eindhoven", "06", 209620), ("Utrecht", "09", 100000), ("Delft", "11", 98000), ("Amsterdam", "07", 741636)],
-    "CA": [("Montréal", "10", 1600000), ("Halifax", "07", 390096), ("Victoria", "02", 92141), ("Québec", "10", 624177), ("St. John's", "05", 100000)],
+    "CA": [("Montréal", "10", 1600000), ("Halifax", "07", 390096), ("Victoria", "02", 92141), ("Québec", "10", 624177), ("Winnipeg", "03", 705244), ("Toronto", "08", 2600000), ("St. John's", "05", 100000)],
     "US": [("Atlanta", "GA", 463878), ("Austin", "TX", 790390), ("Pasadena", "CA", 138000), ("Washington", "DC", 601723), ("Seattle", "WA", 608660),
-           ("Springfield", "IL", 114000), ("Fort Wayne", "IN", 253691), ("San Antonio", "TX", 1400000), ("Dublin", "CA", 46000)],
+           ("Springfield", "IL", 114000), ("Fort Wayne", "IN", 253691), ("San Antonio", "TX", 1400000), ("Dublin", "CA", 46000), ("New York", "NY", 8175133), ("Albany", "NY", 97856), ("NY", "NY", 700)],
     "IN": [("Mumbai", "16", 12691836), ("New Delhi", "07", 249998), ("Delhi", "07", 10927986), ("Pune", "16", 3124458), ("Jaipur", "24", 3046163),
            ("Juhu", "16", 30000), ("Noida", "36", 642381), ("Chandigarh", "05", 960787)],
 }

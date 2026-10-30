@@ -53,7 +53,7 @@ def test_unclaimed_text_needs_the_llm_and_is_reported(engine):
 
 
 def test_landmarks_are_reported_but_do_not_block_accept(engine):
-    r = engine.parse(["Plot 22, Behind old water tank, Vaishali Nagar", "Jaipur, Rajasthan 302021", "India"])
+    r = engine.parse(["Plot 22, Behind old water tank, Sector 12", "Jaipur, Rajasthan 302021", "India"])
     assert r.route == ACCEPT
     assert [l.text for l in r.leftovers] == ["Behind old water tank"] and r.leftovers[0].reason.startswith("landmark")
 

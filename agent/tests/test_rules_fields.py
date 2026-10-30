@@ -65,11 +65,6 @@ def test_landmark_phrase_stops_at_the_town(run):
     assert s.fields["TwnNm"] == "Jaipur" and s.fields["BldgNb"] == "No. 10" and s.fields["StrtNm"] == "Hospital Marg"
 
 
-def test_hinglish_landmark_is_unlabelled(run):
-    s = run(["Plot 5, Gali Road, Shiv Mandir ke paas", "Laxmi Nagar", "Delhi 110092", "India"], FULL)
-    assert "Shiv" not in " ".join(s.fields.values())
-
-
 def test_landmarks_exist_only_for_countries_that_define_them(run):
     s = run(["12 Near Road", "Cork T12 AC34", "IE"], FULL)
     assert s.fields["StrtNm"] == "Near Road"

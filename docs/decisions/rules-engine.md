@@ -36,7 +36,7 @@ Dev accuracy is optimistic. The generator and the gazetteer both use GeoNames, s
 - **Region that is also a town** (Delhi, Chandigarh, Washington, New York) is decided by whether another town is written.
 - **Regions of GB** use a fixed list of nations and counties; unlisted counties are left as unclaimed text.
 - **Hard-set style cases** that the guide settles by rule (care-of lines, rural routes, stations, talukas, renumbered doors) are not yet recognised; they fall out as unclaimed text and route to NEEDS_LLM, which is the safe failure.
-- **Hinglish landmarks** are recognised only by the "ke paas" ending.
+- **Hinglish landmarks** are not recognised (the "ke paas" ending was removed, see the audit-fix section); they fall out as unclaimed text and route to NEEDS_LLM.
 
 ## Not done on purpose
 
@@ -51,7 +51,7 @@ No LLM, agent, MCP, Kafka, calibration of thresholds, or use of the test and har
 1. **Leakage: none found.** A grep of `agent/` (outside tests) for gold labels, record ids, `addrgen`, `postcode_ties.json` and the splits folder finds only the scorer and the CLI. The engine's `parse` takes `raw_lines` and `country_hint` only; the CLI passes the record's `country_hint` and never `gold`. The hint is an input the generator supplies for `no_country` records (it equals the true country). Running dev without any hint gives the same exact match, with fewer addresses accepted, so the result does not depend on it.
 2. **Memorisation: none found.** No rule contains a town, street, name, id or postcode taken from a dev record. The only literals outside the country profiles, the gazetteer and the allowlist are a handful of keywords in `rule_postcode.py` (flat, unit, plot, house, ...). **Two kinds of contamination are disclosed:**
    - Profile entries added after dev failures: the `No.` keyword for Indian house numbers, Delhi, Chandigarh and Puducherry as regions, the Dutch and German particle lists, and the building-then-street splitting logic.
-   - Profile entries that came from my own knowledge of the AI-drafted hard set (read while reviewing it on Day 1), not from dev: the `new no.` keyword and the `ke paas` landmark ending (India), and the `rés` / `résid` building words (France). They weaken the hard set's independence for those few cases. Remove them or report them before the Day 3 hard-set run.
+   - Profile entries that came from my own knowledge of the AI-drafted hard set (read while reviewing it on Day 1), not from dev: the `new no.` keyword and the `ke paas` landmark ending (India), and the `rés` / `résid` building words (France). They weakened the hard set's independence for those few cases; see the audit-fix section below, where they were removed.
 3. **The scorer is not trivially satisfied.** Scoring each prediction against another record's gold (the next record, and the next in the same country) gives essentially zero exact matches.
 4. **The rules do the work.** Disabling the postcode rule, the street/number split, country detection or the town rule each drops dev to near zero. With an empty gazetteer dev falls clearly (towns are then found only by position), so the gazetteer matters, and that is the GeoNames circularity.
 5. **Generalisation (calibration, one run, report only, nothing tuned):** slightly below dev, within three points, with a few wrongly accepted addresses. Failure patterns seen there: an Indian "Sector 12" read as a house number plus a locality "Sector" (the locality pattern loses to the number rule); a US "New York NY" read as region "New York" and town "NY"; a building name absorbing a locality when there are no separators; and, in Canada, a town written right after an English street type that is also a French type-first word ("Williams Boulevard Winnipeg") was skipped as part of the street, which left the address with no town. No change was made.
@@ -68,4 +68,29 @@ No LLM, agent, MCP, Kafka, calibration of thresholds, or use of the test and har
 
 - Report the hard-set result beside dev every time, and say what dev is.
 - Make fields found only by elimination (locality, an unverified street name) lower the address confidence, so they cannot be ACCEPT; this is the largest source of confident wrong answers and a Day 5 calibration input.
-- Fix the Indian sector-versus-number rule, the region-versus-town order for "New York", and decide whether `new no.`, `ke paas` and `rés` stay.
+- Fix the Indian sector-versus-number rule, the region-versus-town order for "New York", and decide whether `new no.`, `ke paas` and `rés` stay. (All done in the audit-fix round below.)
+
+## Audit-fix round: confidence by evidence (2026-10-30)
+
+### What changed
+
+1. **Every field records how it was set** (`ParseState.basis`, shown as `field_basis` in the result). *Explicit*: a pattern, a gazetteer match, a keyword or a country-profile word said so. *Elimination*: it is what was left over after the other rules. A field set by elimination has its confidence capped at `signals.elimination_cap` (0.60, a test checks it stays below the accept threshold), and an address with any such field routes to NEEDS_LLM, never ACCEPT (reason `by_elimination:<field>`). The address score is now the minimum over all fields, not a chosen few. Fields set by elimination today:
+   - a locality that is neither a place listed in the gazetteer nor a match of a profile locality pattern;
+   - a street name taken after a house number with no street word, or before a Dutch/German number with no street-suffixed word;
+   - a street that holds a token no rule recognises (for example "263-II"; ordinals such as "5th" are recognised);
+   - a town written beside the postcode that the gazetteer does not list.
+   Unknown words therefore lower confidence and go to NEEDS_LLM; the open-vocabulary failures of the audit (Rm, Bldg, 263-II, "Mulberry Hall") are not chased. Leftover text lowers the address score but does not, by itself, send an address to REVIEW; REVIEW stays for a contradiction, no country, no town written, or a field with very low confidence.
+2. **Indian "Sector 12", "Sec 12", "Sector-12", "Sec. 12"** are matched by a profile pattern in a new `locality_pattern` rule that runs before the street rule, so the number is not read as a house number.
+3. **City name equal to a state name** ("New York NY", "New York, New York"): a bare state code is no longer counted as "another town", so the first name stays the town and the state code or the name beside the postcode becomes the region. With no state written, the name is just the town.
+4. **Canadian street-type clash** (Boulevard, Place, Avenue are English-last and French-first): read by position. With a name before it ("Williams Boulevard Winnipeg") the word ends the street and the next gazetteer town is the town; right after a number or at the start of a segment ("25 Boulevard Winnipeg") the reading is unclear, the candidate is allowed only beside the postcode or region, and the address is flagged `street_town_clash` and goes to NEEDS_LLM. "Court" is an English type only and is not a clash. A type-first word that is not also English-last (FR "Rue") still keeps the following name out of the town.
+5. **Hard-set-derived profile entries removed.** I read the AI-drafted hard set on Day 1, while reviewing it. Four profile entries were written from my memory of it rather than from the labelling guide or dev: the `new no.` house-number keyword and the `ke paas` landmark ending (India), and the `rés` / `résid` building words (France). They are removed. A fourth was found while checking: the `h.no.` house-number keyword (the guide lists "House No." only); it is removed too. The `no.` keyword stays: it comes from dev text, not from the hard set. **For everything else the hard set stays independent of the engine**: no other profile word, rule or test was written from a hard-set entry, though I cannot claim to have forgotten it entirely, and the hard set was drafted by an AI that also wrote parts of this project.
+
+### Calibration was used once, for reporting
+
+The calibration split was run once during the audit, for reporting only. Its failure patterns (Sector 12, New York NY, the Canadian clash) informed fixes 2 to 4. The tests for those fixes were written from the pattern descriptions, not from calibration records, and calibration was not run again. **Day 5 threshold setting on calibration is therefore slightly optimistic**, and that has to be said wherever calibration-based numbers are reported.
+
+### Results (reproducible with `python -m agent.rules.cli --split dev`, `python -m agent.audit.audit_dev`, `python -m agent.audit.robustness`)
+
+- Dev: exact match is unchanged, nothing is wrongly accepted, and the accepted share is lower than before because localities and streets that rest on elimination now go to NEEDS_LLM. India is the most affected, because most Indian localities in the generator are not in the `cities500` gazetteer. This raises the share the LLM stage will see.
+- The 30 audit addresses: the same ones are exactly right as before, and **none is wrongly accepted** (before: five). All the wrong ones go to NEEDS_LLM or REVIEW.
+- The dev ACCEPT share is now an honest "explicit evidence only" share; it is still on generator-shaped text and still optimistic.

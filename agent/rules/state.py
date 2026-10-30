@@ -20,6 +20,9 @@ PURE_SEPARATOR = re.compile(r"^[\W_]+$", re.UNICODE)
 SEP_NONE, SEP_COMMA, SEP_LINE, SEP_COMMA_LINE = 0, 1, 2, 3  # the last: a comma and then a line break
 
 ACCEPT, NEEDS_LLM, REVIEW = "ACCEPT", "NEEDS_LLM", "REVIEW"
+# How a field was set. EXPLICIT: a pattern, a gazetteer match, a keyword or a country-profile word said so.
+# ELIMINATION: it is what was left over after the other rules took their share.
+EXPLICIT, ELIMINATION = "explicit", "elimination"
 
 
 @dataclass(frozen=True)
@@ -104,6 +107,7 @@ class ParseState:
     spans: dict[str, list[tuple[int, int]]] = field(default_factory=dict)
     evidence: dict[str, list[Evidence]] = field(default_factory=dict)
     confidence: dict[str, float] = field(default_factory=dict)
+    basis: dict[str, str] = field(default_factory=dict)  # field -> EXPLICIT or ELIMINATION: how it was set
     country: str | None = None
     country_source: str | None = None
     flags: list[str] = field(default_factory=list)
@@ -153,7 +157,8 @@ class ParseState:
     def add_evidence(self, key: str, rule: str, why: str) -> None:
         self.evidence.setdefault(key, []).append(Evidence(rule, why))
 
-    def claim(self, name: str, idxs: list[int], rule: str, why: str, conf: float, value: str | None = None) -> None:
+    def claim(self, name: str, idxs: list[int], rule: str, why: str, conf: float, value: str | None = None,
+              basis: str = EXPLICIT) -> None:
         """Set field `name` from tokens `idxs` (written text, single-spaced). A field is set once."""
         idxs = sorted(idxs)
         if name in self.fields:
@@ -162,9 +167,10 @@ class ParseState:
         self.field_tokens[name] = idxs
         self.spans[name] = self.spans_of(idxs)
         self.confidence[name] = conf
+        self.basis[name] = basis
         for i in idxs:
             self.roles[i] = name
-        self.add_evidence(name, rule, why)
+        self.add_evidence(name, rule, why + (" [by elimination]" if basis == ELIMINATION else ""))
 
     def mark(self, role: str, idxs: list[int], rule: str, why: str) -> None:
         """Claim tokens for a role that is not an output field (country text, landmark)."""
@@ -178,6 +184,7 @@ class ParseState:
         self.fields.pop(name, None)
         self.spans.pop(name, None)
         self.confidence.pop(name, None)
+        self.basis.pop(name, None)
         self.flag(reason)
 
     def spans_of(self, idxs: list[int]) -> list[tuple[int, int]]:

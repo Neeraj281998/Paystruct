@@ -3,7 +3,9 @@ from __future__ import annotations
 
 from agent.rules.base import Rule, building_word_hit, has_digit, is_number, is_street_word, window_text
 from agent.rules.profile import Profile
-from agent.rules.state import ParseState
+import re
+
+from agent.rules.state import ELIMINATION, EXPLICIT, ParseState
 
 
 class StreetRule(Rule):
@@ -52,6 +54,16 @@ class StreetRule(Rule):
                 if span and len(span) >= 2 and not self._building(prof, [state.tokens[i] for i in span[:1]]):
                     best = (idxs[: k + 1], rest)
         return best
+
+    _ORDINAL = re.compile(r"\d+(?:st|nd|rd|th|e|er|re|ème|eme|de|ste|°)?", re.IGNORECASE)
+
+    def _claim_street(self, state, idxs, why, conf, explicit=True):
+        """A street found by a street word is explicit, unless it holds a token like '263-II' that no rule recognises."""
+        basis = EXPLICIT if explicit else ELIMINATION
+        odd = [state.tokens[i].text for i in idxs if has_digit(state.tokens[i]) and not self._ORDINAL.fullmatch(state.tokens[i].text)]
+        if odd:
+            basis, why = ELIMINATION, why + f"; unrecognised token {odd[0]!r} inside it"
+        state.claim("StrtNm", idxs, self.id, why, conf, basis=basis)
 
     def _claim_building_nb(self, state, prof, nb_idxs, why):
         if "BldgNb" not in state.fields:
@@ -118,11 +130,11 @@ class StreetRule(Rule):
         span, _ = self._street_span(prof, rest, state)
         toks = [state.tokens[i] for i in rest]
         if span:
-            state.claim("StrtNm", span, self.id, "street word found", sig["street_word"])
+            self._claim_street(state, span, "street word found", sig["street_word"])
         elif self._building(prof, toks) and "BldgNm" not in state.fields:
             state.claim("BldgNm", rest, self.id, "building word after the number", sig["rule_set"])
         elif not any(has_digit(t) for t in toks) and len(rest) <= 5:
-            state.claim("StrtNm", rest, self.id, "name after a house number, no street word (guide 21.1)", sig["street_no_word"])
+            self._claim_street(state, rest, "name after a house number, no street word (guide 21.1)", sig["street_no_word"], explicit=False)
 
     def _peel_building_after(self, state, prof, street):
         """DE/NL: 'Gebouw West Pluijmplein' - a building name before the street-suffixed word (and its particles)."""
@@ -159,11 +171,12 @@ class StreetRule(Rule):
             street = chunk[:num_k]
             street = self._peel_building_after(state, prof, street)
             sw = any(is_street_word(prof, state.tokens[i]) for i in street)
-            state.claim("StrtNm", street, self.id, "street word found" if sw else "name before the house number", sig["street_word"] if sw else sig["street_no_word"])
+            self._claim_street(state, street, "street word found" if sw else "name before the house number",
+                               sig["street_word"] if sw else sig["street_no_word"], explicit=sw)
             state.claim("BldgNb", [chunk[num_k]], self.id, f"number '{toks[num_k].text}' after the street", sig["rule_set"])
         elif "StrtNm" not in state.fields and any(is_street_word(prof, t) for t in toks):
             street = self._peel_building_after(state, prof, chunk)
-            state.claim("StrtNm", street, self.id, "street word found, no number", sig["street_word"])
+            self._claim_street(state, street, "street word found, no number", sig["street_word"])
 
     def run(self, state: ParseState) -> None:
         prof = self.profile(state)

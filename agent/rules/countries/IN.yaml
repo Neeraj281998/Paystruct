@@ -7,7 +7,7 @@ postcode:
   unique: true
 number_position: before
 bldgnb_patterns:
-  - '(?:plot|house\s+no\.?|h\.\s?no\.?|door\s+no\.?|new\s+no\.?|no\.?)\s*[\w/-]+'
+  - '(?:plot|house\s+no\.?|door\s+no\.?|no\.?)\s*[\w/-]+'
 street:
   words_after: [road, rd, marg, street, lane, cross, highway]
 building_words: [residency, towers, heights, apartments, plaza, complex, mansion]
@@ -16,7 +16,6 @@ unit_patterns:
 floor_patterns:
   - '\d+(?:st|nd|rd|th)\s*floor'
 landmark_keywords: [near, opp, opposite, behind, next to, beside, adjacent to, nr]
-landmark_suffixes: [ke paas, ke pass]
 region:
   entries:
     - {name: Andhra Pradesh, abbr: [AP]}
@@ -57,5 +56,5 @@ town:
   suffixes: []
 localities: true
 locality_patterns:
-  - 'sector\s*\d+[A-Za-z]?(?:-[A-Za-z0-9]+)?'
+  - '(?:sector|sec)\.?[\s-]*\d+[A-Za-z]?(?:-[A-Za-z0-9]+)?'
   - 'phase\s*\d+'

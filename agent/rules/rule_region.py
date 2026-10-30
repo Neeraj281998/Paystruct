@@ -46,7 +46,9 @@ class RegionRule(Rule):
             if not is_abbr and not prefix_len and self.ctx.gazetteer.lookup(prof.code, state.text_of(win)):
                 # a region that is also a town ("Delhi", "Chandigarh"): only when another town is written too
                 others = [w for w in free_windows(state, 3, max_inner_sep=0) if not set(w) & set(win)
-                          and self.ctx.gazetteer.lookup(prof.code, state.text_of(w)) and not any(has_digit(state.tokens[i]) for i in w)]
+                          and self.ctx.gazetteer.lookup(prof.code, state.text_of(w)) and not any(has_digit(state.tokens[i]) for i in w)
+                          and not (" ".join(state.tokens[i].fold for i in w) in table
+                               and " ".join(state.tokens[i].fold for i in w) != fold(table[" ".join(state.tokens[i].fold for i in w)].name))]  # "NY" is a state code, not a town
                 if not others:
                     continue
             cands.append((win, region, max(gap, 0), is_abbr))

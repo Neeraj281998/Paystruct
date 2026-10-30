@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 
 from agent.rules.base import Rule
-from agent.rules.state import ACCEPT, NEEDS_LLM, REVIEW, Leftover, ParseState, SEP_COMMA
+from agent.rules.state import ACCEPT, ELIMINATION, NEEDS_LLM, REVIEW, Leftover, ParseState, SEP_COMMA
 from agent.rules.xsd import V1_FIELDS
 
 
@@ -48,12 +48,12 @@ class ConfidenceRule(Rule):
                 if i is not None:
                     run.append(i)
         state.leftovers.sort(key=lambda l: l.start)
-        conf = 1.0
-        for name in ("Ctry", "TwnNm", "PstCd"):
-            if name in state.confidence:
-                conf = min(conf, state.confidence[name])
-        for name, c in state.confidence.items():
-            conf = min(conf, c) if name in ("StrtNm", "BldgNb", "BldgNm") else conf
+        cap = sig["elimination_cap"]
+        for name, how in state.basis.items():
+            if how == ELIMINATION and name in state.confidence:
+                state.confidence[name] = min(state.confidence[name], cap)  # left over, not recognised: never confident
+        conf = min(state.confidence.values(), default=1.0)
+        state.notes["field_floor"] = conf  # leftover text lowers the address score but never, by itself, sends it to REVIEW
         unresolved = [l for l in state.leftovers if l.reason == "unclaimed text"]
         conf -= sig["leftover_penalty"] * min(len(unresolved), 3)
         if any(l.reason.startswith("landmark") for l in state.leftovers):
@@ -74,18 +74,19 @@ class RoutingRule(Rule):
             reasons.append("no_town_written")
         if "Ctry" not in state.fields:
             reasons.append("no_country")
-        if reasons or (state.address_confidence or 0) < th["review"]:
+        if reasons or state.notes.get("field_floor", 1.0) < th["review"]:
             state.route = REVIEW
             state.notes["route_reasons"] = reasons or ["low_confidence"]
             return
         unresolved = [l for l in state.leftovers if l.reason == "unclaimed text"]
         overflow = [f for f in state.flags if f.startswith(("overlong:", "invalid:"))]
         low = (state.address_confidence or 0) < th["accept"]
-        uncertain = [f for f in state.flags if f in ("partial_postcode", "town_unverified", "landmark_unbounded")]
-        if unresolved or overflow or low or uncertain:
+        uncertain = [f for f in state.flags if f in ("partial_postcode", "town_unverified", "landmark_unbounded", "street_town_clash")]
+        by_elimination = [f"by_elimination:{n}" for n, how in state.basis.items() if how == ELIMINATION]
+        if unresolved or overflow or low or uncertain or by_elimination:
             state.route = NEEDS_LLM
             state.notes["route_reasons"] = (["unclaimed_text"] if unresolved else []) + overflow + (["low_confidence"] if low else []) \
-                + uncertain
+                + uncertain + by_elimination
         else:
             state.route = ACCEPT
             state.notes["route_reasons"] = []
