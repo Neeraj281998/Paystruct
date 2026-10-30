@@ -190,3 +190,25 @@ def test_the_hard_set_note_is_generated_from_records(tmp_path):
     assert "N = 10" in text and "30.0% (3/10)" in text and "small, AI-drafted and AI-verified" in text and "read on Day 1" in text
     assert "dev is optimistic" in text.lower()
     assert report.render_hard_note({}).strip().endswith("No hard-set run record yet.")
+
+
+# -- README results block and resume numbers --------------------------------------------------------------------------------------
+def test_the_readme_results_block_equals_the_generated_one():
+    text = (report.README).read_text(encoding="utf-8")
+    assert report.readme_block_in(text) == report.render_readme_block(report.load_runs())   # run: python -m evals.report --readme
+
+
+def test_the_readme_gives_no_cutover_date_and_claims_no_certification():
+    text = (report.README).read_text(encoding="utf-8")
+    assert "14 November" not in text and "documented subset of CBPR+" in text and "December 2026" in text
+
+
+def test_write_readme_replaces_only_the_block(tmp_path):
+    p = tmp_path / "README.md"
+    p.write_text(f"before\n{report.MARK_START}\nold\n{report.MARK_END}\nafter\n", encoding="utf-8")
+    make_run(tmp_path, "rules_only", "test", wrong=0)
+    for s in ("llm_only", "agent"):
+        make_run(tmp_path, s, "test", wrong=0)
+    report.write_readme(report.load_runs(tmp_path), tmp_path, p)
+    out = p.read_text(encoding="utf-8")
+    assert out.startswith("before\n") and out.endswith("\nafter\n") and "old" not in out and "N = 10" in out

@@ -1,98 +1,163 @@
 # PayStruct
 
-Converts free-text postal addresses in ISO 20022 payment messages (pacs.008 and pain.001) into structured address elements, validates the result, and explains failures with a cited rule.
+PayStruct turns free-text postal addresses in ISO 20022 payment messages (pacs.008 and pain.001) into structured `PstlAdr` elements. A Python rules engine runs first; a repair agent built on the Claude API proposes fixes only for what the rules cannot resolve. Every record is then either published as repaired or sent to a human-review queue, and it is measured against two baselines (rules only, LLM only) on synthetic data.
 
-PayStruct implements a documented subset of CBPR+ address rules. It is not certified. All data in this repository is synthetic.
+The principle: **the AI proposes, plain code decides.** The agent has no tool that approves or publishes. A fix is accepted only if a deterministic validator passes and a grounding check passes (every component appears in the original text; only the country code and an allowlisted set of abbreviation expansions may be added).
 
-> Status: work in progress. See [docs/PROGRESS.md](docs/PROGRESS.md) for the phase checklist and [docs/spec.md](docs/spec.md) for the full specification.
+PayStruct implements a documented subset of CBPR+ address rules. It is not certified and not compliant with anything. All data in this repository is synthetic.
+
+## The problem
+
+Payment messages carry the debtor's and creditor's addresses. Many still arrive as unstructured lines (`AdrLine`), while ISO 20022 and the CBPR+ usage guidelines move toward structured elements (town, country, postcode, street and so on). Turning a free-text address into the right fields is easy for tidy addresses and error-prone for the rest, and a wrongly "repaired" address is worse than one left for a person to look at.
+
+Timing: Swift deferred Standards Release 2026 and expects to set new timing for structured addresses by December 2026. This README gives no cutover date. Status checked on 2026-10-30; verify it before relying on it.
+
+## What exists
+
+- **Python, `agent/`:** the rules engine (`agent/rules`), the repair agent with its verifier, pipeline and Postgres-backed worker (`agent/repair`, `agent/db`).
+- **Python, `evals/`:** the evaluation harness, the three systems, run records, and the generated reports.
+- **Java Spring Boot service, `service/`:** ingests and validates pacs.008 and pain.001 messages against the ISO 20022 schemas and extracts address jobs. It is **not wired into the Python pipeline**; the two are separate.
+- **Not built:** an MCP server, RAG, Kafka, a CBPR+ rule layer, a review UI.
 
 ## Architecture
 
-TODO (Phase 9): architecture diagram and description. Detail is in `docs/spec.md`.
+```mermaid
+flowchart TD
+    A[Address lines from a payment message] --> R[Rules engine<br/>Python, country profiles, GeoNames]
+    R -->|ACCEPT: rules resolved it| V
+    R -->|NEEDS_LLM: rules cannot resolve it| G[Repair agent<br/>Claude, hand-written tool-use loop<br/>proposes a structured address]
+    R -->|REVIEW: unsafe to guess| Q
+    G -->|proposal| V{Verifier, plain code<br/>validator + grounding + completeness<br/>+ locked rules fields + confidence}
+    V -->|passes and confident| P[REPAIRED<br/>structured PstlAdr published]
+    V -->|fails, or low confidence| Q[REVIEW<br/>Postgres human-review queue]
+    G -. no tool to approve or publish .-x P
+```
+
+Rules run first. The agent sees only the records the rules cannot resolve and proposes; the verifier is the gate. Anything not valid, grounded and confident goes to review. If no town is written, a town is never derived. Limits are enforced in code: 8 tool calls per attempt, 3 attempts per payment, a per-payment cost cap, timeouts.
+
+## Quick start
+
+From a fresh clone. Needs Python 3.12 and, for the database, Docker. The Java service needs Java 21 and is optional.
+
+```bash
+git clone https://github.com/Neeraj281998/Paystruct.git && cd Paystruct
+
+# 1. Python environment (the offline tests need nothing else)
+python3.12 -m venv agent/.venv
+source agent/.venv/bin/activate
+pip install -r agent/requirements.txt
+
+# 2. Offline tests: no API key, no database, no GeoNames file needed
+python -m pytest agent/tests evals/tests -q
+```
+
+Tests that need the GeoNames file or a database skip cleanly when it is absent. For the full rules-engine tests, add the gazetteer:
+
+```bash
+# 3. GeoNames cities500 (CC BY 4.0, https://www.geonames.org), not committed
+mkdir -p service/src/main/resources/gazetteer
+curl -L -o /tmp/cities500.zip https://download.geonames.org/export/dump/cities500.zip
+unzip -o /tmp/cities500.zip cities500.txt -d service/src/main/resources/gazetteer
+```
+
+Database (only for the Postgres queue and the DB tests):
+
+```bash
+cp .env.example .env          # local-only credentials for Docker Compose, gitignored
+docker compose up -d --wait   # PostgreSQL 16 and Redis
+set -a; source .env; set +a   # POSTGRES_USER / POSTGRES_PASSWORD / POSTGRES_DB for the Python code
+python -m agent.db            # applies the agent tables (idempotent)
+```
+
+Run each system on dev (the tuning split; the frozen test split is not for tuning and the harness refuses it without `--final`):
+
+```bash
+python -m evals.run --system rules_only --split dev          # free, needs the GeoNames file
+export ANTHROPIC_API_KEY=...                                  # set it in your shell; never write it to a file
+python -m evals.run --system llm_only --split dev --limit 30  # costs money: prints an estimate first
+python -m evals.run --system agent    --split dev --limit 30  # costs money: prints an estimate first
+python -m evals.report                                        # regenerates docs/eval-results.md from the run records
+```
+
+Model runs need `--limit N` or `--ids`, stop at a run budget (`PAYSTRUCT_RUN_BUDGET_USD`, default $0.50), and need `--approved-over-30` above 30 records. The hard set and the test split were run once, by `scripts/final_run.py`, after the `final-config` tag (`docs/decisions/final-run-protocol.md`).
+
+Java service (optional, separate from the Python pipeline): `cd service && ./mvnw test`, or `./mvnw spring-boot:run` after `docker compose up`.
 
 ## Results
 
-TODO (Phase 9): the results table is generated from `eval_runs` records. No numbers are written here by hand.
+Every number comes from a run record in `evals/results/` (`docs/decisions/eval-records.md`). The full tables are in [docs/eval-results.md](docs/eval-results.md).
 
-## Run it
+<!-- results:start -->
 
-Prerequisites: Java 21 and Docker. Maven is not needed; the wrapper is in `service/`.
+*Generated by `python -m evals.report --readme` from the run records in `evals/results/`; do not edit by hand (a test fails if it drifts). All data is synthetic. False-repair rate = ACCEPT records with any wrong field, out of all ACCEPT records (k/n, 95% Wilson interval).*
 
-```bash
-cp .env.example .env              # local-only credentials for Docker Compose, gitignored
-docker compose up -d --wait       # PostgreSQL 16 (pgvector) and Redis, both with healthchecks
-cd service
-./mvnw spring-boot:run            # http://localhost:8080
+**Test split** (frozen, run once), N = 1000, git `e7d2f7f`, model `claude-haiku-5-5`:
+
+| system | auto-correct [95% CI] | **false-repair rate** [95% CI] | sent to REVIEW | REVIEW cases with a correct proposal | cost per 1,000 (USD) | latency p50 / p95 (ms) | run record |
+|---|---|---|---|---|---|---|---|
+| rules_only | 88.4% (884/1000) [86.3-90.2] | 0.2% (2/886) [0.1-0.8] | 0.1% (1/1000) | 0/1 | 0.0000 | 1.40 / 2.00 | `20261030T152517Z_rules_only_test_e7d2f7f.json` |
+| llm_only | 96.2% (962/1000) [94.8-97.2] | 3.4% (34/996) [2.5-4.7] | 0.4% (4/1000) | 0/4 | 0.2629 | 1226.60 / 1896.26 | `20261030T154649Z_llm_only_test_e7d2f7f.json` |
+| agent | 89.0% (890/1000) [86.9-90.8] | 0.2% (2/892) [0.1-0.8] | 10.8% (108/1000) | 107/108 | 0.0066 | 2.32 / 3.63 | `20261030T154720Z_agent_test_e7d2f7f.json` |
+
+**Hard set** (AI-drafted, AI-verified; the engine's author read it on Day 1), N = 40, git `e7d2f7f`, model `claude-haiku-5-5`:
+
+| system | auto-correct [95% CI] | **false-repair rate** [95% CI] | sent to REVIEW | REVIEW cases with a correct proposal | cost per 1,000 (USD) | latency p50 / p95 (ms) | run record |
+|---|---|---|---|---|---|---|---|
+| rules_only | 32.5% (13/40) [20.1-48.0] | 13.3% (2/15) [3.7-37.9] | 10.0% (4/40) | 4/4 | 0.0000 | 1.29 / 1.75 | `20261030T152234Z_rules_only_hard_e7d2f7f.json` |
+| llm_only | 77.5% (31/40) [62.5-87.7] | 20.5% (8/39) [10.8-35.5] | 2.5% (1/40) | 0/1 | 0.2579 | 1198.26 / 1433.56 | `20261030T152323Z_llm_only_hard_e7d2f7f.json` |
+| agent | 35.0% (14/40) [22.1-50.5] | 12.5% (2/16) [3.5-36.0] | 60.0% (24/40) | 8/24 | 0.7580 | 7.12 / 9313.96 | `20261030T152514Z_agent_hard_e7d2f7f.json` |
+
+India on the test split (auto-correct): rules_only 40.0% (50/125); llm_only 95.2% (119/125); agent 40.8% (51/125).
+
+Injection slice (AI-written, development, run once): rules_only 15/15; llm_only 15/15; agent 15/15.
+
+Total recorded API spend: $0.43 across 10 run records with a cost (22 run records in all).
+
+<!-- results:end -->
+
+## What the results do and do not show
+
+- **The agent is not better than the rules on accuracy.** Its auto-correct interval overlaps the rules-only interval on the test split, and its false repairs are the same two. What it adds is the routing: it sends records to review rather than publishing them.
+- **There is a safety gap against LLM-only on false repairs, and a cost gap, on this data.** LLM-only accepts everything it can parse and has no verifier; the agent matches the rules' false-repair count at a small fraction of the cost per 1,000 on the test split.
+- **The cost advantage does not hold on the hard set.** There the agent costs more per 1,000 than LLM-only, because most hard records reach the model.
+- **The verifier caught neither of the 2 residual false repairs.** Both are real text from the address placed in the wrong field, which a grounding check (is every component in the text?) cannot see.
+- **Records in REVIEW with a correct proposal are mostly the rules' own output.** The agent's review queue is large, and most of what it holds the rules had already got right.
+- **The test split is optimistic.** It shares a generator and GeoNames with the rules.
+- **The hard set is 40 entries, AI-drafted and AI-verified**, and the engine's author read it on Day 1. It is an independent check, not a benchmark, and no ranking should be read from it.
+- **One run per system.** Temperature cannot be set on this model, so there is no repeat-run variance estimate.
+- **The injection slice is 15 AI-written cases and every system passed**, so it cannot tell them apart.
+
+## Failures
+
+The failure patterns are listed per split in [docs/eval-results.md](docs/eval-results.md) (tables labelled "rules-only run"). On the test split the agent's failures are dominated by records sent to review, which publish no fields; the two accepted-but-wrong records are the residual false repairs above. The clearest weakness is India: only 40 percent of India test records are auto-correct under the rules (the India figure per system is in the results block above), because most Indian addresses reach the model or review. Hybrid-address cases (care-of lines, attention lines, stations) are routed to review and recorded as a limitation (`docs/decisions/agent.md`).
+
+## Limitations and next steps
+
+- Not built: an MCP server, RAG, Kafka, a CBPR+ rule layer, a review UI.
+- The validator checks only a small documented subset: town and country present, field lengths, ISO country codes, postcode shape, and hybrid line limits. The hybrid line limit in the code is a placeholder; the real limit must be confirmed against the CBPR+ guidelines.
+- Never call this compliant or certified. It implements a documented subset of CBPR+ address rules.
+- Synthetic data only. No real customer, bank or employer data.
+- Next: confirm the CBPR+ hybrid limit, handle care-of, attention and station lines, repeat runs for variance, a hard set reviewed by a payments specialist, and the human-run approval CLI.
+
+## Honest cost
+
+The whole project's API spend is in the results block above, summed from the run records (development runs, the audit set, the injection slice and the final runs included).
+
+## Credits
+
+- Town reference data: [GeoNames](https://www.geonames.org) `cities500.txt`, licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). GeoNames postal-code data (also CC BY 4.0) was used to build the synthetic splits. Not committed.
+- Schemas: `pacs.008.001.14` and `pain.001.001.13` from the ISO 20022 message definitions published at iso20022.org, downloaded on 28 Oct 2026 (`service/src/main/resources/xsd/`, `docs/decisions/xsd-versions.md`).
+- Address model: Claude (Anthropic API).
+
+## Repository map
+
 ```
-
-That is all. The service connects to the Compose database with built-in local-development defaults (database, user and password are all `paystruct`). Spring Boot does not read `.env`; to point the service somewhere else, set `POSTGRES_HOST`, `POSTGRES_PORT`, `POSTGRES_DB`, `POSTGRES_USER` and `POSTGRES_PASSWORD` in the environment, which override the defaults. If a datasource setting is left unresolved the service refuses to start and says which one.
-
-Try it with the synthetic samples:
-
-```bash
-curl -s -H 'Content-Type: application/xml' \
-  --data-binary @src/test/resources/samples/pacs008-unstructured.xml \
-  http://localhost:8080/v1/messages
-curl -s http://localhost:8080/v1/messages/<messageId>
+agent/          rules engine (rules/), repair agent, verifier, pipeline, worker (repair/), Postgres store (db/), tests
+evals/          evaluation harness: systems, metrics, guards, run records (results/), report
+data/           synthetic generator, labelling guide, splits (dev, calibration, frozen test, hard), hard-set YAML
+docs/           PLAN, PROGRESS, generated eval-results, decision records, resume numbers
+scripts/        split building and checks, final-run script
+service/        Spring Boot ingestion service (Java 21; not wired to the Python pipeline)
+docker-compose.yml  Postgres 16 and Redis for local use
+eval/, review-ui/, rule-cards/   empty placeholders, not built
 ```
-
-Posting the same bytes again returns the stored result with `"duplicate": true`.
-
-## Test
-
-```bash
-cd service
-./mvnw test       # unit, golden-file and security tests; no Docker needed
-./mvnw verify     # also runs the Testcontainers integration test against real PostgreSQL (Docker running)
-```
-
-## API (Phase 1)
-
-| Method | Path | Does |
-|---|---|---|
-| POST | `/v1/messages` | Takes one pacs.008 or pain.001 XML message (`application/xml`), returns the message type, schema errors, whether it is a duplicate, and one address job per party or agent with a postal address |
-| GET | `/v1/messages/{id}` | Returns the stored result |
-
-Errors are JSON `{"error": "<CODE>", "message": "..."}`: `DTD_NOT_ALLOWED`, `MALFORMED_XML`, `UNSUPPORTED_MESSAGE_TYPE` (HTTP 400), `PAYLOAD_TOO_LARGE` (413), `MESSAGE_NOT_FOUND` (404).
-
-## Repository layout
-
-```
-service/        Spring Boot application (ingestion front door)
-agent/          Python: rules engine (agent/rules), later the repair agent and MCP server
-data/           generator, labelling guide, dataset splits
-eval/           evaluation harness and baselines
-review-ui/      review screen and demo page
-rule-cards/     rule cards for the explanation layer
-docs/           spec, progress, decision records
-```
-
-## Schemas
-
-The XSDs in `service/src/main/resources/xsd/` are `pacs.008.001.14` and `pain.001.001.13`, taken from the ISO 20022 message definitions published at iso20022.org and downloaded on 28 Oct 2026. They are the source of truth for element names and maximum lengths; see `docs/decisions/xsd-versions.md`.
-
-## Attribution
-
-Town reference data for the rules engine comes from [GeoNames](https://www.geonames.org) (`cities500.txt`, licensed CC BY 4.0). The file is not committed; it is read-only input at `service/src/main/resources/gazetteer/cities500.txt`. GeoNames postal-code data (also CC BY 4.0) was used to build the synthetic splits. The generator and the rules engine both use GeoNames, so town and postcode accuracy on the synthetic splits is optimistic (`docs/decisions/geonames-circularity.md`).
-
-## Rules engine (Day 2)
-
-```bash
-/opt/homebrew/bin/python3.12 -m venv agent/.venv && agent/.venv/bin/pip install -r agent/requirements.txt
-agent/.venv/bin/python -m pytest agent/tests                    # unit and property tests
-agent/.venv/bin/python -m agent.rules.cli --split dev           # rules only; dev or calibration, nothing else
-```
-
-Design and caveats: `docs/decisions/rules-engine.md`.
-
-## Repair agent (Day 4)
-
-The model proposes, plain code decides (`docs/decisions/agent.md`, `docs/threat-model.md`). Everything below runs with no API key and no network:
-
-```bash
-agent/.venv/bin/python -m pytest agent evals -q                       # scripted fake model; PostgreSQL tests skip without database settings
-agent/.venv/bin/python -m agent.repair.worker --source dev --limit 30 --no-llm --memory   # rules + verifier only
-set -a; . ./.env; set +a; agent/.venv/bin/python -m agent.db          # create the agent tables (idempotent), then drop --memory above
-```
-
-The checks never let the model delete text, overwrite what the rules know, or publish a hybrid (`docs/decisions/agent.md`, "First real run on dev"). A real run needs `ANTHROPIC_API_KEY` in the environment, a mandatory `--limit`, and prints an estimate first; see the decision record.
