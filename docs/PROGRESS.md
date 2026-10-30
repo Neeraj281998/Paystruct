@@ -128,3 +128,21 @@ Not done, by design: no real API call (the owner runs them), the test guard is n
 Things to know:
 - The injection slice, the robustness set and calibration are development material; calibration was already used for reporting, so the threshold chosen on it is slightly optimistic (`docs/decisions/threshold.md` will say so).
 - A test that wrote to the real `routing.yml` during development was fixed (default paths are now looked up at call time) and the file restored; no stray run records were kept.
+
+## Docs and report presentation after the final runs (2026-10-30)
+
+The final runs are done (`final-config` marks the frozen code, prompts, model id and threshold). This session changed docs and report presentation only: nothing under `agent/`, no scoring, metrics or threshold code, no API call, no evaluation re-run, the tag was not moved, nothing was pushed. The changes are logged in `docs/results-changelog.md` (no result changed).
+
+Built:
+- `evals/report.py`: the per-element, by-country, by-tier, by-tag and failure-pattern tables are labelled "rules-only run" with a one-line note (the headline system rows of `docs/eval-results.md` are byte-identical to before); `--readme` writes the README results block between marker comments; `--resume-numbers` writes `docs/resume-numbers.md`. Tests fail if either file drifts from the generated text.
+- Stale wording fixed about the test guard (`docs/decisions/eval-records.md`, `docs/decisions/final-run-protocol.md`, comments and message text in `scripts/final_run.py`).
+- `README.md` rewritten: problem (Swift status without a cutover date, checked 2026-10-30), what exists, Mermaid architecture, quick start, generated results, what the results do and do not show, failures, limitations, cost, credits, repository map.
+- `docs/resume-numbers.md`: numbers allowed (with record file names and wording), numbers not allowed, three draft bullets, interview answers.
+
+Checks:
+- Secrets scan (working tree and all history): no `.env` tracked or ever committed (`.gitignore` covers it); no real key. The only `sk-ant-` strings are two fake fixtures in tests (`agent/tests/test_repair_pipeline.py`, `agent/tests/test_repair_store.py`).
+- Fresh clone outside the repo, no `.env`, no GeoNames file, no API key: `pytest agent/tests evals/tests` gives 457 passed, 8 skipped. `docker compose config` is valid with `.env.example` copied to `.env`. One README step needed a fix: `rules_only` without the GeoNames file runs silently with much lower numbers, so the README now says to install the file first.
+
+Things to know:
+- The GeoNames download URL in the README (`download.geonames.org/export/dump/cities500.zip`) was not fetched in this session.
+- The Postgres steps were not run in the clone (the local port is in use); only `docker compose config` was checked.
